@@ -5,22 +5,6 @@ const Order = require("../../models/Order");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
 class GetAPIController {
-    // static tokenGenerate = async (req, res) => {
-    //     const user_id = Order.user_id;
-    //     jwt.sign(
-    //         { user_id },
-    //         secretKey,
-    //         { expiresIn: "300s" },
-    //         (err, token) => {
-    //             if (err) {
-    //                 return res
-    //                     .status(500)
-    //                     .json({ error: "Token generation failed" });
-    //             }
-    //             res.json({ token });
-    //         }
-    //     );
-    // };
 
     static getOrders = async (req, res) => {
         try {
