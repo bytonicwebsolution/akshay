@@ -8,6 +8,11 @@ const jwt = require("jsonwebtoken");
 class addToCartController {
     static addCart = async (req, res) => {
         try {
+            var token = req.body.token;
+            const payload = jwt.decode(token, process.env.TOKEN_SECRET);
+            const userId = payload.id;
+            
+
             if (!req.body.sku) {
                 return res.status(404).send({
                     success: false,
@@ -15,12 +20,6 @@ class addToCartController {
                     message: "SKU is required!",
                 });
             }
-
-            var token = req.body.token;
-
-            const payload = jwt.decode(token, process.env.TOKEN_SECRET);
-
-            const userId = payload.id;
 
             // Testcase-01 : Find the ProductStock document by product_id
             const stockData = await ProductStock.find({
@@ -52,9 +51,6 @@ class addToCartController {
                 });
             }
 
-
-            
-
             // Testcase-04 : if product_id and sku present in the productStocks then we proceed on Insert and Update functionality.
             /* Testcase-03 : I want to check sku and user_id is already present or not in the collection, 
                if present then update and else insert new document
@@ -63,20 +59,29 @@ class addToCartController {
                 skuArray[skuIndex] == req.body.sku &&
                 stockData[0].product_id == req.body.product_id
             ) {
-                
                 const insertitem = new Cart({
                     product_id: req.body.product_id,
-                    user_id: userId,
                     quantity: req.body.quantity,
+                    user_id:userId,
                     sku: req.body.sku,
                     product_stock_id: stockData._id, // Store the stock document's _id
                 });
+
                 const cartData = await Cart.find({
-                    user_id: userId,
-                    sku: req.body.sku,
+                    user_id:userId,
+                    product_id: req.body.product_id,
                 });
 
-                
+                // const cartDetails = [];
+                // for(let i=0;i<cartData.length;i++){
+                //     if((cartData[i].sku == req.body.sku)&&(cartData[i].user_id==userId)){
+                //         cartDetails = cartData[i];
+                //         break;
+                //     }
+                // }
+
+        
+            
 
                 if (cartData) {
                     const updateitem = await Cart.findOneAndUpdate(
@@ -91,7 +96,6 @@ class addToCartController {
                         { new: true }
                     );
 
-                    
                     /* Testcase-05 : if req.body.sku is present in the ProductStock collection, 
                 then find the index of an array and accordinig to index find the current stock */
                     if (
