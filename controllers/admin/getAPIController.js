@@ -9,10 +9,7 @@ class GetAPIController {
     static getOrders = async (req, res) => {
         try {
             var token = req.body.token;
-            console.log(token);
             const payload = jwt.decode(token, process.env.TOKEN_SECRET);
-
-            console.log(payload);
             const userId = await Order.findById(payload.id);
 
             let orders;
@@ -31,11 +28,9 @@ class GetAPIController {
     static getdetails = async (req, res) => {
         try {
             var token = req.body.token;
-            console.log(token);
             const payload = jwt.decode(token, process.env.TOKEN_SECRET);
 
             const userId = await User.findById(payload.id);
-            console.log(userId);
 
             const USER_ID = userId._id;
 

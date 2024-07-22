@@ -18,6 +18,11 @@ const Schema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    sku: {
+        type: String,
+        required:true,
+    },
+
     created_at: {
         type: String,
         default: Date,
