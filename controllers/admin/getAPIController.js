@@ -4,56 +4,44 @@ const OrderHistory = require("../../models/OrderHistory");
 const Order = require("../../models/Order");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
+const { query } = require("express");
 class GetAPIController {
-
     static getOrders = async (req, res) => {
         try {
             var token = req.body.token;
             const payload = jwt.decode(token, process.env.TOKEN_SECRET);
-            const userId = await Order.findById(payload.id);
+            const userId = payload.id;
 
             let orders;
 
-            if (userId) {
-                orders = await Order.find({ user_id: user_Id });
-            } else {
-                orders = await Order.find();
-            }
-            res.json(orders);
+            orders = await Order.find({ user_id: userId });
+
+            res.send(orders);
         } catch (error) {
-            console.error("Error fetching data:", error);
+            console.error(error);
+            return res.status(500).send({
+                message: "Error in getting orders " + error.message,
+            });
         }
     };
 
     static getdetails = async (req, res) => {
         try {
-            var token = req.body.token;
-            const payload = jwt.decode(token, process.env.TOKEN_SECRET);
-
-            const userId = await User.findById(payload.id);
-
-            const USER_ID = userId._id;
+            const order_id = req.body.order_id;
 
             let finalArray = {};
 
-            if (USER_ID) {
+            if (order_id) {
                 const transactions = await Transaction.find({
-                    user_id: USER_ID,
+                    order_id: order_id,
                 });
-                // find transactionIds in order_id in Transaction
-                const transactionIds = transactions.map(
-                    (Transaction) => Transaction.order_id
-                );
 
                 const billingAddresses = await BillingAddress.find({
-                    order_id: { $in: transactionIds },
+                    order_id: order_id,
                 }).exec();
 
-                const billingOrderIds = billingAddresses.map(
-                    (BillingAddress) => BillingAddress.order_id._id
-                );
                 const orderHistories = await OrderHistory.find({
-                    order_id: { $in: billingOrderIds },
+                    order_id: order_id,
                 }).exec();
 
                 finalArray = {
@@ -63,9 +51,12 @@ class GetAPIController {
                 };
             }
 
-            res.send(finalArray);
+            res.status(200).send(finalArray);
         } catch (error) {
-            console.error("Error fetching data:", error);
+            console.error(error);
+            return res.status(500).send({
+                message: "Error in getting Order details " + error.message,
+            });
         }
     };
 }

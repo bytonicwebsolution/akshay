@@ -13,6 +13,7 @@ const unit = require("./routes/admin/unit");
 const getAPI = require("./routes/admin/getAPI");
 const addToCart = require("./routes/admin/addtocart");
 const addProduct = require("./routes/admin/addProduct");
+const getAttribute = require("./routes/admin/getAttribute");
 
 
 const AdminRoutes = (app) => {
@@ -31,6 +32,7 @@ const AdminRoutes = (app) => {
     app.use("/admin/getapi", getAPI);
     app.use("/admin/addtocart", addToCart);
     app.use("/admin/add-product", addProduct)
+    app.use("/admin/getattributes", getAttribute);
 };
 
 module.exports = AdminRoutes;

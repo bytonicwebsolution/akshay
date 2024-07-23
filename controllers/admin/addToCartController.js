@@ -8,11 +8,6 @@ const jwt = require("jsonwebtoken");
 class addToCartController {
     static addCart = async (req, res) => {
         try {
-            var token = req.body.token;
-            const payload = jwt.decode(token, process.env.TOKEN_SECRET);
-            const userId = payload.id;
-            
-
             if (!req.body.sku) {
                 return res.status(404).send({
                     success: false,
@@ -21,127 +16,136 @@ class addToCartController {
                 });
             }
 
-            // Testcase-01 : Find the ProductStock document by product_id
-            const stockData = await ProductStock.find({
+            var token = req.body.token;
+            const payload = jwt.decode(token, process.env.TOKEN_SECRET);
+            const userId = payload.id;
+
+            // Find the ProductStock document by product_id
+            const stockData = await ProductStock.findOne({
                 product_id: req.body.product_id,
             });
 
-            if (!stockData[0]) {
+            const findquantityCount = await Cart.find({
+                sku: req.body.sku,
+                product_id: req.body.product_id,
+            });
+
+            let quantityCount = 0;
+
+            for (let i = 0; i < findquantityCount.length; i++) {
+                quantityCount += findquantityCount[i].quantity;
+            }
+
+
+            if (!stockData) {
                 return res.status(404).send({
                     success: false,
                     status: 404,
                     message: "product_id not found in ProductStock",
                 });
             }
-            // find the index of the sku in productStocks which equals to the req.product.sku
-            let skuArray = stockData[0].sku;
+
+            let skuArray = stockData.sku;
             let skuIndex = 0;
 
-            for (skuIndex = 0; skuIndex < skuArray.length; skuIndex++) {
-                if (skuArray[skuIndex] === req.body.sku) {
-                    break;
-                }
-            }
+            skuIndex = skuArray.findIndex((sku) => sku === req.body.sku);
 
-            if (skuIndex === skuArray.length) {
+            if (skuIndex === -1) {
                 return res.status(404).send({
                     success: false,
                     status: 404,
-                    message: "sku not found in ProductStock",
+                    message: "SKU is not Present in Product Stock",
+                });
+            }
+            const insertitem = new Cart({
+                product_id: req.body.product_id,
+                quantity: req.body.quantity,
+                user_id: userId,
+                sku: req.body.sku,
+                product_stock_id: stockData._id, // Store the stock document's _id
+            });
+            if (
+                Number(req.body.quantity) + Number(quantityCount)>
+                stockData.current_stock[skuIndex]
+            ) {
+
+                return res.status(400).send({
+                    success: false,
+                    status: 400,
+                    message: "Product is Out of Stock!",
                 });
             }
 
-            // Testcase-04 : if product_id and sku present in the productStocks then we proceed on Insert and Update functionality.
-            /* Testcase-03 : I want to check sku and user_id is already present or not in the collection, 
-               if present then update and else insert new document
-            */
-            if (
-                skuArray[skuIndex] == req.body.sku &&
-                stockData[0].product_id == req.body.product_id
-            ) {
-                const insertitem = new Cart({
-                    product_id: req.body.product_id,
-                    quantity: req.body.quantity,
-                    user_id:userId,
-                    sku: req.body.sku,
-                    product_stock_id: stockData._id, // Store the stock document's _id
+            // CartData
+            const cartData = await Cart.find({
+                user_id: userId,
+                product_id: req.body.product_id,
+                sku: req.body.sku,
+            });
+            if (cartData.length == 0) {
+                await insertitem.save();
+                return res.send({
+                    success: true,
+                    status: 200,
+                    message: "Item is add to cart successfully!",
                 });
+            }
 
-                const cartData = await Cart.find({
-                    user_id:userId,
-                    product_id: req.body.product_id,
-                });
+            // If user is already present in the Cart then Update the quantity of the product in the Cart
 
-                // const cartDetails = [];
-                // for(let i=0;i<cartData.length;i++){
-                //     if((cartData[i].sku == req.body.sku)&&(cartData[i].user_id==userId)){
-                //         cartDetails = cartData[i];
-                //         break;
-                //     }
-                // }
-
-        
-            
-
-                if (cartData) {
-                    const updateitem = await Cart.findOneAndUpdate(
-                        { sku: req.body.sku },
-                        {
-                            $set: {
-                                quantity:
-                                    cartData[0].quantity +
-                                    Number(req.body.quantity),
-                            },
+            if (cartData) {
+                const updateitem = await Cart.findOneAndUpdate(
+                    { sku: req.body.sku },
+                    {
+                        $set: {
+                            quantity: Number(req.body.quantity),
                         },
-                        { new: true }
-                    );
+                    },
+                    { new: true }
+                );
 
-                    /* Testcase-05 : if req.body.sku is present in the ProductStock collection, 
-                then find the index of an array and accordinig to index find the current stock */
-                    if (
-                        cartData[0].quantity + req.body.quantity >
-                        stockData[0].current_stock[skuIndex]
-                    ) {
-                        return res.status(400).send({
-                            success: false,
-                            status: 400,
-                            message: "Quantity is greater than current stock",
-                        });
-                    }
-                    await updateitem.save();
-                    return res.status(200).send({
-                        success: true,
-                        status: 200,
-                        message: "Product Update to cart",
-                    });
-                } else {
-                    await insertitem.save();
-                    return res.send({
-                        success: true,
-                        status: 200,
-                        message: "Item added successfully",
+                if (
+                    Number(req.body.quantity) + Number(quantityCount) >
+                    stockData.current_stock[skuIndex]
+                ) {
+                    return res.status(400).send({
+                        success: false,
+                        status: 400,
+                        message: "Product is Out of Stock!",
                     });
                 }
+                await updateitem.save();
+                return res.status(200).send({
+                    success: true,
+                    status: 200,
+                    message: "Cart is Update!",
+                });
             }
         } catch (error) {
             console.error(error);
             return res.status(500).send({
-                message: "Error adding unit: " + error.message,
+                message: "Error in getting Cart  " + error.message,
             });
         }
     };
 
     static getCart = async (req, res) => {
         try {
+            let cart = [];
             var token = req.body.token;
 
             const payload = jwt.decode(token, process.env.TOKEN_SECRET);
 
-            const cart = await Cart.find().populate(
-                "product_stock_id product_id user_id"
-            );
-            res.send(cart);
-        } catch (error) {}
+            const userId = payload.id;
+            cart = await Cart.find({ user_id: userId });
+
+            res.status(200).send(cart);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send({
+                message: "Error in getting Cart  " + error.message,
+            });
+        }
     };
 }
 
