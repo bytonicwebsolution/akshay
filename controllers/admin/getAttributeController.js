@@ -17,18 +17,28 @@ class getAttributeController {
             let attributeValue = await AttributeValue.find({
                 attribute_sets_id: attributesetId,
             });
+
             let attributeSet = await AttributeSets.findOne({
                 _id: attributesetId,
             });
 
-            const finalArray = {
-                attributeSet,
-                attributeValue,
+            // Creating a new object to maintain the desired order
+            let orderedAttributeSet = {
+                category_id: attributeSet.category_id,
+                _id: attributeSet._id,
+                title: attributeSet.title,
+                created_at: attributeSet.created_at,
+                updated_at: attributeSet.updated_at,
+                __v: attributeSet.__v,
+                attributeValues: attributeValue,
             };
 
-            res.send(finalArray);
+            res.status(200).send(orderedAttributeSet);
         } catch (error) {
-            res.send(error);
+            console.error(error);
+            return res.status(500).send({
+                message: "Error in getting product attribute " + error.message,
+            });
         }
     };
 }
