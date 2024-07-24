@@ -10,11 +10,9 @@ const product = require("./routes/admin/product");
 const user = require("./routes/admin/user");
 const vendor = require("./routes/admin/vendor");
 const unit = require("./routes/admin/unit");
+const slider = require("./routes/admin/slider")
 const getAPI = require("./routes/admin/getAPI");
 const addToCart = require("./routes/admin/addtocart");
-const addProduct = require("./routes/admin/addProduct");
-const getAttribute = require("./routes/admin/getAttribute");
-
 
 const AdminRoutes = (app) => {
     app.use("/", mainR);
@@ -29,10 +27,9 @@ const AdminRoutes = (app) => {
     app.use("/admin/user", user);
     app.use("/admin/vendor", vendor);
     app.use("/admin/unit", unit);
+    app.use("/admin/slider", slider)
     app.use("/admin/getapi", getAPI);
     app.use("/admin/addtocart", addToCart);
-    app.use("/admin/add-product", addProduct)
-    app.use("/admin/getattributes", getAttribute);
 };
 
 module.exports = AdminRoutes;

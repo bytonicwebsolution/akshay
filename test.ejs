@@ -1,0 +1,122 @@
+static filter = async (req, res) => {
+    try {
+        // let mediaUrl = baseURL + "/dist/product/";
+        const { category_id } = req.query;
+        // find product_status
+        await config.createProductStatus();
+        let product_status = await Status.findOne({
+            type: { $regex: new RegExp("product", "i") },
+            name: { $regex: new RegExp("active", "i") },
+        });
+
+        // find category_status
+        await config.createCategoryStatus();
+        let category_status = await Status.findOne({
+            type: { $regex: new RegExp("category", "i") },
+            name: { $regex: new RegExp("active", "i") },
+        });
+
+        // find brand_status
+        await config.createBrandStatus();
+        let brand_status = await Status.findOne({
+            type: { $regex: new RegExp("brand", "i") },
+            name: { $regex: new RegExp("active", "i") },
+        });
+
+        const categories = await Category.find({
+            status_id: category_status._id,
+        }).populate("status_id");
+
+        // Function to build category hierarchy
+        const buildCategoryTree = (categories, parentId = null) => {
+            let categoryTree = [];
+            categories.forEach((category) => {
+                if (String(category.parent_id) === String(parentId)) {
+                    let childCategories = buildCategoryTree(
+                        categories,
+                        category._id
+                    );
+
+                    let formattedCategory = {
+                        _id: category._id,
+                        name: category.name,
+                        slug: category.slug,
+                        icon: category.icon,
+                        status_id: category.status_id,
+                    };
+
+                    if (childCategories.length > 0) {
+                        formattedCategory.child = childCategories;
+                    }
+                    categoryTree.push(formattedCategory);
+                }
+            });
+
+            return categoryTree;
+        };
+        const categoryTree = buildCategoryTree(categories);
+
+        // Find products within the category
+        const products = await Product.find({
+            category_id: category_id,
+            status_id: product_status._id,
+        })
+            .populate({
+                path: "brand_id",
+                model: "Brand",
+                populate: { path: "status_id", model: "Status" },
+                select: "name status_id",
+            })
+            .populate("unit_id")
+            .sort({ unit_price: -1 });
+
+        // Find brands within the products
+        const uniqueBrands = new Set();
+        // finds brands which status is active
+        products.forEach((product) => {
+            if (
+                product.brand_id &&
+                product.brand_id.status_id &&
+                product.brand_id.status_id.equals(brand_status._id)
+            ) {
+                uniqueBrands.add(product.brand_id); // Add brand to Set if status matches
+            }
+        });
+        const brandsArray = [...uniqueBrands];
+
+        // Calculate min and max unit prices
+        let min_unit_price = Infinity;
+        let max_unit_price = -Infinity;
+
+        products.forEach((product) => {
+            if (product.unit_price < min_unit_price) {
+                min_unit_price = product.unit_price;
+            }
+            if (product.unit_price > max_unit_price) {
+                max_unit_price = product.unit_price;
+            }
+        });
+
+        // Response object
+        const response = {
+            category: categoryTree,
+            brands: brandsArray,
+            price: {
+                min_unit_price: min_unit_price,
+                max_unit_price: max_unit_price,
+            },
+            // mediaUrl,
+        };
+        return res.send({
+            message: "Success",
+            success: true,
+            data: response,
+        });
+    } catch (error) {
+        console.error("Error filtering products:", error);
+        return res.status(500).json({
+            message: "Something went wrong, please try again later",
+            error: error.message,
+        });
+    }
+};

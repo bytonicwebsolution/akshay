@@ -5,6 +5,7 @@ const path = require("path");
 const root = process.cwd();
 const imageFilter = require("../../config/imageFilter");
 const fs = require("fs");
+const config = require("../../config/createStatus");
 
 class CategoryController {
     static list = async (req, res) => {
@@ -49,7 +50,9 @@ class CategoryController {
                         parent_name: 1,
                         meta_title: 1,
                         meta_description: 1,
-                        is_featured:1,
+                        is_featured: 1,
+                        commision_type: 1,
+                        commision: 1,
                         status_id: 1,
                         status_name: 1,
                         created_at: 1,
@@ -63,13 +66,8 @@ class CategoryController {
                 },
             ]).exec();
             await Category.populate(categories, { path: "status_id" });
-
-            let statuses = await Status.find().sort({
-                created_at: -1,
-            });
             return res.render("admin/category", {
                 categories,
-                statuses,
             });
         } catch (error) {
             return res.status(500).send({
@@ -97,6 +95,18 @@ class CategoryController {
                     return res.send(err);
                 }
 
+                await config.createCategoryStatus();
+                // Fetch the active and inactive statuses
+                const activeStatus = await Status.findOne({
+                    type: "category",
+                    name: { $regex: new RegExp("^active$", "i") },
+                });
+
+                const inactiveStatus = await Status.findOne({
+                    type: "category",
+                    name: { $regex: new RegExp("^inactive$", "i") },
+                });
+
                 const insertRecord = Category({
                     icon: req.file.filename,
                     name: req.body.name,
@@ -106,12 +116,12 @@ class CategoryController {
                     is_featured: req.body.is_featured === "on" ? true : false,
                     parent_id: req.body.parent_id,
                     commision_type: req.body.commision_type,
-                    commision:req.body.commision,
-                    status_id: req.body.status_id,
+                    commision: req.body.commision,
+                    status_id:
+                        req.body.status_id === "on"
+                            ? activeStatus._id
+                            : inactiveStatus._id,
                 });
-                
-
-                // console.log(insertRecord)
                 await insertRecord.save();
                 return res.send({
                     success: true,
@@ -127,8 +137,6 @@ class CategoryController {
         }
     };
 
-
-
     static edit = async (req, res) => {
         try {
             editupload(req, res, async function (err) {
@@ -141,41 +149,66 @@ class CategoryController {
                     console.log(err);
                     return res.send(err);
                 }
-    
-                const category = await Category.findOne({ _id: req.body.editid });
-    
+
+                const category = await Category.findOne({
+                    _id: req.body.editid,
+                });
                 if (!category) {
-                    return res.status(404).send({ message: "Category not found" });
+                    return res
+                        .status(404)
+                        .send({ message: "editid not found" });
                 }
-    
+
+                await config.createCategoryStatus();
+                const activeStatus = await Status.findOne({
+                    type: "category",
+                    name: { $regex: new RegExp("^active$", "i") },
+                });
+
+                const inactiveStatus = await Status.findOne({
+                    type: "category",
+                    name: { $regex: new RegExp("^inactive$", "i") },
+                });
+
                 const updatedData = {
                     name: req.body.edit_name,
                     slug: req.body.edit_slug,
                     meta_title: req.body.edit_meta_title,
                     meta_description: req.body.edit_meta_description,
                     parent_id: req.body.edit_parent_id,
-                    is_featured: req.body.edit_is_featured === "on" ? true : false,
-                    status_id: req.body.edit_status_id,
+                    is_featured:
+                        req.body.edit_is_featured === "on" ? true : false,
+                    status_id:
+                        req.body.edit_status_id === "on"
+                            ? activeStatus._id
+                            : inactiveStatus._id,
                     commision_type: req.body.edit_commision_type,
-                    commision:req.body.edit_commision,
+                    commision: req.body.edit_commision,
                     updated_at: Date.now(),
                 };
 
-                 console.log(updatedData)
                 if (req.file) {
                     updatedData.icon = req.file.filename;
                 }
-    
                 await Category.findOneAndUpdate(
                     { _id: req.body.editid },
                     updatedData,
-                    { new: true } // Ensure the returned document is the updated one
+                    { new: true }
                 );
-    
+
                 if (req.file && category.icon) {
-                    fs.unlinkSync(path.join(root, "/public/dist/category/", category.icon));
+                    fs.unlink(
+                        path.join(
+                            root,
+                            "/public/dist/category/" + category.icon
+                        ),
+                        (err) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                        }
+                    );
                 }
-    
                 return res.send({
                     success: true,
                     status: 200,
@@ -184,7 +217,9 @@ class CategoryController {
             });
         } catch (error) {
             console.log(error);
-            return res.status(500).send({ message: "Error updating category: " + error.message });
+            return res
+                .status(500)
+                .send({ message: "Error updating category: " + error.message });
         }
     };
     static delete = async (req, res) => {
@@ -208,15 +243,12 @@ class CategoryController {
 const storage = multer.diskStorage({
     destination: path.join(root, "/public/dist/category"),
     filename: function (req, file, cb) {
-        cb(null, `${Date.now()}.jpg`);
+        cb(
+            null,
+            file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+        );
     },
 });
-
-// Init Upload
-const editupload = multer({
-    storage: storage,
-    fileFilter: imageFilter,
-}).single("editicon");
 
 // Init Upload
 const upload = multer({
@@ -227,6 +259,12 @@ const upload = multer({
     fileFilter: imageFilter,
 }).single("icon");
 
-
+const editupload = multer({
+    storage: storage,
+    // limits: {
+    //     fileSize: 5000000
+    // },
+    fileFilter: imageFilter,
+}).single("editicon");
 
 module.exports = CategoryController;

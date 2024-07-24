@@ -1,3 +1,5 @@
+const Category = require("../../models/Category");
+const Status = require("../../models/Status");
 const Product = require("../../models/Product");
 const ProductStock = require("../../models/ProductStock");
 const multer = require("multer");
@@ -5,9 +7,12 @@ const path = require("path");
 const root = process.cwd();
 const imageFilter = require("../../config/imageFilter");
 const pdfFilter = require("../../config/pdfFilter");
+const AttributeSets = require("../../models/AttributeSets");
+const AttributeValue = require("../../models/AttributeValue");
+const Brand = require("../../models/Brand");
 
-class addProductController {
-    static add = async (req, res) => {
+class ApiController {
+    static add_product = async (req, res) => {
         try {
             upload(req, res, async function (err) {
                 if (req.fileValidationError) {
@@ -144,15 +149,110 @@ class addProductController {
                 .send({ message: "Error creating Product: " + error.message });
         }
     };
+
+    static getAllAttribute = async (req, res) => {
+        try {
+            let finalJson = [];
+            let attributeSet = await AttributeSets.find();
+
+            for (let i = 0; i < attributeSet.length; i++) {
+                let attributeSetId = attributeSet[i]._id;
+
+                let attributevalue = await AttributeValue.find({
+                    attribute_sets_id: attributeSetId,
+                });
+                let attributeset = await AttributeSets.findOne({
+                    _id: attributeSetId,
+                });
+
+                let orderedAttributeSet = {
+                    category_id: attributeset.category_id,
+                    _id: attributeset._id,
+                    title: attributeset.title,
+                    created_at: attributeset.created_at,
+                    updated_at: attributeset.updated_at,
+                    __v: attributeset.__v,
+                    attributeValues: attributevalue,
+                };
+                finalJson.push(orderedAttributeSet);
+            }
+
+            res.send(finalJson);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send({
+                message: "Error in getting product attribute " + error.message,
+            });
+        }
+    };
+
+    static getAllBrands = async (req, res) => {
+        try {
+            const statusData = await Status.findOne({ name: "Active" });
+
+            if (!statusData) {
+                return res.status(200).json([]);
+            }
+            const brandData = await Brand.find({ status_id: statusData._id });
+
+            res.status(200).json(brandData);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    };
+
+    static getAllCategories = async (req, res) => {
+        try {
+            const statusData = await Status.findOne({ name: "Active" });
+
+            if (!statusData) {
+                return res.status(200).json([]);
+            }
+
+            const categories = await Category.aggregate([
+                {
+                    $match: {
+                        parent_id: null,
+                        status_id: statusData._id,
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "Category",
+                        localField: "_id",
+                        foreignField: "parent_id",
+                        as: "children",
+                    },
+                },
+            ]);
+
+            const populateChildren = async (category) => {
+                const children = await Category.find({
+                    parent_id: category._id,
+                    status_id: statusData._id,
+                });
+                category.children = children;
+            };
+
+            await Promise.all(categories.map(populateChildren));
+
+            res.status(200).json(categories);
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+    };
 }
 
-// Set The Storage Engine
 const storage = multer.diskStorage({
     destination: path.join(root, "/public/dist/product"),
     filename: function (req, file, cb) {
-        cb(null, `${Date.now()}.jpg`);
+        cb(
+            null,
+            file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+        );
     },
 });
+
 const fileFilter = function (req, file, cb) {
     const imageFields = [
         "thumbnail",
@@ -171,7 +271,6 @@ const fileFilter = function (req, file, cb) {
     }
 };
 
-// Init Upload
 const upload = multer({
     storage: storage,
     limits: {
@@ -187,4 +286,4 @@ const upload = multer({
     { name: "image", maxCount: 10 },
 ]);
 
-module.exports = addProductController;
+module.exports = ApiController;

@@ -1,4 +1,5 @@
-<%- include('partials/header.ejs') %><!-- Begin page -->
+<%- include('partials/header.ejs') %>
+<!-- Begin page -->
 <div id="layout-wrapper">
     <!-- Start right Content here -->
     <div class="main-content">
@@ -8,14 +9,16 @@
                 <div class="row">
                     <div class="col-12">
                         <div
-                            class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            class="page-title-box d-sm-flex align-items-center justify-content-between"
+                        >
                             <h4 class="mb-sm-0">Categories</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item">
-                                        <a
-                                            href="javascript: void(0);">Dashboard</a>
+                                        <a href="javascript: void(0);"
+                                            >Dashboard</a
+                                        >
                                     </li>
                                     <li class="breadcrumb-item active">
                                         Customers
@@ -27,12 +30,14 @@
                 </div>
                 <!-- end page title -->
 
+            <div id="productList">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
                                 <div
-                                    class="d-flex align-items-center flex-wrap gap-3">
+                                    class="d-flex align-items-center flex-wrap gap-3"
+                                >
                                     <div class="flex-grow-1">
                                         <h3 class="card-title mb-0">
                                             Category List
@@ -40,25 +45,34 @@
                                     </div>
                                     <div>
                                         <div class="d-flex flex-wrap gap-2">
-                                            <button type="button"
+                                            <button
+                                                type="button"
                                                 class="btn btn-thm add-btn"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#showModal"
-                                                data-name="Category">
+                                                data-name="Category"
+                                            >
                                                 <i
-                                                    class="bi bi-plus-circle align-baseline me-1"></i>
+                                                    class="bi bi-plus-circle align-baseline me-1"
+                                                ></i>
                                                 Add Category
                                             </button>
-                                            <button type="button"
-                                                class="btn btn-secondary">
+                                            <button
+                                                type="button"
+                                                class="btn btn-secondary"
+                                            >
                                                 <i
-                                                    class="ph-cloud-arrow-down align-middle me-1"></i>
+                                                    class="ph-cloud-arrow-down align-middle me-1"
+                                                ></i>
                                                 Import
                                             </button>
-                                            <button type="button"
-                                                class="btn btn-subtle-info">
+                                            <button
+                                                type="button"
+                                                class="btn btn-subtle-info"
+                                            >
                                                 <i
-                                                    class="ph-cloud-arrow-up align-middle me-1"></i>
+                                                    class="ph-cloud-arrow-up align-middle me-1"
+                                                ></i>
                                                 Export
                                             </button>
                                         </div>
@@ -71,25 +85,31 @@
                 </div>
                 <!--end row-->
 
-                <div class="row" id="customer-list">
+                <div class="row">
                     <div class="col-xxl-12">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row gy-3">
                                     <div class="col-xl-4">
                                         <div class="search-box">
-                                            <input type="text"
+                                            <input
+                                                type="text"
                                                 class="form-control search"
-                                                placeholder="Search customer, email etc..." />
+                                                placeholder="Search customer, email etc..."
+                                            />
                                             <i
-                                                class="ri-search-line search-icon"></i>
+                                                class="ri-search-line search-icon"
+                                            ></i>
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-md-4">
                                         <div>
-                                            <select class="form-control"
-                                                id="idStatus" data-choices
-                                                data-choices-search-false>
+                                            <select
+                                                class="form-control"
+                                                id="idStatus"
+                                                data-choices
+                                                data-choices-search-false
+                                            >
                                                 <option value="all">
                                                     All Select
                                                 </option>
@@ -106,19 +126,24 @@
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-md-4">
-                                        <input type="text" class="form-control"
+                                        <input
+                                            type="text"
+                                            class="form-control"
                                             id="datepicker-range"
                                             data-provider="flatpickr"
                                             data-date-format="d M, Y"
                                             data-range-date="true"
-                                            placeholder="Select date" />
+                                            placeholder="Select date"
+                                        />
                                     </div>
                                     <div class="col-xl-2 col-md-4">
                                         <button
                                             class="btn btn-subtle-primary w-100"
-                                            onclick="filterData();">
+                                            onclick="filterData();"
+                                        >
                                             <i
-                                                class="bi bi-funnel align-baseline me-1"></i>
+                                                class="bi bi-funnel align-baseline me-1"
+                                            ></i>
                                             Filter
                                         </button>
                                     </div>
@@ -128,10 +153,11 @@
                         <!--end card-->
                         <div class="card">
                             <div class="card-body">
-                                <div class="table-responsive table-card">
+                                <div class="table-responsive">
                                     <table
-                                        class="table align-middle table-nowrap">
-                                        <thead>
+                                        class="table table-centered align-middle table-nowrap mb-0"
+                                    >
+                                        <thead class="table-active">
                                             <tr>
                                                 <th>
                                                     <div class="form-check">
@@ -139,120 +165,134 @@
                                                             class="form-check-input"
                                                             type="checkbox"
                                                             value="option"
-                                                            id="checkAll" />
+                                                            id="checkAll"
+                                                        />
                                                         <label
                                                             class="form-check-label"
-                                                            for="checkAll"></label>
+                                                            for="checkAll"
+                                                        ></label>
                                                     </div>
                                                 </th>
-                                                <th class="sort cursor-pointer">
+                                                <th class="sort cursor-pointer"
+                                                    data-sort="customer"
+                                                >
                                                     Icon
                                                 </th>
-                                                <th class="sort cursor-pointer">
+                                                <th class="sort cursor-pointer"
+                                                    data-sort="category"
+                                                >
                                                     Category
                                                 </th>
-                                                <th class="sort cursor-pointer">
+                                                <th class="sort cursor-pointer"
+                                                    data-sort="category">
                                                     Slug
                                                 </th>
 
-                                                <th class="sort cursor-pointer">
-                                                    Featured</th>
-                                                <th class="sort cursor-pointer">
+                                                <th class="sort cursor-pointer"
+                                                    data-sort="status"
+                                                >
+                                                    Featured
+                                                </th>
+                                                <th class="sort cursor-pointer"
+                                                data-sort="status">
                                                     Status
                                                 </th>
-                                                <th class="sort cursor-pointer">
+                                                <th class="sort cursor-pointer"
+                                                data-sort="published">
                                                     Date
                                                 </th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody class="list">
-                                            <% if (!categories[0]) { %>
+                                            <% if(!categories[0]) { %>
                                             <tr>
-                                                <td colspan="100%"
-                                                    class="text-center">
+                                                <td
+                                                    colspan="100%"
+                                                    class="text-center"
+                                                >
                                                     No Data
                                                 </td>
                                             </tr>
-                                            <% } else { %>
-                                            <% categories.forEach(function(categories) { %>
+                                            <% } else {%> <%
+                                            categories.forEach(function(categories){%>
                                             <tr>
                                                 <td>
                                                     <div class="form-check">
                                                         <input
                                                             class="form-check-input"
                                                             type="checkbox"
-                                                            name="chk_child" />
+                                                            name="chk_child"
+                                                        />
                                                         <label
-                                                            class="form-check-label"></label>
+                                                            class="form-check-label"
+                                                        ></label>
                                                     </div>
                                                 </td>
                                                 <td class="customer">
                                                     <div
-                                                        class="d-flex align-items-center">
+                                                        class="d-flex align-items-center"
+                                                    >
                                                         <div
-                                                            class="flex-shrink-0 me-2">
+                                                            class="flex-shrink-0 me-2"
+                                                        >
                                                             <div>
-                                                                <img class="avatar-xs rounded-circle customer-image-elem"
-                                                                    src="../../dist/category/<%- categories.icon %>"
-                                                                    alt="<%- categories.icon %>" />
+                                                                <img
+                                                                    class="avatar-xs rounded-circle customer-image-elem"
+                                                                    src="<%- categories.icon ? '../../dist/category/' + categories.icon : '../../assets/images/default/mart-demo-img.jpg' %>"
+                                                                />
                                                             </div>
                                                         </div>
                                                         <div
-                                                            class="flex-grow-1">
+                                                            class="flex-grow-1"
+                                                        >
                                                             <h5
-                                                                class="fs-base mb-0">
-                                                                <a href="#"
-                                                                    class="text-reset customer-name-elem">
-                                                                    <%= categories.name ?
-categories.name :
-'' %>
+                                                                class="fs-base mb-0"
+                                                            >
+                                                                <a
+                                                                    href="#"
+                                                                    class="text-reset customer-name-elem"
+                                                                >
+                                                                    <%=
+                                                                    categories.name
+                                                                    ?
+                                                                    categories.name
+                                                                    : ''%>
                                                                 </a>
                                                             </h5>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td class="category">
-                                                    <% if (categories.parent_name) { %>
-                                                    <%= categories.parent_name %>
-                                                    <% } else { %>
-                                                    ––
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                    
-                                                    <% } %>
+                                                    <%
+                                                    if(categories.parent_name) {
+                                                    %> <%=
+                                                    categories.parent_name %> <%
+                                                    } else { %> –– <% } %>
                                                 </td>
                                                 <td class="slug">
                                                     <%= categories.slug ?
-categories.slug : '' %>
+                                                    categories.slug : '' %>
                                                 </td>
 
                                                 <td>
                                                     <span
-                                                        class="badge bg-secondary-subtle text-secondary">
-                                                        <%= categories.is_featured === true ? "True" : 'False' %>
+                                                        class="badge bg-secondary-subtle text-secondary"
+                                                    >
+                                                        <%=
+                                                        categories.is_featured===true
+                                                        ? "True" : 'False' %>
                                                     </span>
                                                 </td>
 
                                                 <td class="status">
                                                     <span
-                                                        class="badge bg-secondary-subtle text-secondary">
-                                                        <%= categories.status_id ? categories.status_id.name : '' %>
+                                                        class="badge bg-secondary-subtle text-secondary"
+                                                    >
+                                                        <%= categories.status_id
+                                                        ?
+                                                        categories.status_id.name
+                                                        : '' %>
                                                     </span>
                                                 </td>
 
@@ -262,18 +302,22 @@ categories.slug : '' %>
 
                                                 <td>
                                                     <div
-                                                        class="dropdown position-static">
+                                                        class="dropdown position-static"
+                                                    >
                                                         <button
                                                             class="btn btn-subtle-secondary btn-sm btn-icon"
                                                             role="button"
                                                             data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
+                                                            aria-expanded="false"
+                                                        >
                                                             <i
-                                                                class="bi bi-three-dots-vertical"></i>
+                                                                class="bi bi-three-dots-vertical"
+                                                            ></i>
                                                         </button>
 
                                                         <ul
-                                                            class="dropdown-menu dropdown-menu-end">
+                                                            class="dropdown-menu dropdown-menu-end"
+                                                        >
                                                             <!-- <li>
                                                                 <a
                                                                     class="dropdown-item"
@@ -285,39 +329,44 @@ categories.slug : '' %>
                                                                 >
                                                             </li> -->
                                                             <li>
-
-                                                                <a class="dropdown-item edit-item-btn"
+                                                                <a
+                                                                    class="dropdown-item edit-item-btn"
                                                                     data-bs-toggle="modal"
                                                                     data-name="Category"
                                                                     href="#showEditModal"
                                                                     id="edit_btn"
-                                                                    data-model="<%= JSON.stringify(categories) %>"><i
-                                                                        class="ph-pencil align-middle me-1"></i>
+                                                                    data-model="<%= JSON.stringify(categories) %>"
+                                                                    ><i
+                                                                        class="ph-pencil align-middle me-1"
+                                                                    ></i>
                                                                     Edit
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a class="dropdown-item remove-item-btn"
+                                                                <a
+                                                                    class="dropdown-item remove-item-btn"
                                                                     data-bs-toggle="modal"
                                                                     href="#deleteRecordModal"
-                                                                    data-id="<%= categories._id %>"><i
-                                                                        class="ph-trash align-middle me-1"></i>
-                                                                    Remove</a>
+                                                                    data-id="<%= categories._id %>"
+                                                                    ><i
+                                                                        class="ph-trash align-middle me-1"
+                                                                    ></i>
+                                                                    Remove</a
+                                                                >
                                                             </li>
                                                         </ul>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <% }); %>
-                                            
-                                            <% } %>
+                                            <% }); %> <% } %>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="noresult" style="display: none">
                                     <div class="text-center py-4">
                                         <i
-                                            class="ph-magnifying-glass fs-1 text-primary"></i>
+                                            class="ph-magnifying-glass fs-1 text-primary"
+                                        ></i>
                                         <h5 class="mt-2">
                                             Sorry! No Result Found
                                         </h5>
@@ -328,8 +377,10 @@ categories.slug : '' %>
                                         </p>
                                     </div>
                                 </div>
-                                <div class="align-items-center mt-4 justify-content-between row text-center text-sm-start"
-                                    id="pagination-element">
+                                <div
+                                    class="align-items-center mt-4 justify-content-between row text-center text-sm-start"
+                                    id="pagination-element"
+                                >
                                     <div class="col-sm">
                                         <div class="text-muted">
                                             Showing
@@ -341,14 +392,21 @@ categories.slug : '' %>
                                     </div>
                                     <div class="col-sm-auto mt-3 mt-sm-0">
                                         <div
-                                            class="pagination-wrap hstack gap-2">
-                                            <a class="page-item pagination-prev disabled"
-                                                href="javascript:void(0)">Previous</a>
+                                            class="pagination-wrap hstack gap-2"
+                                        >
+                                            <a
+                                                class="page-item pagination-prev disabled"
+                                                href="javascript:void(0)"
+                                                >Previous</a
+                                            >
                                             <ul
-                                                class="pagination listjs-pagination mb-0">
-                                            </ul>
-                                            <a class="page-item pagination-next"
-                                                href="javascript:void(0)">Next</a>
+                                                class="pagination listjs-pagination mb-0"
+                                            ></ul>
+                                            <a
+                                                class="page-item pagination-next"
+                                                href="javascript:void(0)"
+                                                >Next</a
+                                            >
                                         </div>
                                     </div>
                                 </div>
@@ -357,6 +415,7 @@ categories.slug : '' %>
                     </div>
                     <!--end col-->
                 </div>
+            </div>
                 <!--end row-->
             </div>
             <!-- container-fluid -->
@@ -368,61 +427,94 @@ categories.slug : '' %>
 <!-- END layout-wrapper -->
 
 <!-- Add Category Modal -->
-<div class="modal modal-lg fade" id="showModal" tabindex="-1"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+    class="modal modal-lg fade"
+    id="showModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+>
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light p-3">
                 <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close" id="close-ordermodal"></button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    id="close-ordermodal"
+                ></button>
             </div>
             <form class="tablelist-form" id="addCategoryForm">
                 <div class="modal-body">
-                    <div id="alert-error-msg"
-                        class="d-none alert alert-danger py-2"></div>
+                    <div
+                        id="alert-error-msg"
+                        class="d-none alert alert-danger py-2"
+                    ></div>
                     <input type="hidden" id="id-field" />
 
                     <div class="text-center mb-3">
                         <div class="position-relative d-inline-block">
                             <div
-                                class="position-absolute top-100 start-100 translate-middle">
-                                <label for="image-input" class="mb-0"
+                                class="position-absolute top-100 start-100 translate-middle"
+                            >
+                                <label
+                                    for="image-input"
+                                    class="mb-0"
                                     data-bs-toggle="tooltip"
                                     data-bs-placement="right"
-                                    title="Select Vendor photo">
+                                    title="Select Category photo"
+                                >
                                     <span class="avatar-xs d-inline-block">
                                         <span
-                                            class="avatar-title bg-light border rounded-circle text-muted cursor-pointer">
+                                            class="avatar-title bg-light border rounded-circle text-muted cursor-pointer"
+                                        >
                                             <i class="ri-image-fill"></i>
                                         </span>
                                     </span>
                                 </label>
-                                <input class="form-control d-none"
-                                    id="image-input" name="icon" type="file"
-                                    accept="image/png, image/gif, image/jpeg" />
+                                <input
+                                    class="form-control d-none"
+                                    id="image-input"
+                                    name="icon"
+                                    type="file"
+                                    accept="image/png, image/gif, image/jpeg"
+                                />
                             </div>
                             <div class="avatar-lg">
                                 <div class="avatar-title bg-light rounded-3">
-                                    <img src="/assets/images/users/user-dummy-img.jpg"
-                                        alt="" id="image-preview"
-                                        class="avatar-md h-auto rounded-3 object-fit-cover" />
+                                    <img
+                                        src="/assets/images/users/user-dummy-img.jpg"
+                                        alt=""
+                                        id="image-preview"
+                                        class="avatar-md h-auto rounded-3 object-fit-cover"
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="customername-field"
-                            class="form-label">Category Name</label>
-                        <input type="text" id="customername-field"
-                            class="form-control" name="name"
-                            placeholder="Enter Category name" />
+                        <label for="name" class="form-label"
+                            >Category Name</label
+                        >
+                        <input
+                            type="text"
+                            id="name"
+                            class="form-control"
+                            name="name"
+                            placeholder="Enter Category name"
+                        />
                     </div>
                     <div class="mb-3">
-                        <label for="status-field" class="form-label">Root
-                            Category</label>
-                        <select class="form-control" id="status-field"
-                            name="parent_id">
+                        <label for="parent_id" class="form-label"
+                            >Root Category</label
+                        >
+                        <select
+                            class="form-control"
+                            id="parent_id"
+                            name="parent_id"
+                        >
                             <option value="" disabled selected>
                                 Select Category
                             </option>
@@ -436,93 +528,129 @@ categories.slug : '' %>
 
                     <div class="row mb-3">
                         <div class="col">
-                            <label for="slug-field"
-                                class="form-label">Slug</label>
-                            <input type="text" id="slug-field" name="slug"
-                                class="form-control" placeholder="Enter slug">
-                        </div>
-                        <div class="col">
-                            <div class="d-flex justify-content-center align-items-center"
-                                style="margin-top:2rem;">
-                                <label class="form-check-label"
-                                    for="variant">Add to Featured</label>
-                                <div class="form-check form-switch ms-4">
-                                    <input type="checkbox" name="is_featured"
-                                        id="is_featured"
-                                        class="form-check-input form-check-input-lg" />
-                                    <span
-                                        class="custom-switch-indicator"></span>
-                                </div>
-                            </div>
-                        </div>
+                            <label for="slug-field" class="form-label"
+                                >Slug</label
+                            >
+                            <input
+                                type="text"
+                                id="slug-field"
+                                name="slug"
+                                class="form-control"
+                                placeholder="Enter slug"
+                            />
+                        </div>                        
                     </div>
-
 
                     <div class="row mb-3">
                         <div class="col">
-                            <label class="form-label"
-                                for="commision_type">Commition
-                                Type</label>
-                            <select class="form-control" id="commision_type"
-                                name="commision_type">
+                            <label class="form-label" for="commision_type"
+                                >Commition Type</label
+                            >
+                            <select
+                                class="form-control"
+                                id="commision_type"
+                                name="commision_type"
+                            >
                                 <option value="" disabled selected>
-                                    Select
-                                    Commision
-                                    Type
+                                    Select Commision Type
                                 </option>
-                                <option value="flat">
-                                    Flat
-                                </option>
-                                <option value="percentage">
-                                    Percentage
-                                </option>
+                                <option value="flat">Flat</option>
+                                <option value="percentage">Percentage</option>
                             </select>
                         </div>
                         <div class="col">
                             <label for="commision" class="form-label">
                                 Commision
                             </label>
-                            <input type="number" class="form-control"
-                                id="commision" name="commision"
-                                placeholder="Enter Commision" />
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="commision"
+                                name="commision"
+                                placeholder="Enter Commision"
+                            />
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="title" class="form-label">Meta Title</label>
-                        <input type="text" id="title" name="meta_title"
-                            class="form-control" placeholder="Enter Title" />
+                        <input
+                            type="text"
+                            id="meta_title"
+                            name="meta_title"
+                            class="form-control"
+                            placeholder="Enter Title"
+                        />
                     </div>
                     <div class="mb-3">
-                        <label for="description-field" class="form-label">Meta
-                            Description</label>
-                        <textarea class="form-control" name="meta_description"
-                            id="description"
-                            placeholder="Enter Description"></textarea>
+                        <label for="description-field" class="form-label"
+                            >Meta Description</label
+                        >
+                        <textarea
+                            class="form-control"
+                            name="meta_description"
+                            id="meta_description"
+                            placeholder="Enter Description"
+                        ></textarea>
                     </div>
-                    <div>
-                        <label for="status-field"
-                            class="form-label">Status</label>
-                        <select class="form-control" id="status-field"
-                            name="status_id">
-                            <option value="" disabled selected>
-                                Select Status
-                            </option>
-                            <% statuses.forEach(function(element) { %>
-                            <option value="<%= element._id %>">
-                                <%= element.name %>
-                            </option>
-                            <% }); %>
-                        </select>
+
+                    <div class="row">                        
+                        <div class="col ms-3">
+                            <div
+                                class="d-flex justify-content-start align-items-start"
+                            >
+                                <label class="form-check-label" for="variant"
+                                    >Status</label
+                                >
+                                <div class="form-check form-switch ms-4">
+                                    <input
+                                        type="checkbox"
+                                        name="status_id"
+                                        id="status_id"
+                                        class="form-check-input form-check-input-lg"
+                                        checked
+                                    />
+                                    <span
+                                        class="custom-switch-indicator"
+                                    ></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div
+                                class="d-flex justify-content-start align-items-start"
+                            >
+                                <label class="form-check-label" for="variant"
+                                    >Add to Featured</label
+                                >
+                                <div class="form-check form-switch ms-4">
+                                    <input
+                                        type="checkbox"
+                                        name="is_featured"
+                                        id="is_featured"
+                                        class="form-check-input form-check-input-lg"
+                                    />
+                                    <span
+                                        class="custom-switch-indicator"
+                                    ></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
-                        <button type="button" class="btn btn-light"
-                            data-bs-dismiss="modal">
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal"
+                        >
                             Close
                         </button>
-                        <button type="submit" class="btn btn-success"
-                            id="add-btn">
+                        <button
+                            type="submit"
+                            class="btn btn-success"
+                            id="add-btn"
+                        >
                             Add Category
                         </button>
                     </div>
@@ -534,63 +662,100 @@ categories.slug : '' %>
 <!-- end Add Category Modal -->
 
 <!-- Edit Category Modal -->
-<div class="modal modal-lg fade" id="showEditModal" tabindex="-1"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+    class="modal modal-lg fade"
+    id="showEditModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+>
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light p-3">
                 <h5 class="modal-title" id="exampleModalLabel">
                     Edit Category
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close" id="close-ordermodal"></button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    id="close-ordermodal"
+                ></button>
             </div>
             <form class="tablelist-form" id="editform">
                 <div class="modal-body">
-                    <div id="alert-error-msg"
-                        class="d-none alert alert-danger py-2"></div>
+                    <div
+                        id="alert-error-msg"
+                        class="d-none alert alert-danger py-2"
+                    ></div>
                     <input type="hidden" id="editid" name="editid" />
                     <div class="text-center mb-3">
                         <div class="position-relative d-inline-block">
                             <div
-                                class="position-absolute top-100 start-100 translate-middle">
-                                <label for="editicon" class="mb-0"
+                                class="position-absolute top-100 start-100 translate-middle"
+                            >
+                                <label
+                                    for="editicon"
+                                    class="mb-0"
                                     data-bs-toggle="tooltip"
                                     data-bs-placement="right"
-                                    title="Select Category photo">
+                                    title="Select Category photo"
+                                >
                                     <span class="avatar-xs d-inline-block">
                                         <span
-                                            class="avatar-title bg-light border rounded-circle text-muted cursor-pointer">
+                                            class="avatar-title bg-light border rounded-circle text-muted cursor-pointer"
+                                        >
                                             <i class="ri-image-fill"></i>
                                         </span>
                                     </span>
                                 </label>
-                                <input class="form-control d-none" id="editicon"
-                                    name="editicon" type="file"
-                                    accept="image/png, image/gif, image/jpeg">
+                                <input
+                                    class="form-control d-none"
+                                    id="editicon"
+                                    name="editicon"
+                                    type="file"
+                                    accept="image/png, image/gif, image/jpeg"
+                                />
                             </div>
                             <div class="avatar-lg">
-                                <div class="avatar-title bg-light rounded-3 "
-                                    id="editpreviewicon">
-                                    <img src="" alt="Image Preview"
+                                <div
+                                    class="avatar-title bg-light rounded-3"
+                                    id="editpreviewicon"
+                                >
+                                    <img
+                                        src=""
+                                        alt="Image Preview"
                                         id="editimage-preview"
-                                        class="avatar-md h-auto rounded-3 object-fit-cover">
+                                        class="avatar-md h-auto rounded-3 object-fit-cover"
+                                    />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="customername-field"
-                            class="form-label">Category Name</label>
-                        <input type="text" id="edit_name" class="form-control"
-                            name="edit_name" placeholder="Enter Category name">
+                        <label for="name" class="form-label"
+                            >Category Name</label
+                        >
+                        <input
+                            type="text"
+                            id="edit_name"
+                            class="form-control"
+                            name="edit_name"
+                            placeholder="Enter Category name"
+                        />
                     </div>
                     <div class="mb-3">
-                        <label for="status-field" class="form-label">Root
-                            Category</label>
-                        <select class="form-control" id="edit_parent_id"
-                            name="edit_parent_id">
-                            <option value="" disabled selected>Select Category
+                        <label for="status-field" class="form-label"
+                            >Root Category</label
+                        >
+                        <select
+                            class="form-control"
+                            id="edit_parent_id"
+                            name="edit_parent_id"
+                        >
+                            <option value="" disabled selected>
+                                Select Category
                             </option>
                             <% categories.forEach(function(element) { %>
                             <option value="<%= element._id %>">
@@ -600,99 +765,128 @@ categories.slug : '' %>
                         </select>
                     </div>
 
-
                     <div class="row mb-3">
                         <div class="col">
-                            <label for="slug-field"
-                                class="form-label">Slug</label>
-                            <input type="text" id="edit_slug" name="edit_slug"
-                                class="form-control" placeholder="Enter slug">
-                        </div>
-                        <div class="col">
-                            <div class="d-flex justify-content-center align-items-center"
-                                style="margin-top:2rem;">
-                                <label class="form-check-label"
-                                    for="variant">Add to Featured</label>
-                                <div class="form-check form-switch ms-4">
-                                    <input type="checkbox"
-                                        name="edit_is_featured"
-                                        id="edit_is_featured"
-                                        class="form-check-input form-check-input-lg" />
-                                    <span
-                                        class="custom-switch-indicator"></span>
-                                </div>
-                            </div>
+                            <label for="slug-field" class="form-label"
+                                >Slug</label
+                            >
+                            <input
+                                type="text"
+                                id="edit_slug"
+                                name="edit_slug"
+                                class="form-control"
+                                placeholder="Enter slug"
+                            />
                         </div>
                     </div>
 
-
                     <div class="row mb-3">
                         <div class="col">
-                            <label class="form-label"
-                                for="edit_commision_type">Commition
-                                Type</label>
-                            <select class="form-control"
+                            <label class="form-label" for="edit_commision_type"
+                                >Commition Type</label
+                            >
+                            <select
+                                class="form-control"
                                 id="edit_commision_type"
-                                name="edit_commision_type">
+                                name="edit_commision_type"
+                            >
                                 <option value="" disabled selected>
-                                    Select
-                                    Commision
-                                    Type
+                                    Select Commision Type
                                 </option>
-                                <option value="flat">
-                                    Flat
-                                </option>
-                                <option value="percentage">
-                                    Percentage
-                                </option>
+                                <option value="flat">Flat</option>
+                                <option value="percentage">Percentage</option>
                             </select>
                         </div>
                         <div class="col">
                             <label for="edit_commision" class="form-label">
                                 Commision
                             </label>
-                            <input type="number" class="form-control"
-                                id="edit_commision" name="edit_commision"
-                                placeholder="Enter Commision" />
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="edit_commision"
+                                name="edit_commision"
+                                placeholder="Enter Commision"
+                            />
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="title" class="form-label">Meta Title</label>
-                        <input type="text" id="edit_meta_title"
-                            name="edit_meta_title" class="form-control"
-                            placeholder="Enter Title">
+                        <input
+                            type="text"
+                            id="edit_meta_title"
+                            name="edit_meta_title"
+                            class="form-control"
+                            placeholder="Enter Title"
+                        />
                     </div>
                     <div class="mb-3">
-                        <label for="description-field" class="form-label">Meta
-                            Description</label>
-                        <textarea class="form-control"
+                        <label for="description-field" class="form-label"
+                            >Meta Description</label
+                        >
+                        <textarea
+                            class="form-control"
                             name="edit_meta_description"
                             id="edit_meta_description"
-                            placeholder="Enter Description"></textarea>
+                            placeholder="Enter Description"
+                        ></textarea>
                     </div>
-                    <div>
-                        <label for="status-field"
-                            class="form-label">Status</label>
-                        <select class="form-control" id="edit_status_id"
-                            name="edit_status_id">
-                            <option value="" disabled selected>Select Status
-                            </option>
-                            <% statuses.forEach(function(element) { %>
-                            <option value="<%= element._id %>"
-                                <%= element._id === element.status_id ?
-                                'selected' : '' %>>
-                                <%= element.name %>
-                            </option>
-                            <% }); %>
-                        </select>
+                    <div class="row">                        
+                        <div class="col ms-3">
+                            <div
+                                class="d-flex justify-content-start align-items-start"
+                            >
+                                <label class="form-check-label" for="variant"
+                                    >Status</label
+                                >
+                                <div class="form-check form-switch ms-4">
+                                    <input
+                                        type="checkbox"
+                                        name="edit_status_id"
+                                        id="edit_status_id"
+                                        class="form-check-input form-check-input-lg"
+                                        checked
+                                    />
+                                    <span
+                                        class="custom-switch-indicator"
+                                    ></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div
+                                class="d-flex justify-content-start align-items-start"
+                            >
+                                <label class="form-check-label" for="variant"
+                                    >Add to Featured</label
+                                >
+                                <div class="form-check form-switch ms-4">
+                                    <input
+                                        type="checkbox"
+                                        name="edit_is_featured"
+                                        id="edit_is_featured"
+                                        class="form-check-input form-check-input-lg"
+                                    />
+                                    <span
+                                        class="custom-switch-indicator"
+                                    ></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
-                        <button type="button" class="btn btn-light"
-                            data-bs-dismiss="modal">Close</button>
-                        <button type="submit"
-                            class="btn btn-success">Save</button>
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
                     </div>
                 </div>
             </form>
@@ -701,15 +895,23 @@ categories.slug : '' %>
 </div>
 <!-- end Edit Category Modal -->
 
-
 <!-- deleteRecordModal -->
-<div id="deleteRecordModal" class="modal fade zoomIn" tabindex="-1"
-    aria-hidden="true">
+<div
+    id="deleteRecordModal"
+    class="modal fade zoomIn"
+    tabindex="-1"
+    aria-hidden="true"
+>
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="btn-close" id="deleteRecord-close"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    id="deleteRecord-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
             </div>
             <div class="modal-body p-md-5">
                 <div class="text-center">
@@ -724,12 +926,18 @@ categories.slug : '' %>
                     </div>
                 </div>
                 <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                    <button type="button" class="btn w-sm btn-light btn-hover"
-                        data-bs-dismiss="modal">
+                    <button
+                        type="button"
+                        class="btn w-sm btn-light btn-hover"
+                        data-bs-dismiss="modal"
+                    >
                         Close
                     </button>
-                    <button type="submit" class="btn w-sm btn-danger btn-hover"
-                        id="delete-record">
+                    <button
+                        type="submit"
+                        class="btn w-sm btn-danger btn-hover"
+                        id="delete-record"
+                    >
                         Yes, Delete It!
                     </button>
                 </div>
@@ -746,22 +954,20 @@ categories.slug : '' %>
     var addformCategory = $("#addCategoryForm");
     addformCategory.on("submit", submitFormHandler);
 
-
     function submitFormHandler(e) {
         e.preventDefault();
 
         var formData = new FormData(addformCategory[0]);
-        console.log(formData);
         // DO POST
         $.ajax({
-                type: "POST",
-                cache: false,
-                enctype: "multipart/form-data",
-                processData: false,
-                contentType: false,
-                url: "/admin/category/add",
-                data: formData,
-            })
+            type: "POST",
+            cache: false,
+            enctype: "multipart/form-data",
+            processData: false,
+            contentType: false,
+            url: "/admin/category/add",
+            data: formData,
+        })
             .done((res) => {
                 if (res.status == 200) {
                     iziToast.success({
@@ -769,7 +975,7 @@ categories.slug : '' %>
                         message: res.message,
                         position: "topRight",
                     });
-                    setTimeout(function() {
+                    setTimeout(function () {
                         location.reload();
                     }, 1000);
                 } else {
@@ -780,7 +986,7 @@ categories.slug : '' %>
                     });
                 }
             })
-            .fail(function(xhr, status, error) {
+            .fail(function (xhr, status, error) {
                 iziToast.error({
                     title: "Error",
                     message: xhr.responseText,
@@ -791,31 +997,27 @@ categories.slug : '' %>
     //#endregion Add Category
 
     //#region starts Edit Category
-
-    $("#editicon").change(function() {
+    $("#editicon").change(function () {
         displayPP(this, $("#editimage-preview"));
     });
 
-    $(document).on("click", "#edit_btn", function(e) {
+    $(document).on("click", "#edit_btn", function (e) {
         var data = $(this).attr("data-model");
         data = JSON.parse(data);
-        console.log(data);
-
+       
         // Filling form fields with data according to the model
-        $('#editimage-preview').attr('src', '/dist/category/' + data
-            .icon); // Update image preview
+        $("#editimage-preview").attr("src", "/dist/category/" + data.icon); // Update image preview
         $("#editid").val(data._id);
         $("#edit_name").val(data.name);
         $("#edit_parent_id").val(data.parent_id._id);
         $("#edit_slug").val(data.slug);
-        $("#edit_status_id").val(data.status_id._id);
+        $("#edit_status_id").prop("checked", data.status_id);
         $("#edit_meta_title").val(data.meta_title);
         $("#edit_meta_description").val(data.meta_description);
         $("#edit_commision_type").val(data.commision_type);
         $("#edit_commision").val(data.commision);
         $("#edit_is_featured").prop("checked", data.is_featured);
     });
-
 
     var editform = $("#editform");
     editform.on("submit", editSubmitHandler);
@@ -831,19 +1033,16 @@ categories.slug : '' %>
 
         // Prepare form data
         var formData = new FormData(this);
-        for (var pair of formData.entries()) {
-            console.log(pair[0]+ ', ' + pair[1]); 
-        }
 
         // Perform AJAX request
         $.ajax({
-                type: "POST",
-                enctype: "multipart/form-data",
-                processData: false,
-                contentType: false,
-                url: "/admin/category/edit",
-                data: formData,
-            })
+            type: "POST",
+            enctype: "multipart/form-data",
+            processData: false,
+            contentType: false,
+            url: "/admin/category/edit",
+            data: formData,
+        })
             .done((res) => {
                 if (res.status == 200) {
                     iziToast.success({
@@ -851,7 +1050,9 @@ categories.slug : '' %>
                         message: res.message,
                         position: "topRight",
                     });
-
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
                 } else {
                     iziToast.error({
                         title: "Error",
@@ -860,7 +1061,7 @@ categories.slug : '' %>
                     });
                 }
             })
-            .fail(function(xhr, status, error) {
+            .fail(function (xhr, status, error) {
                 iziToast.error({
                     title: "Error",
                     message: xhr.responseText,
@@ -871,23 +1072,21 @@ categories.slug : '' %>
 
     //#endregion Edit Category
 
-
     //#region Delete Category
     let categoryIdToDelete;
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Show the modal and store the category ID to delete
-        $(".remove-item-btn").click(function() {
+        $(".remove-item-btn").click(function () {
             categoryIdToDelete = $(this).data("id");
         });
 
         // AJAX request to delete the category
-        $("#delete-record").click(function() {
+        $("#delete-record").click(function () {
             $.ajax({
-                    type: "POST",
-                    contentType: "application/json",
-                    url: "/admin/category/delete/" +
-                        categoryIdToDelete,
-                })
+                type: "POST",
+                contentType: "application/json",
+                url: "/admin/category/delete/" + categoryIdToDelete,
+            })
                 .done((res) => {
                     if (res.status == 200) {
                         iziToast.success({
@@ -895,7 +1094,7 @@ categories.slug : '' %>
                             message: res.message,
                             position: "topRight",
                         });
-                        setTimeout(function() {
+                        setTimeout(function () {
                             location.reload();
                         }, 1000);
                     } else {
@@ -906,7 +1105,7 @@ categories.slug : '' %>
                         });
                     }
                 })
-                .fail(function(xhr, status, error) {
+                .fail(function (xhr, status, error) {
                     iziToast.error({
                         title: "Error",
                         message: xhr.responseText,
@@ -916,4 +1115,26 @@ categories.slug : '' %>
         });
     });
     //#endregion Delete Category
+</script>
+
+<script>
+    function generateSlug(name) {
+        return name
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .replace(/\s+/g, "-");
+    }
+
+    // Generate slug when name is entered
+    $("#name").on("input", function () {
+        var slug = generateSlug($(this).val());
+        $("#slug-field").val(slug);
+    });
+ 
+    // Generate slug when name is entered
+    $("#edit_name").on("input", function () {
+        var slug = generateSlug($(this).val());
+        $("#edit_slug").val(slug);
+    });
+
 </script>

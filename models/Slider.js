@@ -3,18 +3,18 @@ const mongoose = require("mongoose");
 const sliderSchema = new mongoose.Schema({
     title: {
         type: String,
-        max: 50,
         required: true,
     },
     description: {
         type: String,
-        max: 100,
         required: true,
     },
     url: {
         type: String,
-        max: 50,
-        required: true,
+    },
+    image:{
+        type: String,
+        required:true,
     },
     status_id: {
         type: mongoose.Schema.Types.ObjectId,
