@@ -149,6 +149,23 @@ class UserController {
             });
         }
     };
+
+    static delete = async (req, res) => {
+        try {
+            await User.findByIdAndDelete(req.params.id);
+
+            return res.send({
+                success: true,
+                status: 200,
+                message: " User deleted successfully",
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .send({ message: "Error deleting slider: " + error.message });
+        }
+    };
 }
 
 module.exports = UserController;

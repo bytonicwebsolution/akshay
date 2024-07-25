@@ -120,3 +120,88 @@ static filter = async (req, res) => {
         });
     }
 };
+
+
+
+
+
+
+
+
+
+        <!-- $(".toggle-btn").on("click", function() {
+            var userId = $(this).data("id");
+            var button = $(this);
+            var newStatus;
+
+            // Toggle classes and determine new status
+            if (button.hasClass("actives")) {
+                button
+                    .removeClass("actives")
+                    .addClass("inactives")
+                newStatus = "inactive";
+            } else {
+                button
+                    .removeClass("inactives")
+                    .addClass("actives")
+                newStatus = "active";
+            }
+
+            // Send AJAX request to update status
+            $.ajax({
+                url: "/admin/vendor/status_change",
+                method: "POST",
+                data: {
+                    userId: userId,
+                    status: newStatus,
+                },
+                success: function(response) {
+                    if (response.status == 200) {
+                        // Revert button status if update fails
+                        if (newStatus ===
+                            "active") {
+                            button
+                                .removeClass(
+                                    "actives")
+                                .addClass(
+                                    "inactives")
+                        } else {
+                            button
+                                .removeClass(
+                                    "inactives")
+                                .addClass("actives")
+                        }
+
+                        iziToast.success({
+                            title: "Success",
+                            message: response
+                                .message,
+                            position: "topRight",
+                        });
+                        setTimeout(function() {
+                            location
+                                .reload();
+                        }, 1000);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Revert button status if error occurs
+                    if (newStatus === "active") {
+                        button
+                            .removeClass("actives")
+                            .addClass("inactives")
+                    } else {
+                        button
+                            .removeClass(
+                                "inactives")
+                            .addClass("actives")
+                    }
+                    iziToast.error({
+                        title: "Error",
+                        message: xhr
+                            .responseText,
+                        position: "topRight",
+                    });
+                },
+            });
+        }); -->

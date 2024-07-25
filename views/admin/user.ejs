@@ -630,4 +630,59 @@
     }
 
     //#endregion Edit User
+
+
+    // #editregion Delete User
+
+    let UserIdToDelete;
+    $(document).ready(function() {
+        // Show the modal and store the Slider ID to delete
+        $(".remove-item-btn").on("click", function() {
+            var UserIdToDelete = $(this).data("id");
+            console.log(UserIdToDelete)
+
+
+
+            // AJAX request to delete the Slider
+            $("#delete-record").click(function() {
+                $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/admin/user/delete/" +
+                        UserIdToDelete,
+                    })
+                    .done((res) => {
+                        if (res.status == 200) {
+                            iziToast.success({
+                                title: "Success",
+                                message: res
+                                    .message,
+                                position: "topRight",
+                            });
+                            setTimeout(function() {
+                                location
+                                    .reload();
+                            }, 1000);
+                        } else {
+                            iziToast.error({
+                                title: "Error",
+                                message: res
+                                    .message,
+                                position: "topRight",
+                            });
+                        }
+                    })
+                    .fail(function(xhr, status, error) {
+                        iziToast.error({
+                            title: "Error",
+                            message: xhr
+                                .responseText,
+                            position: "topRight",
+                        });
+                    });
+            });
+        })
+    });
+
+    // #editregion Delete User
 </script>

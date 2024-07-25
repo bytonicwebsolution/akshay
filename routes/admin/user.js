@@ -6,6 +6,8 @@ const { NotLoggedIn } = require("../../middlewares/Adminauth");
 router.get("/list", NotLoggedIn, UserController.list);
 router.post("/add", NotLoggedIn, UserController.add);
 router.post("/edit",NotLoggedIn, UserController.edit );
+router.post("/delete/:id", NotLoggedIn, UserController.delete)
+
 
 
 module.exports = router;

@@ -201,6 +201,7 @@ const createUserStatus = async () => {
     };
     await checkAndUpdateStatus("active");
     await checkAndUpdateStatus("inactive");
+    await checkAndUpdateStatus("banned");
 };
 
 const createRatingStatus = async () => {

@@ -159,7 +159,7 @@ class SliderController {
 
                 const updatedData = {
                     title: req.body.edit_title,
-                    url: req.body.edit_meta_url,
+                    url: req.body.edit_url,
                     description: req.body.edit_description,
                     status_id:
                         req.body.edit_status_id === "on"
@@ -172,7 +172,7 @@ class SliderController {
                 if (req.file) {
                     updatedData.image = req.file.filename;
                 }
-                await Category.findOneAndUpdate(
+                await Slider.findOneAndUpdate(
                     { _id: req.body.editid },
                     updatedData,
                     { new: true }

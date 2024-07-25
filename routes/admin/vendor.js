@@ -8,6 +8,9 @@ router.post("/add", NotLoggedIn,VendorController.add);
 router.get("/edit/:id", NotLoggedIn,VendorController.edit);
 router.post("/update",NotLoggedIn, VendorController.update);
 router.post("/status_change",NotLoggedIn, VendorController.status_change)
+router.post("/remove_ban",NotLoggedIn, VendorController.remove_ban)
+router.post("/status_ban",NotLoggedIn, VendorController.status_ban)
+router.post("/delete/:id",NotLoggedIn, VendorController.delete )
 
 
 module.exports = router;

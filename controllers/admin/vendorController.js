@@ -1,5 +1,6 @@
 const User = require("../../models/User");
 const Vendor = require("../../models/Vendor");
+const config = require("../../config/createStatus");
 // const Coupon = require("../../models/Coupon");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
@@ -166,7 +167,6 @@ class VendorController {
     };
 
     // POST route to handle the edit operation
-    // POST route to handle the edit operation
     static edit = async (req, res) => {
         try {
             let statuses = await Status.find().sort({ created_at: -1 });
@@ -204,7 +204,6 @@ class VendorController {
                 additional_info: req.body.additional_info,
                 updated_at: Date.now(),
             };
-            console.log("updatedUserData", updatedUserData);
 
             let updatedVendorData = {
                 aadhar_no: req.body.aadhar_no,
@@ -216,7 +215,6 @@ class VendorController {
                 account_no: req.body.account_no,
                 updated_at: Date.now(),
             };
-            console.log("updatedVendorData", updatedVendorData);
 
             // Check if files are uploaded and update the paths accordingly
             if (req.files) {
@@ -259,37 +257,23 @@ class VendorController {
         }
     };
 
-    static status_change = async (req, res) => {
-        const userId = req.body.userId;
-        const status = req.body.status;
-
-        console.log(status)
-
+    static status_ban = async (req, res) => {
         try {
-            // Find the status document with name 'Banned'
-            const bannedStatus = await Status.findOne({ name: "Banned" });
-
-            if (!bannedStatus && !statusDoc) {
-                return res.status(400).json({
-                    status: 400,
-                    message: "Status not found",
-                });
-            }
-
-            // Find the status document corresponding to the status name
-            const statusDoc = await Status.findOne({ name: status });
-            console.log(bannedStatus)
-            console.log(statusDoc)
-
-            // Update user's status_id to the _id of the 'Banned' status
-            // Using findOneAndUpdate to handle creation if status_id doesn't exist
+            const { userId } = req.body;
+            const bannedStatus = await Status.findOne({
+                type: "user",
+                name: { $regex: new RegExp("^banned$", "i") },
+            });
+            await config.createUserStatus();
             await User.findOneAndUpdate(
                 { _id: userId },
                 { $set: { status_id: bannedStatus._id } } // upsert option to create if not exists
             );
 
             // Update user's status_id
-            await User.findByIdAndUpdate(userId, { status_id: statusDoc._id });
+            await User.findByIdAndUpdate(userId, {
+                status_id: bannedStatus._id,
+            });
 
             // Send a success response
             res.status(200).json({
@@ -299,6 +283,70 @@ class VendorController {
         } catch (error) {
             console.error("Error banning user:", error);
             res.status(500).json({ error: "Internal Server Error" });
+        }
+    };
+
+    static status_change = async (req, res) => {
+        try {
+            const { userId, status } = req.body;
+
+            const findStatus = await Status.findOne({
+                name: status,
+                type: "user",
+            });
+
+            await config.createUserStatus();
+
+            if (findStatus) {
+                await User.findOneAndUpdate(
+                    { _id: findStatus._id },
+                    { $set: { status_id: findStatus._id } } // Return the updated document
+                );
+
+                // Update user's status_id
+                await User.findByIdAndUpdate(userId, {
+                    status_id: findStatus._id,
+                });
+            }
+
+            // Send a success response
+            res.status(200).json({
+                status: 200,
+                message: "Status Change Successfully!",
+            });
+        } catch (error) {
+            console.error("Error banning user:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    };
+
+    static remove_ban = async (req, res) => {
+        const userId = req.params.id;
+        const newStatus = req.body.status;
+
+        try {
+            await User.findByIdAndUpdate(userId, { status: newStatus });
+            res.json({ success: true });
+        } catch (error) {
+            console.error(error);
+            res.json({ success: false });
+        }
+    };
+
+    static delete = async (req, res) => {
+        try {
+            await User.findByIdAndDelete(req.params.id);
+
+            return res.send({
+                success: true,
+                status: 200,
+                message: " Vendor deleted successfully",
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .send({ message: "Error deleting slider: " + error.message });
         }
     };
 }

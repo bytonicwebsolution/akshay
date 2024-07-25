@@ -323,20 +323,22 @@ table {
     border-radius: 3px;
     cursor: pointer; /* Ensure cursor changes on hover */
 }
-.banned {
+.status-ban {
     border: none;
     font-size: smaller;
     font-weight: 400;
     border-radius: 3px;
-    background-color:  #EC1E24 !important; /* Ensure it overrides */
-    color: white !important; /* Ensure it overrides */
-    cursor: not-allowed; /* Disable cursor */
+    background-color: #ec1e24 !important;
+    color: white !important;
+    cursor: not-allowed;
+    font-weight: bold;
 }
-.actives {
-    background-color: #2DCB73; 
+.status-active {
+    background-color: #2dcb73;
+    
 }
-.inactives {
-    background-color: #DDDDDE;
+.status-inactive {
+    background-color: #ddddde;
     color: black;
 }
 
@@ -348,6 +350,9 @@ table {
     transform-origin: center;
     margin-right: 20px;
 }
-/* .form-switch{
-    margin-left: 5px;
-} */
+
+
+
+.transform:hover{
+    transform: scale(1.2);
+}

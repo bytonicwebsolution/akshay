@@ -450,6 +450,7 @@
                                     name="image"
                                     type="file"
                                     accept="image/png, image/gif, image/jpeg"
+                                    required
                                 />
                             </div>
                             <div class="avatar-lg">
@@ -474,6 +475,7 @@
                             class="form-control"
                             name="title"
                             placeholder="Enter Slider title"
+                            required
                         />
                     </div>
 
@@ -483,7 +485,7 @@
                                 >Slider URL</label
                             >
                             <input
-                                type="text"
+                                type="url"
                                 id="url-field"
                                 name="url"
                                 class="form-control"
@@ -920,25 +922,4 @@
         });
     });
     //#endregion Delete Slider
-</script>
-
-<script>
-    function generateSlug(name) {
-        return name
-            .toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, "")
-            .replace(/\s+/g, "-");
-    }
-
-    // Generate slug when name is entered
-    $("#name").on("input", function () {
-        var slug = generateSlug($(this).val());
-        $("#slug-field").val(slug);
-    });
-
-    // Generate slug when name is entered
-    $("#edit_name").on("input", function () {
-        var slug = generateSlug($(this).val());
-        $("#edit_slug").val(slug);
-    });
 </script>
