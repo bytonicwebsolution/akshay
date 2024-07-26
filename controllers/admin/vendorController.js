@@ -320,18 +320,6 @@ class VendorController {
         }
     };
 
-    static remove_ban = async (req, res) => {
-        const userId = req.params.id;
-        const newStatus = req.body.status;
-
-        try {
-            await User.findByIdAndUpdate(userId, { status: newStatus });
-            res.json({ success: true });
-        } catch (error) {
-            console.error(error);
-            res.json({ success: false });
-        }
-    };
 
     static delete = async (req, res) => {
         try {

@@ -151,14 +151,14 @@ user.last_name %>
                         <td class="statusbar">
                           <button data-bs-toggle="tooltip" data-bs-placement="top" title="Update Status" class="<%= user.status_id?.name === 'banned' ? 'status-ban transform' : (user.status_id?.name === 'inactive' ? 'status-inactive toggle-btn transform ' : 'status-active toggle-btn transform') %>" data-id="<%= user._id %>">
                             <%= user.status_id ?
-user.status_id.name :
+user.status_id?.name :
 'active' %>
                           </button>
                         </td>
                         <td class="flex items-center justify-between">
                           <div class="dropdown mt-1">
                             <button data-id="<%= user._id %>" class="btn btn-subtle-secondary btn-sm btn-icon three-dot three-dot-button" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="bi bi-three-dots-vertical "></i>
+                              <i class="bi bi-three-dots-vertical"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
                               <li>
@@ -172,24 +172,32 @@ user.status_id.name :
                               </li>
 
                               <li>
+                                <% if (user.status_id?.name ==
+"banned") { %><a class="dropdown-item remove-ban-item-btn btn btn-danger" href="javascript:void(0);" data-id="<%= user._id %>">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ban-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M2.71 12.584q.328.378.706.707l9.875-9.875a7 7 0 0 0-.707-.707l-9.875 9.875Z" />
+                                  </svg>
+                                  <span class="px-1">
+                                    Remove
+                                    ban
+                                  </span>
+                                </a>
+                                <% } else { %>
                                 <a class="dropdown-item ban-item-btn btn btn-danger" href="javascript:void(0);" data-id="<%= user._id %>">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-ban mr-3" viewBox="0 0 16 16">
                                     <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0" />
                                   </svg>
                                   <span class="px-1">
-                                    <% if (user.status_id.name == "banned") { %>
-                                    Remove
-                                    ban
-                                    <% } else { %>
                                     Ban this
                                     vendor
-
-
-
-
-                                    <% } %>
                                   </span>
                                 </a>
+
+
+
+
+
+                                <% } %>
                               </li>
                               <li>
                                 <a class="dropdown-item delete-vendor-btn" href="#DeleteVendorModal" data-bs-toggle="modal" data-id="<%= user._id %>">
@@ -549,25 +557,23 @@ totalPages; i++) { %>
   });
 
   $(document).ready(function() {
-
     $(".three-dot-button").on("click", async function() {
       var userId = $(this).data("id");
-
 
       // Assuming user.status_id is available in the context
 
       const banButtons = document.querySelectorAll(
-        '.ban-item-btn');
+        ".ban-item-btn");
 
-      banButtons.forEach(button => {
-        button.addEventListener('click',
+      banButtons.forEach((button) => {
+        button.addEventListener("click",
           function() {
             const userId = this
               .getAttribute(
-                'data-id');
+                "data-id");
             const span = this
               .querySelector(
-                'span');
+                "span");
             const currentText = span
               .textContent.trim();
 
@@ -575,13 +581,13 @@ totalPages; i++) { %>
               // Make an AJAX request to update the user status
               $.ajax({
                 url: `/remove-ban/${userId}`,
-                type: 'POST',
-                contentType: 'application/json',
+                type: "POST",
+                contentType: "application/json",
                 data: JSON
                   .stringify({
                     status: currentText ===
-                      'Ban this vendor' ?
-                      'banned' : 'active'
+                      "Ban this vendor" ?
+                      "banned" : "active",
                   }),
                 success: function(
                   data
@@ -592,13 +598,13 @@ totalPages; i++) { %>
                     // Update the button text based on the new status
                     span.textContent =
                       currentText ===
-                      'Ban this vendor' ?
-                      'Remove ban' :
-                      'Ban this vendor';
+                      "Ban this vendor" ?
+                      "Remove ban" :
+                      "Ban this vendor";
                   } else {
                     alert
                       (
-                        'Failed to update status'
+                        "Failed to update status"
                       );
                   }
                 },
@@ -607,10 +613,10 @@ totalPages; i++) { %>
                 ) {
                   console
                     .error(
-                      'Error:',
+                      "Error:",
                       err
                     );
-                }
+                },
               });
             }
           });
@@ -662,6 +668,46 @@ totalPages; i++) { %>
           });
         },
       });
+    });
+
+    // Handle "Remove ban" button click
+    $(".remove-ban-item-btn").on("click", function() {
+      var userId = $(this).data("id");
+      var currentStatusButton = $(this).closest("td")
+        .find(".toggle-btn");
+
+      let newStatus = "active";
+
+      // AJAX POST request to remove the ban
+      $.ajax({
+          type: "POST",
+          url: "/admin/vendor/status_change",
+          data: {
+            userId: userId,
+            status: newStatus
+          },
+        })
+        .done((res) => {
+          currentStatusButton
+            .removeClass("status-ban")
+            .addClass("status-active")
+            .prop("disabled", false);
+          iziToast.success({
+            title: "Success",
+            message: res.message,
+            position: "topRight",
+          });
+          setTimeout(function() {
+            location.reload();
+          }, 1000);
+        })
+        .fail(function(xhr, status, error) {
+          iziToast.error({
+            title: "Error",
+            message: xhr.responseText,
+            position: "topRight",
+          });
+        });
     });
 
     // Handle "Ban this vendor" button click

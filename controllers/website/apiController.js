@@ -203,7 +203,9 @@ class ApiController {
 
     static getAllCategories = async (req, res) => {
         try {
-            const statusData = await Status.findOne({ name: "Active" });
+            const statusData = await Status.findOne();
+
+            
 
             if (!statusData) {
                 return res.status(200).json([]);

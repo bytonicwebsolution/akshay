@@ -13,6 +13,7 @@ const unit = require("./routes/admin/unit");
 const slider = require("./routes/admin/slider")
 const getAPI = require("./routes/admin/getAPI");
 const addToCart = require("./routes/admin/addtocart");
+const staff = require("./routes/admin/staff")
 
 const AdminRoutes = (app) => {
     app.use("/", mainR);
@@ -30,6 +31,7 @@ const AdminRoutes = (app) => {
     app.use("/admin/slider", slider)
     app.use("/admin/getapi", getAPI);
     app.use("/admin/addtocart", addToCart);
+    app.use("/admin/staff", staff)
 };
 
 module.exports = AdminRoutes;

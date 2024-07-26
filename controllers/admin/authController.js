@@ -22,6 +22,8 @@ class AuthController {
         if (!validPassword) return res.status(500).send("Invalid Password");
         req.session.username = user.username;
         req.session.password = user.password;
+        req.session.type = user.type;
+        
         req.session.user = user;
         if (req.session.path) {
             return res.send(req.session.path);

@@ -9,7 +9,8 @@ const createAdmin = async () => {
         const hashedPassword = await bcrypt.hash('bytonic', salt);
         const adminauth = Adminauth({
             username: 'admin',
-            password: hashedPassword
+            password: hashedPassword,
+            type:'a'
         }); 
         try {           
             await adminauth.save();
