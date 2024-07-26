@@ -70,6 +70,9 @@ class staffController {
                 currentpassword,
             } = body;
 
+
+            return console.log(file)
+
             const image = file ? file.filename : null;
             
             if (password !== currentpassword) {

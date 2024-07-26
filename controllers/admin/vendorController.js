@@ -1,47 +1,13 @@
 const User = require("../../models/User");
 const Vendor = require("../../models/Vendor");
 const config = require("../../config/createStatus");
-// const Coupon = require("../../models/Coupon");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const path = require("path");
 const root = process.cwd();
-
+const imageFilter = require("../../config/imageFilter");
 require("dotenv").config;
 const Status = require("../../models/Status");
-
-// Set storage engine for users
-const storage1 = multer.diskStorage({
-    destination: path.join(root, "/public/dist/users"),
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}.jpg`);
-    },
-});
-
-// Set storage engine for vendors
-const storage2 = multer.diskStorage({
-    destination: path.join(root, "/public/dist/vendor"),
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}.jpg`);
-    },
-});
-
-// Init upload for users
-const upload = multer({
-    storage: storage1,
-    limits: { fileSize: 1000000 },
-}).fields([{ name: "image" }]);
-
-// Init upload for vendors
-const upload2 = multer({
-    storage: storage2,
-    limits: { fileSize: 1000000 },
-}).fields([
-    { name: "aadhar_front_photo" },
-    { name: "aadhar_back_photo" },
-    { name: "pan_front_photo" },
-    { name: "signature" },
-]);
 
 class VendorController {
     static list = async (req, res) => {
@@ -127,7 +93,7 @@ class VendorController {
 
                 await vendor.save();
                 return res.send({
-                    message: "User registered successfully",
+                    message: "Vendor registered successfully",
                     status: true,
                     success: true,
                 });
@@ -169,15 +135,17 @@ class VendorController {
     // POST route to handle the edit operation
     static edit = async (req, res) => {
         try {
-            let statuses = await Status.find().sort({ created_at: -1 });
             let id = req.params.id;
-            const vendors = await Vendor.findOne({ user_id: id });
+            let statuses = await Status.find().sort({ created_at: -1 });
             const users = await User.findOne({ _id: id });
+            const vendors = await Vendor.findOne({ user_id: users._id });
 
             res.render("admin/edit-vendor", { vendors, statuses, users });
         } catch (error) {
             console.error("Error fetching user:", error);
-            return res.status(500).send("Error fetching user details");
+            return res
+                .status(500)
+                .send("Error fetching user details", error.message);
         }
     };
 
@@ -185,12 +153,11 @@ class VendorController {
         try {
             const user = await User.findOne({
                 _id: req.body.editid,
+                type: "v",
             });
+            const vendor = await Vendor.findOne({ user_id: req.body.editid });
 
-            const vendor = await Vendor.findOne({
-                user_id: req.body.editid,
-            });
-
+            console.log("req.files", req.files);
             let updatedUserData = {
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
@@ -216,43 +183,86 @@ class VendorController {
                 updated_at: Date.now(),
             };
 
-            // Check if files are uploaded and update the paths accordingly
+            const fileUploadPromises = [];
+
+            // Check if files are uploaded
             if (req.files) {
                 if (req.files.image) {
-                    updatedUserData.image = req.files.image[0].filename;
+                    fileUploadPromises.push(
+                        new Promise((resolve, reject) => {
+                            uploadUser.single("image")(req, res, (err) => {
+                                if (err) {
+                                    return reject(
+                                        "Error uploading user image."
+                                    );
+                                }
+                                updatedUserData.image = req.file.filename;
+                                resolve();
+                            });
+                        })
+                    );
                 }
-                if (req.files.aadhar_front_photo) {
-                    updatedVendorData.aadhar_front_photo =
-                        req.files.aadhar_front_photo[0].filename;
-                }
-                if (req.files.aadhar_back_photo) {
-                    updatedVendorData.aadhar_back_photo =
-                        req.files.aadhar_back_photo[0].filename;
-                }
-                if (req.files.pan_front_photo) {
-                    updatedVendorData.pan_front_photo =
-                        req.files.pan_front_photo[0].filename;
-                }
-                if (req.files.signature) {
-                    updatedVendorData.signature =
-                        req.files.signature[0].filename;
+
+                if (
+                    req.files.aadhar_front_photo ||
+                    req.files.aadhar_back_photo ||
+                    req.files.pan_front_photo ||
+                    req.files.signature
+                ) {
+                    fileUploadPromises.push(
+                        new Promise((resolve, reject) => {
+                            uploadVendor.fields([
+                                { name: "aadhar_front_photo", maxCount: 1 },
+                                { name: "aadhar_back_photo", maxCount: 1 },
+                                { name: "pan_front_photo", maxCount: 1 },
+                                { name: "signature", maxCount: 1 },
+                            ])(req, res, (err) => {
+                                if (err) {
+                                    return reject(
+                                        "Error uploading vendor documents."
+                                    );
+                                }
+                                if (req.files.aadhar_front_photo) {
+                                    updatedVendorData.aadhar_front_photo =
+                                        req.files.aadhar_front_photo[0].filename;
+                                }
+                                if (req.files.aadhar_back_photo) {
+                                    updatedVendorData.aadhar_back_photo =
+                                        req.files.aadhar_back_photo[0].filename;
+                                }
+                                if (req.files.pan_front_photo) {
+                                    updatedVendorData.pan_front_photo =
+                                        req.files.pan_front_photo[0].filename;
+                                }
+                                if (req.files.signature) {
+                                    updatedVendorData.signature =
+                                        req.files.signature[0].filename;
+                                }
+                                resolve();
+                            });
+                        })
+                    );
                 }
             }
+
+            await Promise.all(fileUploadPromises);
 
             await User.updateOne({ _id: req.body.editid }, updatedUserData);
             await Vendor.updateOne(
                 { user_id: req.body.editid },
                 updatedVendorData
             );
-            res.status(200).json({
+
+            res.status(200).send({
                 status: 200,
                 message: "Vendor details updated successfully",
             });
         } catch (error) {
             console.error("Error updating vendor details:", error);
-            return res.status(500).json({
+            return res.status(500).send({
                 status: 500,
                 message: "Error updating vendor details",
+                error: error.message,
             });
         }
     };
@@ -282,7 +292,11 @@ class VendorController {
             });
         } catch (error) {
             console.error("Error banning user:", error);
-            res.status(500).json({ error: "Internal Server Error" });
+            return res.status(500).send({
+                status: 500,
+                message: "Error ban user",
+                error: error.message,
+            });
         }
     };
 
@@ -310,33 +324,64 @@ class VendorController {
             }
 
             // Send a success response
-            res.status(200).json({
+            res.status(200).send({
                 status: 200,
                 message: "Status Change Successfully!",
             });
         } catch (error) {
             console.error("Error banning user:", error);
-            res.status(500).json({ error: "Internal Server Error" });
+            return res.status(500).send({
+                status: 500,
+                message: "Error Status Change",
+                error: error.message,
+            });
         }
     };
-
 
     static delete = async (req, res) => {
         try {
             await User.findByIdAndDelete(req.params.id);
-
             return res.send({
                 success: true,
                 status: 200,
-                message: " Vendor deleted successfully",
+                message: "Vendor deleted successfully",
             });
         } catch (error) {
             console.log(error);
             return res
                 .status(500)
-                .send({ message: "Error deleting slider: " + error.message });
+                .send({ message: "Error deleting Vendor: " + error.message });
         }
     };
 }
+
+// Storage configuration for User images
+const userStorage = multer.diskStorage({
+    destination: path.join(root, "/public/dist/users"),
+    filename: function (req, file, cb) {
+        cb(
+            null,
+            file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+        );
+    },
+});
+
+// Storage configuration for Vendor documents
+const vendorStorage = multer.diskStorage({
+    destination: path.join(root, "/public/dist/vendor"),
+    filename: function (req, file, cb) {
+        cb(
+            null,
+            file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+        );
+    },
+});
+
+// Multer configurations
+const uploadUser = multer({ storage: userStorage, fileFilter: imageFilter });
+const uploadVendor = multer({
+    storage: vendorStorage,
+    fileFilter: imageFilter,
+});
 
 module.exports = VendorController;
