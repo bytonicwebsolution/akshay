@@ -21,16 +21,16 @@ const upload = multer({
 
 class staffController {
     static list = async (req, res) => {
+        let staff = await Adminauth.find().sort({
+            created_at: -1,
+        });
         try {
-            // let staff = await Staff.aggregate([
-            //     {
-            //         $sort: {
-            //             created_at: -1,
-            //         },
-            //     },
-            // ]).exec();
-
-            res.render("admin/staff");
+            const staffs = await Adminauth.find({type:'s'});
+        
+            return res.render("admin/staff",{
+                staff,
+                staffs,
+            });
         } catch (error) {
             return res.status(500).send({
                 message: "Error fetching categories: " + error.message,
@@ -58,9 +58,12 @@ class staffController {
     static POSTadd = async (req, res) => {
         upload(req, res, async (err) => {
             if (err) {
-                return res.status(400).send({ message: err });
+                return res.status(400).send({ message: err.message });
             }
-            const { file, body } = req;
+
+            const file = req;
+            // const image = file ? file.filename : null;
+
             const {
                 first_name,
                 last_name,
@@ -68,21 +71,18 @@ class staffController {
                 phone,
                 password,
                 currentpassword,
-            } = body;
+            } = req.body;
 
-
-            return console.log(file)
-
-            const image = file ? file.filename : null;
-            
             if (password !== currentpassword) {
                 return res.status(401).json({
                     message: "Password and Confirm Password do not match",
                 });
             }
-            if (!image) {
-                return res.status(400).send({ message: "Image is required" });
-            }
+
+            // if (!image) {
+            //     return res.status(400).send({ message: "Image is required" });
+            // }
+
             try {
                 const saltRounds = 10;
                 const salt = await bcrypt.genSalt(saltRounds);
@@ -100,7 +100,7 @@ class staffController {
                 }
 
                 const staff = new Adminauth({
-                    image: image,
+                    image: file.filename,
                     type: "s",
                     first_name: first_name,
                     last_name: last_name,
@@ -123,6 +123,8 @@ class staffController {
             }
         });
     };
+
+
 }
 
 module.exports = staffController;
