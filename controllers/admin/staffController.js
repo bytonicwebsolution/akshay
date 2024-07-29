@@ -1,13 +1,16 @@
 const Adminauth = require("../../models/Adminauth");
-
+const imageFilter = require("../../config/imageFilter");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const path = require("path");
 const root = process.cwd();
+const fs = require("fs");
 
 // Set storage engine for users
 const storage = multer.diskStorage({
-    destination: path.join(root, "/public/dist/staff"),
+    destination: (req, res, cb) => {
+        cb(null, path.join(root, "/public/dist/staff"));
+    },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}.jpg`);
     },
@@ -16,20 +19,29 @@ const storage = multer.diskStorage({
 // Init upload for users
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 1000000 },
-}).fields([{ name: "image" }]);
+    fileFilter: imageFilter,
+}).single("image");
 
 class staffController {
     static list = async (req, res) => {
-        let staff = await Adminauth.find().sort({
+        let staffs = await Adminauth.find().sort({
             created_at: -1,
         });
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+        const startIndex = (page - 1) * limit;
         try {
-            const staffs = await Adminauth.find({type:'s'});
-        
-            return res.render("admin/staff",{
+            const staff = await Adminauth.find({ type: "s" })
+                .skip(startIndex)
+                .limit(limit);
+            const totalStaffs = await Adminauth.countDocuments();
+            const totalPages = Math.ceil(totalStaffs / limit);
+            return res.render("admin/staff", {
                 staff,
                 staffs,
+                totalPages,
+                currentPage: page,
+                totalStaffs,
             });
         } catch (error) {
             return res.status(500).send({
@@ -61,10 +73,8 @@ class staffController {
                 return res.status(400).send({ message: err.message });
             }
 
-            const file = req;
-            // const image = file ? file.filename : null;
-
             const {
+                username,
                 first_name,
                 last_name,
                 email,
@@ -79,10 +89,6 @@ class staffController {
                 });
             }
 
-            // if (!image) {
-            //     return res.status(400).send({ message: "Image is required" });
-            // }
-
             try {
                 const saltRounds = 10;
                 const salt = await bcrypt.genSalt(saltRounds);
@@ -90,6 +96,7 @@ class staffController {
 
                 const staffExists = await Adminauth.findOne({
                     email: email,
+                    username:username,
                     type: "s",
                 });
 
@@ -100,8 +107,9 @@ class staffController {
                 }
 
                 const staff = new Adminauth({
-                    image: file.filename,
+                    image: req.file.filename,
                     type: "s",
+                    username:username,
                     first_name: first_name,
                     last_name: last_name,
                     email: email,
@@ -109,7 +117,9 @@ class staffController {
                     password: hashedPassword,
                 });
 
+
                 await staff.save();
+                
                 return res.json({
                     message: "Staff registered successfully",
                     success: true,
@@ -124,7 +134,87 @@ class staffController {
         });
     };
 
+    static edit = async (req, res) => {
+        try {
+            upload(req, res, async function (err) {
+                if (req.fileValidationError) {
+                    return res.send(req.fileValidationError);
+                } else if (err instanceof multer.MulterError) {
+                    console.log(err);
+                    return res.send(err);
+                } else if (err) {
+                    console.log(err);
+                    return res.send(err);
+                }
 
+                const staff = await Adminauth.findOne({ _id: req.body.editid });
+
+                if (!staff) {
+                    return res.status(404).send({ message: "user not found" });
+                }
+
+                let updatedData = {
+                    image: req.file ? req.file.filename : "",
+                    username: req.body.edit_user_name,
+                    first_name: req.body.edit_first_name,
+                    last_name: req.body.edit_last_name,
+                    email: req.body.edit_email,
+                    phone: req.body.edit_phone,
+                    updated_at: Date.now(),
+                };
+                if (req.file) {
+                    updatedData.image = req.file.filename;
+                }
+                await Adminauth.findOneAndUpdate(
+                    { _id: req.body.editid },
+                    updatedData,
+                    { new: true }
+                );
+
+                if (req.file && staff.image) {
+                    fs.unlink(
+                        path.join(
+                            root,
+                            "/public/dist/staff/" + staff.image
+                        ),
+                        (err) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                        }
+                    );
+                }
+                return res.send({
+                    success: true,
+                    status: 200,
+                    message: "Staff updated successfully",
+                });
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                message: "Something went wrong please try again later",
+                error: error.message,
+            });
+        }
+    };
+
+    static delete = async (req, res) => {
+        try {
+            await Adminauth.findByIdAndDelete(req.params.id);
+
+            return res.send({
+                success: true,
+                status: 200,
+                message: " Staff deleted successfully",
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .send({ message: "Error deleting slider: " + error.message });
+        }
+    };
 }
 
 module.exports = staffController;

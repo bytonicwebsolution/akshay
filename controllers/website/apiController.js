@@ -205,8 +205,6 @@ class ApiController {
         try {
             const statusData = await Status.findOne();
 
-            
-
             if (!statusData) {
                 return res.status(200).json([]);
             }
@@ -243,7 +241,22 @@ class ApiController {
             res.status(500).send(error.message);
         }
     };
+
+
+    static get_all_products = async(req,res)=>{
+        try {
+            const products = await Product.find();
+            // return console.log(products)
+            res.status(200).json(products)
+        } catch (error) {
+            res.status(500).send(error.message);
+        }
+
+      
+    }
 }
+
+
 
 const storage = multer.diskStorage({
     destination: path.join(root, "/public/dist/product"),

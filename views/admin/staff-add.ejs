@@ -56,6 +56,11 @@
                         <div class="col-xxl-5 p-4">
                           <div class="row">
                             <div class="col-lg-12 mb-4">
+                              <label for="username" class="form-label fw-semibold mb-2">User
+                                Name <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" id="username" name="username" placeholder="Enter User Name" required />
+                            </div>
+                            <div class="col-lg-12 mb-4">
                               <label for="first_name" class="form-label fw-semibold mb-2">First
                                 Name <span class="text-danger">*</span></label>
                               <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter First Name" required />
@@ -75,6 +80,7 @@
                                 <span class="text-danger">*</span></label>
                               <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number" required />
                             </div>
+                            
                             <div class="col-lg-12 mb-4">
                               <label for="password" class="form-label fw-semibold mb-2">Password
                                 <span class="text-danger">*</span></label>
@@ -306,13 +312,13 @@
   });
 
   var addform = $("#addStaffForm");
-  addform.on("submit", submitFormHandler);
+addform.on("submit", submitFormHandler);
 
-  function submitFormHandler(e) {
+function submitFormHandler(e) {
     e.preventDefault();
 
     var formData = new FormData(addform[0]);
-    console.log(formData)
+
 
     $.ajax({
         type: "POST",
@@ -321,23 +327,28 @@
         enctype: "multipart/form-data",
         processData: false,
         contentType: false,
-      })
-      .done((res) => {
+    })
+    .done((res) => {
         iziToast.success({
-          title: "Success",
-          message: res.message,
-          position: "topRight",
+            title: "Success",
+            message: res.message,
+            position: "topRight",
         });
         setTimeout(function() {
-          location.reload();
+            location.reload();
+            window.location.href = '/admin/staff/list';
         }, 1000);
-      })
-      .fail(function(xhr, status, error) {
+    })
+    .fail(function(xhr, status, error) {
         iziToast.error({
-          title: "Error",
-          message: xhr.responseText,
-          position: "topRight",
+            title: "Error",
+            message: xhr.responseText,
+            position: "topRight",
         });
-      });
-  }
+    });
+}
+
+
+
+
 </script>

@@ -97,6 +97,7 @@ class webauthController {
                 });
             const user = await User.findOne({
                 email: email,
+                
             });
             if (!user)
                 return res.send({

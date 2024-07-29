@@ -62,9 +62,9 @@
               <!--end card-->
               <div class="card">
                 <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-centered align-middle table-nowrap mb-0">
-                      <thead class="table-active">
+                  <div class="table-responsive table-card">
+                    <table class="table align-middle table-nowrap list " id="staffTableBody">
+                      <thead >
                         <tr>
 
                           <th class="sort cursor-pointer" data-sort="customer">
@@ -87,102 +87,80 @@
                           <th>Action</th>
                         </tr>
                       </thead>
-                      <tbody class="list">
+                      <tbody class="list" id="staffTableBody">
+                        <% staff.forEach((staff,index)=>{ %>
 
-                        <tr>
+                        <!-- <tr>
                           <td colspan="100%" class="text-center">
                             No Data
                           </td>
+                        </tr> -->
+
+                        <tr data-id="<%=staff._id %>">
+                          <td>
+                            <%= (currentPage - 1) * 10 +index + 1 %>
+                          </td>
+                          <td class="customer">
+                            <div class="d-flex align-items-center">
+                              <div class="flex-shrink-0 me-2">
+                                <div>
+                                  <img class="avatar-sm rounded-circle customer-image-elem" src="<%- staff.image ? '../../dist/staff/' + staff.image : '/assets/images/users/user-dummy-img.jpg' %>" />
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="name">
+                            <% if (staff.username) { %>
+                              <%= staff.username %>
+                              <% } else { %>
+                              <%= staff.first_name + " " +
+    staff.last_name %>
+    
+                              <% } %>
+
+                          </td>
+                          <td class="phone">
+                            <% if (staff.phone) { %>
+                              <%= staff.phone %>
+                              
+                              <% } %>
+
+                          </td>
+                          <td class="email">
+                            <%= staff.email ? staff.email :'' %>
+                          </td>
+
+                          <td class="flex items-center justify-between">
+                            <div class="dropdown mt-1">
+                              <button data-id="<%= staff._id %>" class="btn btn-subtle-secondary btn-sm btn-icon three-dot three-dot-button" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                              </button>
+                              <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                  <a class="dropdown-item edit-item-btn" data-bs-toggle="modal"
+                                  data-name="Staff" href="#showEditModal" id = "edit_btn"data-model="<%= JSON.stringify(staff) %>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-pencil-square mr-2" viewBox="0 0 16 16">
+                                      <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                      <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                    </svg>
+                                    <span class="px-1">Edit</span>
+                                  </a>
+                                </li>
+  
+                                <li>
+                                  <a class="dropdown-item remove-item-btn" href="#deleteRecordModal" data-bs-toggle="modal" data-id="<%= staff._id %>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                      <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                    </svg>
+                                    <span class="px-1">Remove</span>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </td>
                         </tr>
-
-
-                        <!-- <tr>
-                                                    <td>
-                                                        <div class="form-check">
-                                                            <input
-                                                                class="form-check-input"
-                                                                type="checkbox"
-                                                                name="chk_child" />
-                                                            <label
-                                                                class="form-check-label"></label>
-                                                        </div>
-                                                    </td>
-                                                    <td class="customer">
-                                                        <div
-                                                            class="d-flex align-items-center">
-                                                            <div
-                                                                class="flex-shrink-0 me-2">
-                                                                <div>
-                                                                    <img class="avatar-xs rounded-circle customer-image-elem"
-                                                                        src="" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="Slider">
-
-                                                    </td>
-                                                    <td class="Slider">
-
-                                                    </td>
-
-                                                    <td class="status">
-                                                        <span
-                                                            class="badge bg-secondary-subtle text-secondary">
-                                                            
-sliders.status_id.name :
-'' %>
-                                                        </span>
-                                                    </td>
-
-                                                    <td>
-                                                        <div
-                                                            class="dropdown position-static">
-                                                            <button
-                                                                class="btn btn-subtle-secondary btn-sm btn-image"
-                                                                role="button"
-                                                                data-bs-toggle="dropdown"
-                                                                aria-expanded="false">
-                                                                <i
-                                                                    class="bi bi-three-dots-vertical"></i>
-                                                            </button>
-
-                                                            <ul
-                                                                class="dropdown-menu dropdown-menu-end">
-                                                                <<li>
-                                                                <a
-                                                                    class="dropdown-item"
-                                                                    href="apps-ecommerce-product-details.html"
-                                                                    ><i
-                                                                        class="ph-eye align-middle me-1"
-                                                                    ></i>
-                                                                    View</a
-                                                                >
-                                                            </li> 
-                                                                <li>
-                                                                    <a class="dropdown-item edit-item-btn"
-                                                                        data-bs-toggle="modal"
-                                                                        data-name="Slider"
-                                                                        href="#showEditModal"
-                                                                        id="edit_btn"
-                                                                        data-model=""><i
-                                                                            class="ph-pencil align-middle me-1"></i>
-                                                                        Edit
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item remove-item-btn"
-                                                                        data-bs-toggle="modal"
-                                                                        href="#deleteRecordModal"
-                                                                        data-id=""><i
-                                                                            class="ph-trash align-middle me-1"></i>
-                                                                        Remove</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </td>
-                                                </tr> -->
-
+                        <% }) %>
                       </tbody>
                     </table>
                   </div>
@@ -203,18 +181,40 @@ sliders.status_id.name :
                     <div class="col-sm">
                       <div class="text-muted">
                         Showing
-                        <span class="fw-semibold">10</span>
+                        <span class="fw-semibold">
+                          <%= staff.length %>
+                        </span>
                         of
-                        <span class="fw-semibold">13</span>
+                        <span class="fw-semibold">
+                          <%= totalStaffs %>
+                        </span>
                         Results
                       </div>
                     </div>
                     <div class="col-sm-auto mt-3 mt-sm-0">
                       <div class="pagination-wrap hstack gap-2">
-                        <a class="page-item pagination-prev disabled" href="javascript:void(0)">Previous</a>
+                        <% if (currentPage > 1) { %>
+                        <a class="page-item pagination-prev" href="/staff?page=<%= currentPage - 1 %>">Previous</a>
+                        <% } else { %><a class="page-item pagination-prev disabled" href="javascript:void(0)">Previous</a>
+  
+                        <% } %>
                         <ul class="pagination listjs-pagination mb-0">
+                          <% for (let i = 1; i <=
+  totalPages; i++) { %>
+                          <li class="page-item<%= i === currentPage ? 'active' : '' %>">
+                            <a class="page-link" href="/staff?page=<%= i %>">
+                              <%= i %>
+                            </a>
+                          </li>
+  
+  
+                          <% } %>
                         </ul>
-                        <a class="page-item pagination-next" href="javascript:void(0)">Next</a>
+                        <% if (currentPage < totalPages) { %>
+                        <a class="page-item pagination-next" href="/staff?page=<%= currentPage + 1 %>">Next</a>
+                        <% } else { %><a class="page-item pagination-next disabled" href="javascript:void(0)">Next</a>
+  
+                        <% } %>
                       </div>
                     </div>
                   </div>
@@ -237,11 +237,11 @@ sliders.status_id.name :
 
 
 <!-- Edit Slider Modal -->
-<div class="modal modal fade" id="showEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="showEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header bg-light p-3">
-        <h5 class="modal-title" id="exampleModalLabel">Edit Slider</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Edit Staff</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-ordermodal"></button>
       </div>
       <form class="tablelist-form" id="editform">
@@ -251,50 +251,45 @@ sliders.status_id.name :
           <div class="text-center mb-3">
             <div class="position-relative d-inline-block">
               <div class="position-absolute top-100 start-100 translate-middle">
-                <label for="editimage" class="mb-0" data-bs-toggle="tooltip" data-bs-placement="right" title="Select Slider photo">
+                <label for="image" class="mb-0" data-bs-toggle="tooltip" data-bs-placement="right" title="Select Staff Photo">
                   <span class="avatar-xs d-inline-block">
                     <span class="avatar-title bg-light border rounded-circle text-muted cursor-pointer">
                       <i class="ri-image-fill"></i>
                     </span>
                   </span>
                 </label>
-                <input class="form-control d-none" id="editimage" name="editimage" type="file" accept="image/png, image/gif, image/jpeg" />
+                <input class="form-control d-none" id="image" name="image" type="file" accept="image/png, image/gif, image/jpeg" />
               </div>
               <div class="avatar-lg">
                 <div class="avatar-title bg-light rounded-3" id="editpreviewimage">
-                  <img src="" alt="Image Preview" id="editimage-preview" class="avatar-md h-auto rounded-3 object-fit-cover" />
+                  <img src="" alt="Image Preview" id="editdisplay_perview_image" class="avatar-md h-auto rounded-3 object-fit-cover" />
                 </div>
               </div>
             </div>
           </div>
           <div class="mb-3">
-            <label for="title" class="form-label">Slider
-              Title</label>
-            <input type="text" id="edit_title" class="form-control" name="edit_title" placeholder="Enter Slider Title" />
+            <label for="edit_user_name" class="form-label">User Name</label>
+            <input type="text" id="edit_user_name" class="form-control" name="edit_user_name" placeholder="Enter User Name" />
+          </div>
+          <div class="mb-3">
+            <label for="edit_first_name" class="form-label">First Name</label>
+            <input type="text" id="edit_first_name" class="form-control" name="edit_first_name" placeholder="Enter First Name" />
+          </div>
+          <div class="mb-3">
+            <label for="edit_last_name" class="form-label">Last Name</label>
+            <input type="text" id="edit_last_name" class="form-control" name="edit_last_name" placeholder="Enter Last Name" />
           </div>
 
           <div class="row mb-3">
             <div class="col">
-              <label for="url-field" class="form-label">Slider
-                URL</label>
-              <input type="text" id="edit_url" name="edit_url" class="form-control" placeholder="Enter url" />
+              <label for="edit_email" class="form-label">Email</label>
+              <input type="text" id="edit_email" name="edit_email" class="form-control" placeholder="Enter Email" />
             </div>
           </div>
 
           <div class="mb-3">
-            <label for="description-field" class="form-label">Description</label>
-            <textarea class="form-control" name="edit_description" id="edit_description" placeholder="Enter Description"></textarea>
-          </div>
-          <div class="row">
-            <div class="col ms-3">
-              <div class="d-flex justify-content-start align-items-start">
-                <label class="form-check-label" for="variant">Status</label>
-                <div class="form-check form-switch ms-4">
-                  <input type="checkbox" name="edit_status_id" id="edit_status_id" class="form-check-input form-check-input-lg" checked />
-                  <span class="custom-switch-indicator"></span>
-                </div>
-              </div>
-            </div>
+            <label for="edit_phone" class="form-label">Phone</label>
+            <textarea class="form-control" name="edit_phone" id="edit_phone" placeholder="Enter Phone"></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -348,3 +343,131 @@ sliders.status_id.name :
 </div>
 <!-- /deleteRecordModal -->
 <%- include('partials/footer.ejs') %>
+
+
+<script>
+  //#region starts Edit User
+
+    $("#image").change(function() {
+        displayPP(this, $("#editdisplay_perview_image"), $(
+            "editpreviewimage"));
+    });
+
+    // Fill form fields with data when the edit button is clicked
+    $(document).on("click", "#edit_btn", function(e) {
+        var data = $(this).attr("data-model");
+        data = JSON.parse(data);
+
+
+        $('#editdisplay_perview_image').attr('src', '/dist/staff/' +
+            data.image); // Update image preview
+        $("#editid").val(data._id);
+
+        $("#edit_user_name").val(data.username);
+        $("#edit_first_name").val(data.first_name);
+        $("#edit_last_name").val(data.last_name);
+        $("#edit_email").val(data.email);
+        $("#edit_phone").val(data.phone);
+    });
+
+    // Handle form submission
+    var editform = $("#editform");
+    editform.on("submit", editSubmitHandler);
+
+    function editSubmitHandler(e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+
+        $.ajax({
+                type: "POST",
+                enctype: "multipart/form-data",
+                processData: false,
+                contentType: false,
+                url: "/admin/staff/edit",
+                data: formData,
+            })
+            .done((res) => {
+                if (res.status == 200) {
+                    iziToast.success({
+                        title: "Success",
+                        message: res.message,
+                        position: "topRight",
+                    });
+                    
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                    
+                    
+                } else {
+                    iziToast.error({
+                        title: "Error",
+                        message: res.message,
+                        position: "topRight",
+                    });
+                }
+            })
+            .fail(function(xhr, status, error) {
+                iziToast.error({
+                    title: "Error",
+                    message: xhr.responseText,
+                    position: "topRight",
+                });
+            });
+    }
+
+    //#endregion Edit User
+
+
+    // #editregion Delete User
+
+    let StaffIdToDelete;
+    $(document).ready(function() {
+        // Show the modal and store the Slider ID to delete
+        $(".remove-item-btn").on("click", function() {
+            var StaffIdToDelete = $(this).data("id");
+
+            // AJAX request to delete the Slider
+            $("#delete-record").click(function() {
+                $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/admin/staff/delete/" +
+                        StaffIdToDelete,
+                    })
+                    .done((res) => {
+                        if (res.status == 200) {
+                            iziToast.success({
+                                title: "Success",
+                                message: res
+                                    .message,
+                                position: "topRight",
+                            });
+                            setTimeout(function() {
+                                location
+                                    .reload();
+                            }, 1000);
+                        } else {
+                            iziToast.error({
+                                title: "Error",
+                                message: res
+                                    .message,
+                                position: "topRight",
+                            });
+                        }
+                    })
+                    .fail(function(xhr, status, error) {
+                        iziToast.error({
+                            title: "Error",
+                            message: xhr
+                                .responseText,
+                            position: "topRight",
+                        });
+                    });
+            });
+        })
+    });
+
+    // #editregion Delete User
+</script>

@@ -17,7 +17,7 @@ class AuthController {
         const user = await Adminauth.findOne({
             username: username,
         });
-        if (!user) return res.send("Account not found");
+        if (!user) return res.status(500).send("Account not found");
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) return res.status(500).send("Invalid Password");
         req.session.username = user.username;
