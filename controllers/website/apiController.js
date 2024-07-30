@@ -246,7 +246,6 @@ class ApiController {
     static get_all_products = async(req,res)=>{
         try {
             const products = await Product.find();
-            // return console.log(products)
             res.status(200).json(products)
         } catch (error) {
             res.status(500).send(error.message);

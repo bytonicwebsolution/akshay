@@ -151,13 +151,13 @@ class VendorController {
 
     static update = async (req, res) => {
         try {
-            const user = await User.findOne({
-                _id: req.body.editid,
-                type: "v",
-            });
-            const vendor = await Vendor.findOne({ user_id: req.body.editid });
+            // const user = await User.findOne({
+            //     _id: req.body.editid,
+            //     type: "v",
+            // });
+            // const vendor = await Vendor.findOne({ user_id: req.body.editid });
 
-            console.log("req.files", req.files);
+
             let updatedUserData = {
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
@@ -184,6 +184,7 @@ class VendorController {
             };
 
             const fileUploadPromises = [];
+
 
             // Check if files are uploaded
             if (req.files) {
@@ -383,5 +384,6 @@ const uploadVendor = multer({
     storage: vendorStorage,
     fileFilter: imageFilter,
 });
+const upload = multer({ storage: userStorage }).single("image"); 
 
 module.exports = VendorController;

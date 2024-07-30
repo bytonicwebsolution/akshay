@@ -1,5 +1,4 @@
 const express = require("express");
-var { rainbow } = require("handy-log");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const AdminRoutes = require("./admin-routes");

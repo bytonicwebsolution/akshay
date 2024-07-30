@@ -24,8 +24,6 @@ class UnitController {
                 symbol_international: req.body.symbol_international,
             });
 
-            console.log(insertRecord);
-
             await insertRecord.save();
             return res.send({
                 success: true,

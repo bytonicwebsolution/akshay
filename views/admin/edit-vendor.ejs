@@ -632,6 +632,20 @@
 <%- include('partials/footer.ejs') %>
 
 <script>
+  $("#image").change(function () {
+    displayPP(this, $("#previewimage"));
+});
+$("#aadhar_front_photo").change(function () {
+    displayPP(this, $("#preview_aadhar_front_photo"));
+});
+$("#aadhar_back_photo").change(function () {
+    displayPP(this, $("#preview_aadhar_back_photo"));
+});
+$("#pan_front_photo").change(function () {
+    displayPP(this, $("#preview_pan_front_photo"));
+});
+
+
     $(document).ready(function () {
         const vendor = JSON.parse(
             '<%- JSON.stringify(vendors).replace(/\\n/g, "\\\\n").replace(/\\r/g, "\\\\r").replace(/\\t/g, "\\\\t").replace(/\\f/g, "\\\\f") %>'
@@ -690,21 +704,8 @@
         $("#gst_no").val(vendor.gst_no);
         $("#ifsc_code").val(vendor.ifsc_code);
     });
-</script>
 
-<script>
-    $("#image").change(function () {
-        displayPP(this, $("#previewimage"));
-    });
-    $("#aadhar_front_photo").change(function () {
-        displayPP(this, $("#preview_aadhar_front_photo"));
-    });
-    $("#aadhar_back_photo").change(function () {
-        displayPP(this, $("#preview_aadhar_back_photo"));
-    });
-    $("#pan_front_photo").change(function () {
-        displayPP(this, $("#preview_pan_front_photo"));
-    });
+   
 
     var editform = $("#EditVendorForm");
     editform.on("submit", submitFormHandler);
@@ -718,6 +719,9 @@
         const hasImages = Array.from(fileInputs).some(
             (input) => input.files.length > 0
         );
+
+        
+
         if (hasImages) {
             // If there are files selected, create FormData from the current form
             formData = new FormData(currentForm);
@@ -731,6 +735,7 @@
             url: "/admin/vendor/update",
             data: hasImages ? formData : JSON.stringify(formData),
             cache: false,
+            enctype:"multipart/form-data",
             contentType: hasImages ? false : "application/json",
             processData: !hasImages,
         })

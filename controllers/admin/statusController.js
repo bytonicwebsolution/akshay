@@ -47,7 +47,6 @@ class StatusController {
 
     static edit = async (req, res) => {
         try {
-            console.log(req.body)
             const { editid, type, name } = req.body;
             const status = await Status.findOne({
                 _id: editid,
