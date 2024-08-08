@@ -2,6 +2,7 @@ const express = require("express");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const AdminRoutes = require("./admin-routes");
+const SellerRoutes = require("./seller-routes.js");
 const bodyParser = require("body-parser");
 const createAdmin = require("./config/createAdmin");
 const session = require("express-session");
@@ -69,6 +70,7 @@ app.use(
 
 //routes
 AdminRoutes(app);
+SellerRoutes(app)
 WebsiteRoutes(app);
 
 module.exports = app;
