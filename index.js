@@ -24,7 +24,7 @@ io.on("connection", (socket) => {
 
 app.listen(PORT, "0.0.0.0", () => {
     // setTimeout(printURL, 50);
-    console.log(printURL);
+    console.log(printURL());
     rainbow(`App running on port ${PORT} ..`);
 });
 
