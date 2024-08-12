@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <h4>We've Launched our new website</h4>
                     <p class="text-muted">Click the below button to visit our website.</p>
                 </div>
-                <a href="index.html" class="btn btn-primary icon-link">Back to Home <i class="bi bi-arrow-right"></i></a>
+                <a href="/seller/dashboard" class="btn btn-primary icon-link">Back to Home <i class="bi bi-arrow-right"></i></a>
             </div>`));
       }, 1e3);
   });

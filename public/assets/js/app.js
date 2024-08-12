@@ -127,7 +127,7 @@
       (document.querySelector(".navbar-menu") &&
         (document.querySelector(".navbar-menu").innerHTML = p),
       ((n = document.createElement("ul")).innerHTML =
-        '<a href="index.html" class="logo"><img src="assets/images/logo-sm.png" alt="" height="22"></a>'),
+        '<a href="/seller/dashboard" class="logo"><img src="assets/images/logo-sm.png" alt="" height="22"></a>'),
       Array.from(
         document.getElementById("navbar-nav").querySelectorAll(".menu-link")
       ).forEach(function (e) {
@@ -147,7 +147,7 @@
       }),
       (e = (e =
         "/" == location.pathname
-          ? "index.html"
+          ? "/seller/dashboard"
           : location.pathname.substring(1)).substring(
         e.lastIndexOf("/") + 1
       )) &&
@@ -182,7 +182,7 @@
       ).forEach(function (a) {
         var n = (n =
           "/" == location.pathname
-            ? "index.html"
+            ? "/seller/dashboard"
             : location.pathname.substring(1)).substring(n.lastIndexOf("/") + 1);
         a.addEventListener("click", function (e) {
           var t;
@@ -406,7 +406,7 @@
       t,
       a =
         "/" == location.pathname
-          ? "index.html"
+          ? "/seller/dashboard"
           : location.pathname.substring(1);
     (a = a.substring(a.lastIndexOf("/") + 1)) &&
       (document.body.classList.contains("twocolumn-panel") &&
@@ -463,7 +463,7 @@
   }
   function A() {
     var e =
-      "/" == location.pathname ? "index.html" : location.pathname.substring(1);
+      "/" == location.pathname ? "/seller/dashboard" : location.pathname.substring(1);
     (e = e.substring(e.lastIndexOf("/") + 1)) &&
       ((e = document
         .getElementById("navbar-nav")

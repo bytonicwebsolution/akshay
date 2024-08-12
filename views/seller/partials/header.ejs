@@ -113,7 +113,7 @@
         <div class="app-menu navbar-menu">
             <!-- navbar-brand-box LOGO -->
             <div class="navbar-brand-box">
-                <a href="index.html" class="logo logo-light">
+                <a href="/seller/dashboard" class="logo logo-light">
                     <span class="logo-sm">
                         <img
                             src="/assets/images/white-logo.png"
@@ -156,6 +156,7 @@
                                 class="nav-link menu-link collapsed"
                                 data-bs-toggle="collapse"
                                 role="button"
+                                onclick="toggleTab('sidebarProducts')"
                                 aria-expanded="false"
                                 aria-controls="sidebarProducts"
                             >
@@ -163,31 +164,34 @@
                                 <span data-key="t-ecommerce">Product</span>
                             </a>
                             <div
-                                class="collapse menu-dropdown "
+                                class="collapse menu-dropdown"
                                 id="sidebarProducts"
                             >
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a
                                             href="/seller/product/list"
-                                            class="nav-link"
+                                            class="nav-link child-tab"
                                             data-key="t-products"
+                                            onclick="setActive(this)"
                                             >All Products
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a
                                             href="/seller/product/add"
-                                            class="nav-link "
+                                            class="nav-link child-tab"
                                             data-key="t-create-product"
+                                            onclick="setActive(this)"
                                             >Add New Product</a
                                         >
                                     </li>
                                     <li class="nav-item">
                                         <a
                                             href="/seller/product/categories"
-                                            class="nav-link"
+                                            class="nav-link child-tab"
                                             data-key="t-create-product"
+                                            onclick="setActive(this)"
                                             >Categories</a
                                         >
                                     </li>
@@ -210,9 +214,10 @@
                                 data-bs-toggle="collapse"
                                 role="button"
                                 aria-expanded="false"
-                                aria-controls="sidebarEcommerce"
+                                onclick="toggleTab('sidebarMarketing')"
+                                aria-controls="sidebarMarketing"
                             >
-                                <i class="ph-storefront"></i>
+                            <i class="ph ph-gift"></i>
                                 <span data-key="t-ecommerce">Marketing</span>
                             </a>
                             <div
@@ -223,8 +228,9 @@
                                     <li class="nav-item">
                                         <a
                                             href="/seller/marketing/coupons"
-                                            class="nav-link"
+                                            class="nav-link child-tab"
                                             data-key="t-products"
+                                            onclick="setActive(this)"
                                             >Coupons
                                         </a>
                                     </li>
@@ -237,11 +243,12 @@
                                 href="#sidebarReports"
                                 class="nav-link menu-link collapsed"
                                 data-bs-toggle="collapse"
+                                onclick="toggleTab('sidebarReports')"
                                 role="button"
                                 aria-expanded="false"
                                 aria-controls="sidebarEcommerce"
                             >
-                                <i class="ph-storefront"></i>
+                                <i class="ph-book-bookmark"></i>
                                 <span data-key="t-ecommerce">Reports</span>
                             </a>
                             <div
@@ -252,7 +259,7 @@
                                     <li class="nav-item">
                                         <a
                                             href="/seller/reports/product-sale"
-                                            class="nav-link"
+                                            class="nav-link child-tab"
                                             data-key="t-products"
                                             >Product Sale
                                         </a>
@@ -260,7 +267,7 @@
                                     <li class="nav-item">
                                         <a
                                             href="/seller/reports/product-stock"
-                                            class="nav-link"
+                                            class="nav-link child-tab"
                                             data-key="t-create-product"
                                             >Product Stock</a
                                         >
@@ -268,7 +275,7 @@
                                     <li class="nav-item">
                                         <a
                                             href="/seller/reports/product-wishlist"
-                                            class="nav-link"
+                                            class="nav-link child-tab"
                                             data-key="t-create-product"
                                             >Product Wishlist</a
                                         >
@@ -276,7 +283,7 @@
                                     <li class="nav-item">
                                         <a
                                             href="/seller/reports/commision-history"
-                                            class="nav-link"
+                                            class="nav-link child-tab"
                                             data-key="t-create-product"
                                             >Commision History</a
                                         >
@@ -290,7 +297,7 @@
                                 href="/seller/payout/list"
                                 class="nav-link menu-link"
                             >
-                                <i class="ph-user-circle"></i>
+                            <i class="ph ph-money"></i>
                                 <span data-key="t-calendar">Payout</span>
                             </a>
                         </li>
@@ -300,7 +307,7 @@
                                 href="/seller/shop-settings/profile"
                                 class="nav-link menu-link"
                             >
-                                <i class="ph-user-circle"></i>
+                                <i class="ph ph-user-circle-gear"></i>
                                 <span data-key="t-calendar">Shop Settings</span>
                             </a>
                         </li>
@@ -309,7 +316,7 @@
                                 href="/seller/support/list"
                                 class="nav-link menu-link"
                             >
-                                <i class="ph-user-circle"></i>
+                                <i class="ph ph-headset"></i>
                                 <span data-key="t-calendar">Support</span>
                             </a>
                         </li>
@@ -342,7 +349,7 @@
                     <div class="d-flex">
                         <!-- LOGO -->
                         <div class="navbar-brand-box horizontal-logo">
-                            <a href="index.html" class="logo logo-light">
+                            <a href="/seller/dashboard" class="logo logo-light">
                                 <span class="logo-sm">
                                     <img
                                         src="/assets/images/white-logo.png"
@@ -415,13 +422,13 @@
                                         class="dropdown-item bg-transparent text-wrap"
                                     >
                                         <a
-                                            href="index.html"
+                                            href="/seller/dashboard"
                                             class="btn btn-subtle-secondary btn-sm btn-rounded"
                                             >how to setup
                                             <i class="mdi mdi-magnify ms-1"></i
                                         ></a>
                                         <a
-                                            href="index.html"
+                                            href="/seller/dashboard"
                                             class="btn btn-subtle-secondary btn-sm btn-rounded"
                                             >buttons
                                             <i class="mdi mdi-magnify ms-1"></i
