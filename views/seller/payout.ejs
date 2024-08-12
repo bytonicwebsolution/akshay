@@ -50,21 +50,8 @@
                                                 ></i>
                                             </div>
                                         </div>
-                                        
-                                        <div class="col-xxl-3">
-                                            <button
-                                                type="button"
-                                                class="btn btn-thm add-btn"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#showSupportModal"
-                                                data-name="support"
-                                            >
-                                                <i
-                                                    class="bi bi-plus-circle align-baseline me-1"
-                                                ></i>
-                                                Send request
-                                            </button>
-                                        </div>
+
+                                       
                                         <!--end col-->
                                     </div>
                                     <!--end row-->
@@ -85,6 +72,20 @@
                                         <h5 class="card-title mb-0">
                                             Payout Report
                                         </h5>
+                                    </div>
+                                    <div class="col-xxl-2 col-sm-6 ms-auto">
+                                        <button
+                                            type="button"
+                                            class="btn btn-thm add-btn"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#showSupportModal"
+                                            data-name="support"
+                                        >
+                                            <i
+                                                class="bi bi-plus-circle align-baseline me-1"
+                                            ></i>
+                                            Send request
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -327,7 +328,7 @@
 
 <!-- Add User Modal -->
 <div
-    class="modal fade modal-lg"
+    class="modal fade modal"
     id="showSupportModal"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
@@ -337,7 +338,7 @@
         <div class="modal-content">
             <div class="modal-header bg-light p-3">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    Send Payout Request 
+                    Send Payout Request
                 </h5>
                 <button
                     type="button"
@@ -354,33 +355,32 @@
                         class="d-none alert alert-danger py-2"
                     ></div>
                     <input type="hidden" id="id-field" />
-                    
-                        <div class="mb-3">
-                            <label for="add_firstname" class="form-label"
-                                >Amount</label
-                            >
-                            <input
-                                type="number"
-                                id="amount"
-                                class="form-control"
-                                name="amount"
-                                placeholder="Enter Amount "
-                            />
-                        </div>
-                        <div class=" mb-3">
-                            <label for="add_lastname" class="form-label"
-                                >Department</label
-                            >
-                            <textarea
-                                type="text"
-                                id="department"
-                                class="form-control"
-                                name="department"
-                                rows="3"
-                            >
-                            </textarea>
-                        </div>
-                    
+
+                    <div class="mb-3">
+                        <label for="add_firstname" class="form-label"
+                            >Amount</label
+                        >
+                        <input
+                            type="number"
+                            id="amount"
+                            class="form-control"
+                            name="amount"
+                            placeholder="Enter Amount "
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <label for="add_lastname" class="form-label"
+                            >Department</label
+                        >
+                        <textarea
+                            type="text"
+                            id="department"
+                            class="form-control"
+                            name="department"
+                            rows="3"
+                        >
+                        </textarea>
+                    </div>
 
                     <div>
                         <label for="status-field" class="form-label"
@@ -398,7 +398,6 @@
                             <option value="">Cash</option>
                         </select>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">

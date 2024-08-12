@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <!-- dropzone min -->
-        <script src="assets/libs/dropzone/dropzone-min.js"></script>
+        <script src="/public/assets/libs/dropzone/dropzone-min.js"></script>
 
         <!-- ckeditor -->
         <script src="/public/assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
@@ -157,13 +157,13 @@
                                 data-bs-toggle="collapse"
                                 role="button"
                                 aria-expanded="false"
-                                aria-controls="sidebarEcommerce"
+                                aria-controls="sidebarProducts"
                             >
                                 <i class="ph-storefront"></i>
                                 <span data-key="t-ecommerce">Product</span>
                             </a>
                             <div
-                                class="collapse menu-dropdown"
+                                class="collapse menu-dropdown "
                                 id="sidebarProducts"
                             >
                                 <ul class="nav nav-sm flex-column">
@@ -178,7 +178,7 @@
                                     <li class="nav-item">
                                         <a
                                             href="/seller/product/add"
-                                            class="nav-link"
+                                            class="nav-link "
                                             data-key="t-create-product"
                                             >Add New Product</a
                                         >
@@ -1004,7 +1004,9 @@
                                 <h6 class="dropdown-header">
                                     Welcome Richard!
                                 </h6>
-                                <a class="dropdown-item" href="profile.html"
+                                <a
+                                    class="dropdown-item"
+                                    href="/seller/shop-settings/profile"
                                     ><i
                                         class="mdi mdi-account-circle text-muted fs-lg align-middle me-1"
                                     ></i>

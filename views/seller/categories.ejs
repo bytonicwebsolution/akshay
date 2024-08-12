@@ -50,7 +50,7 @@
                                                 ></i>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-xxl-3 col-sm-6">
                                             <div>
                                                 <select
@@ -101,8 +101,8 @@
                                                 </select>
                                             </div>
                                         </div>
-                                       
-                                        <div class="col-xxl-1 col-sm-6">
+
+                                        <div class="col-xxl-1 col-sm-6 ms-auto">
                                             <button
                                                 type="button"
                                                 class="btn btn-secondary w-100 pd-new"
@@ -133,7 +133,6 @@
                                     <div class="flex-grow-1">
                                         <h5 class="card-title mb-0">
                                             Products
-                                            
                                         </h5>
                                     </div>
                                     <div class="flex-shrink-0">
@@ -141,22 +140,17 @@
                                             class="d-flex flex-wrap align-items-start gap-2"
                                         >
                                             <button
-                                                class="btn btn-subtle-danger d-none"
-                                                id="remove-actions"
-                                                onClick="deleteMultiple()"
+                                                type="button"
+                                                class="btn btn-thm add-btn"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#showAddModal"
+                                                data-name="Category"
                                             >
                                                 <i
-                                                    class="ri-delete-bin-2-line"
-                                                ></i>
-                                            </button>
-                                            <a
-                                                href="/admin/product/add"
-                                                class="btn btn-thm add-btn"
-                                                ><i
                                                     class="bi bi-plus-circle align-baseline me-1"
                                                 ></i>
-                                                Add Request</a
-                                            >
+                                                Add Request
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -394,6 +388,84 @@
 </div>
 <!-- END layout-wrapper -->
 
+<!-- Add Category Modal -->
+<div
+    class="modal fade"
+    id="showAddModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" id="exampleModalLabel">Request Category</h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    id="close-ordermodal"
+                ></button>
+            </div>
+            <form class="tablelist-form" id="submitForm">
+                <div class="modal-body">
+                    <input type="hidden" id="id-field" />
+
+                    <div class="text-center mb-3"></div>
+                    <div class="mb-3">
+                        <label for="brandname-field" class="form-label"
+                            >Request Category</label
+                        >
+                        <input
+                            type="text"
+                            id="brandname-field"
+                            class="form-control"
+                            name="name"
+                            placeholder="Enter Request"
+                        />
+                    </div>
+
+                    <div>
+                        <label for="status-field" class="form-label"
+                            >Root Category</label
+                        >
+                        <select
+                            class="form-control"
+                            id="status-field"
+                            name="status_id"
+                        >
+                            <option value="" disabled selected>
+                                Select Category
+                            </option>
+
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-success"
+                            id="add-btn"
+                        >
+                            Send Request
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end Add Category Modal -->
 <!-- deleteRecordModal -->
 <div
     id="deleteRecordModal"
