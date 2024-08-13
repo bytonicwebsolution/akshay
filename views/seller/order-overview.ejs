@@ -673,7 +673,7 @@
                                             </h5>
                                             <div class="flex-shrink-0">
                                                 <a
-                                                    href="javascript:void(0);"
+                                                    href=";"
                                                     class="badge bg-secondary-subtle text-secondary"
                                                     >Track Order</a
                                                 >
@@ -748,7 +748,7 @@
                                     class="progress progress-step-arrow progress-info mb-4"
                                 >
                                     <a
-                                        href="javascript:void(0);"
+                                        href=";"
                                         class="progress-bar active"
                                         role="progressbar"
                                         style="width: 100%"
@@ -761,7 +761,7 @@
                                         Order Placed</a
                                     >
                                     <a
-                                        href="javascript:void(0);"
+                                        href=";"
                                         class="progress-bar active d-none d-xxl-inline-block"
                                         role="progressbar"
                                         style="width: 100%"
@@ -774,7 +774,7 @@
                                         Packed</a
                                     >
                                     <a
-                                        href="javascript:void(0);"
+                                        href=";"
                                         class="progress-bar pending d-none d-md-inline-block"
                                         role="progressbar"
                                         style="width: 100%"
@@ -787,7 +787,7 @@
                                         Shipping</a
                                     >
                                     <a
-                                        href="javascript:void(0);"
+                                        href=";"
                                         class="progress-bar d-none d-md-inline-block"
                                         role="progressbar"
                                         style="width: 100%"
@@ -800,7 +800,7 @@
                                         Out For Delivery</a
                                     >
                                     <a
-                                        href="javascript:void(0);"
+                                        href=";"
                                         class="progress-bar"
                                         role="progressbar"
                                         style="width: 100%"
@@ -832,5 +832,18 @@
     <!-- end main content-->
 </div>
 <!-- END layout-wrapper -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var map = L.map('map').setView([51.505, -0.09], 13); // Set initial coordinates and zoom level
+      
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '© OpenStreetMap'
+        }).addTo(map);
+      });
+      
+</script>
 
 <%- include ('partials/footer.ejs') %>

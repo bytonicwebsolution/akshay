@@ -14,7 +14,7 @@
               <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                   <li class="breadcrumb-item">
-                    <a href="javascript: void(0);">Dashboard</a>
+                    <a href="/admin/dashboard">Dashboard</a>
                   </li>
                   <li class="breadcrumb-item active">
                     Customers
@@ -195,7 +195,7 @@
                       <div class="pagination-wrap hstack gap-2">
                         <% if (currentPage > 1) { %>
                         <a class="page-item pagination-prev" href="/staff?page=<%= currentPage - 1 %>">Previous</a>
-                        <% } else { %><a class="page-item pagination-prev disabled" href="javascript:void(0)">Previous</a>
+                        <% } else { %><a class="page-item pagination-prev disabled" href="">Previous</a>
   
                         <% } %>
                         <ul class="pagination listjs-pagination mb-0">
@@ -212,7 +212,7 @@
                         </ul>
                         <% if (currentPage < totalPages) { %>
                         <a class="page-item pagination-next" href="/staff?page=<%= currentPage + 1 %>">Next</a>
-                        <% } else { %><a class="page-item pagination-next disabled" href="javascript:void(0)">Next</a>
+                        <% } else { %><a class="page-item pagination-next disabled" href="">Next</a>
   
                         <% } %>
                       </div>

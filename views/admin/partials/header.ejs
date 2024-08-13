@@ -21,9 +21,7 @@
             href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"
         />
         <link rel="stylesheet" href="/admin/css/snackbar.min.css" />
-        <link rel="stylesheet" href="/admin/css/timepicker.css" /> 
-
-
+        <link rel="stylesheet" href="/admin/css/timepicker.css" />
 
         <meta charset="utf-8" />
         <title>Anuda Mart</title>
@@ -138,32 +136,35 @@
                     <div id="two-column-menu"></div>
                     <ul class="navbar-nav" id="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/dashboard">
+                            <a
+                                class="nav-link dashboard"
+                                href="/admin/dashboard"
+                            >
                                 <i class="ph-gauge"></i>
                                 <span data-key="t-dashboards">Dashboards</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a
-                                href="#sidebarEcommerce"
-                                class="nav-link menu-link collapsed"
+                                href="#sidebarProducts"
+                                class="nav-link menu-link collapsed product"
                                 data-bs-toggle="collapse"
                                 role="button"
                                 aria-expanded="false"
-                                aria-controls="sidebarEcommerce"
+                                aria-controls="sidebarProducts"
                             >
                                 <i class="ph-storefront"></i>
                                 <span data-key="t-ecommerce">Product</span>
                             </a>
                             <div
                                 class="collapse menu-dropdown"
-                                id="sidebarEcommerce"
+                                id="sidebarProducts"
                             >
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item">
                                         <a
                                             href="/admin/product/list"
-                                            class="nav-link"
+                                            class="nav-link products"
                                             data-key="t-products"
                                             >Products</a
                                         >
@@ -171,7 +172,7 @@
                                     <li class="nav-item">
                                         <a
                                             href="/admin/product/add"
-                                            class="nav-link"
+                                            class="nav-link add_product"
                                             data-key="t-create-product"
                                             >Add Product</a
                                         >
@@ -195,7 +196,7 @@
                                     <li class="nav-item">
                                         <a
                                             href="/admin/category/list"
-                                            class="nav-link"
+                                            class="nav-link categories"
                                             data-key="t-products"
                                             >Categories</a
                                         >
@@ -203,7 +204,7 @@
                                     <li class="nav-item">
                                         <a
                                             href="/admin/brand/list"
-                                            class="nav-link"
+                                            class="nav-link brands"
                                             data-key="t-products"
                                             >Brands</a
                                         >
@@ -211,7 +212,7 @@
                                     <li class="nav-item">
                                         <a
                                             href="/admin/attribute/list"
-                                            class="nav-link"
+                                            class="nav-link attribute_sets"
                                             data-key="t-products"
                                             >Attribute Sets</a
                                         >
@@ -219,7 +220,7 @@
                                     <li class="nav-item">
                                         <a
                                             href="/admin/attribute-values/list"
-                                            class="nav-link"
+                                            class="nav-link attribute_values"
                                             data-key="t-products"
                                             >Attribute Values</a
                                         >
@@ -230,7 +231,7 @@
                         <li class="nav-item">
                             <a
                                 href="/admin/status/list"
-                                class="nav-link menu-link"
+                                class="nav-link menu-link status"
                             >
                                 <i class="ph-slack-logo"></i>
                                 <span data-key="t-calendar">Status</span>
@@ -240,9 +241,9 @@
                         <li class="nav-item">
                             <a
                                 href="/admin/user/list"
-                                class="nav-link menu-link"
+                                class="nav-link menu-link customers"
                             >
-                                <i class="ph-user-circle"></i>
+                            <i class="ph ph-users"></i>
                                 <span data-key="t-calendar">Customers</span>
                             </a>
                         </li>
@@ -250,9 +251,9 @@
                         <li class="nav-item">
                             <a
                                 href="/admin/vendor/list"
-                                class="nav-link menu-link"
+                                class="nav-link menu-link venders"
                             >
-                                <i class="ph-user-circle"></i>
+                            <i class="bi bi-shop-window"></i>
                                 <span data-key="t-calendar">Venders</span>
                             </a>
                         </li>
@@ -260,9 +261,9 @@
                         <li class="nav-item">
                             <a
                                 href="/admin/slider/list"
-                                class="nav-link menu-link"
+                                class="nav-link menu-link sliders"
                             >
-                                <i class="ph-user-circle"></i>
+                            <i class="ph ph-cards"></i>
                                 <span data-key="t-calendar">Slider</span>
                             </a>
                         </li>
@@ -270,18 +271,18 @@
                         <li class="nav-item">
                             <a
                                 href="/admin/unit/list"
-                                class="nav-link menu-link"
+                                class="nav-link menu-link units"
                             >
-                                <i class="ph-user-circle"></i>
+                            <i class="bi bi-boxes"></i>
                                 <span data-key="t-calendar">Units</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a
                                 href="/admin/staff/list"
-                                class="nav-link menu-link"
+                                class="nav-link menu-link manage_staff"
                             >
-                                <i class="ph-user-circle"></i>
+                            <i class="bi bi-person-vcard"></i>
                                 <span data-key="t-calendar">Manage Staffs</span>
                             </a>
                         </li>
@@ -353,8 +354,8 @@
                         </li> -->
                         <li class="nav-item">
                             <a
-                                href="javascript:void(0)"
-                                class="nav-link menu-link"
+                                href=""
+                                class="nav-link menu-link logout"
                             >
                                 <i class="ph ph-sign-out"></i>
                                 <span data-key="t-calendar" onclick="logout()"
@@ -475,7 +476,7 @@
 
                                     <!-- item-->
                                     <a
-                                        href="javascript:void(0);"
+                                        href=";"
                                         class="dropdown-item notify-item"
                                     >
                                         <i
@@ -486,7 +487,7 @@
 
                                     <!-- item-->
                                     <a
-                                        href="javascript:void(0);"
+                                        href=";"
                                         class="dropdown-item notify-item"
                                     >
                                         <i
@@ -497,7 +498,7 @@
 
                                     <!-- item-->
                                     <a
-                                        href="javascript:void(0);"
+                                        href=";"
                                         class="dropdown-item notify-item"
                                     >
                                         <i
@@ -518,7 +519,7 @@
                                     <div class="notification-list">
                                         <!-- item -->
                                         <a
-                                            href="javascript:void(0);"
+                                            href=";"
                                             class="dropdown-item notify-item py-2"
                                         >
                                             <div class="d-flex">
@@ -540,7 +541,7 @@
                                         </a>
                                         <!-- item -->
                                         <a
-                                            href="javascript:void(0);"
+                                            href=";"
                                             class="dropdown-item notify-item py-2"
                                         >
                                             <div class="d-flex">
@@ -562,7 +563,7 @@
                                         </a>
                                         <!-- item -->
                                         <a
-                                            href="javascript:void(0);"
+                                            href=";"
                                             class="dropdown-item notify-item py-2"
                                         >
                                             <div class="d-flex">
@@ -651,7 +652,7 @@
                                             </div>
                                             <div class="col-auto dropdown">
                                                 <a
-                                                    href="javascript:void(0);"
+                                                    href=";"
                                                     data-bs-toggle="dropdown"
                                                     class="link-secondary fs-md"
                                                     ><i
@@ -1200,4 +1201,48 @@
             </div>
         </div>
     </body>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", (event) => {
+            const pathnameToTabClassMap = {
+                "/admin/dashboard": "dashboard",
+                "/admin/product/list": "products",
+                "/admin/product/add": "add_product",
+                "/admin/category/list": "categories",
+                "/admin/brand/list": "brands",
+                "/admin/attribute/list": "attribute_sets",
+                "/admin/attribute-values/list": "attribute_values",
+                "/admin/status/list": "status",
+                "/admin/user/list": "customers",
+                "/admin/vendor/list": "venders",
+                "/admin/slider/list": "sliders",
+                "/admin/unit/list": "units",
+                "/admin/staff/list": "manage_staff",
+            };
+
+            const activeTabClass =
+                pathnameToTabClassMap[window.location.pathname];
+
+            if (activeTabClass) {
+                // Highlight the specific active tab
+                const activeTab = document.querySelector(`.${activeTabClass}`);
+                if (activeTab) {
+                    activeTab.classList.add("active");
+
+                    // Check which sidebar the active tab belongs to and open that sidebar
+                    if (
+                        document.getElementById("sidebarProducts") &&
+                        activeTab.closest("#sidebarProducts")
+                    ) {
+                        document
+                            .getElementById("sidebarProducts")
+                            .classList.add("show");
+                        const note = document.querySelector(".product");
+                        note.style.backgroundColor = "#E40F15";
+                        note.style.color = "white";
+                    }
+                }
+            }
+        });
+    </script>
 </html>
