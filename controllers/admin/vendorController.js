@@ -11,25 +11,19 @@ const Status = require("../../models/Status");
 
 class VendorController {
     static list = async (req, res) => {
-        let statuses = await Status.find().sort({
-            created_at: -1,
-        });
-        const page = parseInt(req.query.page) || 1;
-        const limit = 10;
-        const startIndex = (page - 1) * limit;
         try {
-            const users = await User.find({ user_type: "v" })
-                .skip(startIndex)
-                .limit(limit)
-                .populate("status_id");
-            const totalUsers = await User.countDocuments();
-            const totalPages = Math.ceil(totalUsers / limit);
+            let statuses = await Status.find({
+                type: "user",
+            }).sort({
+                created_at: -1,
+            });
+
+            const users = await User.find({ user_type: "v" }).populate(
+                "status_id"
+            );
             return res.render("admin/vendor", {
                 statuses,
                 users,
-                currentPage: page,
-                totalUsers,
-                totalPages,
             });
         } catch (error) {
             return res
@@ -39,7 +33,7 @@ class VendorController {
     };
 
     static add = async (req, res) => {
-        upload(req, res, async (err) => {
+        uploadUser(req, res, async (err) => {
             if (err) {
                 return res.status(400).send({ message: err });
             }
@@ -81,6 +75,12 @@ class VendorController {
                     });
                 }
 
+                await config.createUserStatus();
+                const activeStatus = await Status.findOne({
+                    type: "user",
+                    name: { $regex: new RegExp("^active$", "i") },
+                });
+
                 const vendor = new User({
                     image: image,
                     user_type: "v",
@@ -88,14 +88,12 @@ class VendorController {
                     last_name: last_name,
                     email: email,
                     password: hashedpassword,
-                    status_id: status_id,
+                    status_id: activeStatus._id,
                 });
-
                 await vendor.save();
                 return res.send({
                     message: "Vendor registered successfully",
                     status: true,
-                    success: true,
                 });
             } catch (error) {
                 console.log(error);
@@ -137,10 +135,17 @@ class VendorController {
         try {
             let id = req.params.id;
             let statuses = await Status.find().sort({ created_at: -1 });
-            const users = await User.findOne({ _id: id });
-            const vendors = await Vendor.findOne({ user_id: users._id });
 
-            res.render("admin/edit-vendor", { vendors, statuses, users });
+            const user = await User.findOne({ _id: id });
+            if (!user) {
+                return res.status(404).send("User not found");
+            }
+
+            let vendors = await Vendor.findOne({ user_id: user._id });
+            if (!vendors) {
+                vendors = new Vendor({ user_id: user._id });
+            }
+            res.render("admin/edit-vendor", { vendors, statuses, user });
         } catch (error) {
             console.error("Error fetching user:", error);
             return res
@@ -151,118 +156,103 @@ class VendorController {
 
     static update = async (req, res) => {
         try {
-            // const user = await User.findOne({
-            //     _id: req.body.editid,
-            //     type: "v",
-            // });
-            // const vendor = await Vendor.findOne({ user_id: req.body.editid });
+            editupload(req, res, async (err) => {
+                if (err) {
+                    return res.status(500).send({
+                        message: "Error uploading images",
+                        error: err.message,
+                    });
+                }
 
+                const editid = req.body.editid;
+                if (!editid) {
+                    return res
+                        .status(400)
+                        .send({ message: "editid is required" });
+                }
 
-            let updatedUserData = {
-                first_name: req.body.first_name,
-                last_name: req.body.last_name,
-                email: req.body.email,
-                phone: req.body.phone,
-                dob: req.body.dob,
-                status_id: req.body.status_id,
-                address: req.body.address,
-                address2: req.body.address2,
-                pincode: req.body.pincode,
-                additional_info: req.body.additional_info,
-                updated_at: Date.now(),
-            };
+                // Find user by editid
+                const user = await User.findOne({ _id: editid });
+                if (!user) {
+                    return res.status(404).send("User not found");
+                }
 
-            let updatedVendorData = {
-                aadhar_no: req.body.aadhar_no,
-                pan_no: req.body.pan_no,
-                gst_no: req.body.gst_no,
-                account_holder_name: req.body.account_holder_name,
-                ifsc_code: req.body.ifsc_code,
-                bank_name: req.body.bank_name,
-                account_no: req.body.account_no,
-                updated_at: Date.now(),
-            };
-
-            const fileUploadPromises = [];
-
-
-            // Check if files are uploaded
-            if (req.files) {
+                // Handle user image update
+                let userImage = user.image;
                 if (req.files.image) {
-                    fileUploadPromises.push(
-                        new Promise((resolve, reject) => {
-                            uploadUser.single("image")(req, res, (err) => {
-                                if (err) {
-                                    return reject(
-                                        "Error uploading user image."
-                                    );
-                                }
-                                updatedUserData.image = req.file.filename;
-                                resolve();
-                            });
-                        })
-                    );
+                    userImage = req.files.image[0].filename;
                 }
 
-                if (
-                    req.files.aadhar_front_photo ||
-                    req.files.aadhar_back_photo ||
-                    req.files.pan_front_photo ||
-                    req.files.signature
-                ) {
-                    fileUploadPromises.push(
-                        new Promise((resolve, reject) => {
-                            uploadVendor.fields([
-                                { name: "aadhar_front_photo", maxCount: 1 },
-                                { name: "aadhar_back_photo", maxCount: 1 },
-                                { name: "pan_front_photo", maxCount: 1 },
-                                { name: "signature", maxCount: 1 },
-                            ])(req, res, (err) => {
-                                if (err) {
-                                    return reject(
-                                        "Error uploading vendor documents."
-                                    );
-                                }
-                                if (req.files.aadhar_front_photo) {
-                                    updatedVendorData.aadhar_front_photo =
-                                        req.files.aadhar_front_photo[0].filename;
-                                }
-                                if (req.files.aadhar_back_photo) {
-                                    updatedVendorData.aadhar_back_photo =
-                                        req.files.aadhar_back_photo[0].filename;
-                                }
-                                if (req.files.pan_front_photo) {
-                                    updatedVendorData.pan_front_photo =
-                                        req.files.pan_front_photo[0].filename;
-                                }
-                                if (req.files.signature) {
-                                    updatedVendorData.signature =
-                                        req.files.signature[0].filename;
-                                }
-                                resolve();
-                            });
-                        })
-                    );
+                // Update user details
+                await User.findByIdAndUpdate(
+                    { _id: editid },
+                    {
+                        image: userImage,
+                        first_name: req.body.first_name,
+                        last_name: req.body.last_name,
+                        email: req.body.email,
+                        phone: req.body.phone,
+                        dob: req.body.dob,
+                        address: req.body.address,
+                        address2: req.body.address2,
+                        pincode: req.body.pincode,
+                        additional_info: req.body.additional_info,
+                        status_id: req.body.status_id,
+                    },
+                    { upsert: true, new: true }
+                );
+
+                // Next handle vendor document uploads
+                let vendor = await Vendor.findOne({ user_id: user._id });
+                if (!vendor) {
+                    vendor = new Vendor({ user_id: user._id });
                 }
-            }
 
-            await Promise.all(fileUploadPromises);
+                const {
+                    aadhar_front_photo,
+                    aadhar_back_photo,
+                    pan_front_photo,
+                } = req.files || {};
 
-            await User.updateOne({ _id: req.body.editid }, updatedUserData);
-            await Vendor.updateOne(
-                { user_id: req.body.editid },
-                updatedVendorData
-            );
+                const vendorFiles = {
+                    aadhar_front_photo: aadhar_front_photo
+                        ? aadhar_front_photo[0].filename
+                        : vendor.aadhar_front_photo,
+                    aadhar_back_photo: aadhar_back_photo
+                        ? aadhar_back_photo[0].filename
+                        : vendor.aadhar_back_photo,
+                    pan_front_photo: pan_front_photo
+                        ? pan_front_photo[0].filename
+                        : vendor.pan_front_photo,
+                };
 
-            res.status(200).send({
-                status: 200,
-                message: "Vendor details updated successfully",
+                // Update vendor details
+                const vendorDetails = {
+                    aadhar_no: req.body.aadhar_no,
+                    pan_no: req.body.pan_no,
+                    gst_no: req.body.gst_no,
+                    account_holder_name: req.body.account_holder_name,
+                    ifsc_code: req.body.ifsc_code,
+                    bank_name: req.body.bank_name,
+                    account_no: req.body.account_no,
+                    ...vendorFiles,
+                };
+
+                await Vendor.findOneAndUpdate(
+                    { user_id: user._id },
+                    vendorDetails,
+                    { upsert: true, new: true }
+                );
+
+                res.status(200).send({
+                    status: 200,
+                    message: "Vendor updated successfully",
+                });
             });
         } catch (error) {
-            console.error("Error updating vendor details:", error);
+            console.error("Error updating vendor:", error);
             return res.status(500).send({
-                status: 500,
-                message: "Error updating vendor details",
+                message: "Error updating vendor",
                 error: error.message,
             });
         }
@@ -356,7 +346,8 @@ class VendorController {
     };
 }
 
-// Storage configuration for User images
+//#region Multer Configurations for Add vendor
+// Storage configuration for user images
 const userStorage = multer.diskStorage({
     destination: path.join(root, "/public/dist/users"),
     filename: function (req, file, cb) {
@@ -367,9 +358,27 @@ const userStorage = multer.diskStorage({
     },
 });
 
-// Storage configuration for Vendor documents
-const vendorStorage = multer.diskStorage({
-    destination: path.join(root, "/public/dist/vendor"),
+// Init upload for users
+const uploadUser = multer({
+    storage: userStorage,
+    limits: { fileSize: 1000000 },
+}).single("image");
+//#endregion
+
+//#region Multer Configurations for Edit vendor
+// Storage configuration for vendor images
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        let uploadPath = path.join(root, "/public/dist/users");
+        if (
+            file.fieldname === "aadhar_front_photo" ||
+            file.fieldname === "aadhar_back_photo" ||
+            file.fieldname === "pan_front_photo"
+        ) {
+            uploadPath = path.join(root, "/public/dist/vendor");
+        }
+        cb(null, uploadPath);
+    },
     filename: function (req, file, cb) {
         cb(
             null,
@@ -378,12 +387,14 @@ const vendorStorage = multer.diskStorage({
     },
 });
 
-// Multer configurations
-const uploadUser = multer({ storage: userStorage, fileFilter: imageFilter });
-const uploadVendor = multer({
-    storage: vendorStorage,
+const editupload = multer({
+    storage: storage,
     fileFilter: imageFilter,
-});
-const upload = multer({ storage: userStorage }).single("image"); 
+}).fields([
+    { name: "image", maxCount: 1 },
+    { name: "aadhar_front_photo", maxCount: 1 },
+    { name: "aadhar_back_photo", maxCount: 1 },
+    { name: "pan_front_photo", maxCount: 1 },
+]);
 
 module.exports = VendorController;

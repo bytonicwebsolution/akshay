@@ -30,7 +30,7 @@ class OrderController {
         } catch (error) {
             console.log(error);
             return res.status(500).send({
-                message: "Error creating attribute sets: " + error.message,
+                message: "Error creating order detail: " + error.message,
             });
         }
     };

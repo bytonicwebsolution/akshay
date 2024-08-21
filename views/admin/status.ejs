@@ -1,4 +1,5 @@
-<%- include('partials/header.ejs') %><!-- Begin page -->
+<%- include('partials/header.ejs') %>
+<!-- Begin page -->
 <div id="layout-wrapper">
     <!-- Start right Content here -->
     <div class="main-content">
@@ -8,14 +9,16 @@
                 <div class="row">
                     <div class="col-12">
                         <div
-                            class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            class="page-title-box d-sm-flex align-items-center justify-content-between"
+                        >
                             <h4 class="mb-sm-0">Status</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item">
-                                        <a
-                                            href="/admin/dashboard">Dashboard</a>
+                                        <a href="javascript: void(0);"
+                                            >Dashboard</a
+                                        >
                                     </li>
                                     <li class="breadcrumb-item active">
                                         Status
@@ -32,7 +35,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <div
-                                    class="d-flex align-items-center flex-wrap gap-3">
+                                    class="d-flex align-items-center flex-wrap gap-3"
+                                >
                                     <div class="flex-grow-1">
                                         <h3 class="card-title mb-0">
                                             Status List
@@ -40,25 +44,34 @@
                                     </div>
                                     <div>
                                         <div class="d-flex flex-wrap gap-2">
-                                            <button type="button"
+                                            <button
+                                                type="button"
                                                 class="btn btn-thm add-btn"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#showModal"
-                                                data-name="Status">
+                                                data-name="Status"
+                                            >
                                                 <i
-                                                    class="bi bi-plus-circle align-baseline me-1"></i>
+                                                    class="bi bi-plus-circle align-baseline me-1"
+                                                ></i>
                                                 Add Status
                                             </button>
-                                            <button type="button"
-                                                class="btn btn-secondary">
+                                            <button
+                                                type="button"
+                                                class="btn btn-secondary"
+                                            >
                                                 <i
-                                                    class="ph-cloud-arrow-down align-middle me-1"></i>
+                                                    class="ph-cloud-arrow-down align-middle me-1"
+                                                ></i>
                                                 Import
                                             </button>
-                                            <button type="button"
-                                                class="btn btn-subtle-info">
+                                            <button
+                                                type="button"
+                                                class="btn btn-subtle-info"
+                                            >
                                                 <i
-                                                    class="ph-cloud-arrow-up align-middle me-1"></i>
+                                                    class="ph-cloud-arrow-up align-middle me-1"
+                                                ></i>
                                                 Export
                                             </button>
                                         </div>
@@ -77,7 +90,8 @@
                             <div class="card-body">
                                 <div class="table-responsive table-card">
                                     <table
-                                        class="table align-middle table-nowrap">
+                                        class="table align-middle table-nowrap"
+                                    >
                                         <thead>
                                             <tr>
                                                 <th>
@@ -86,10 +100,12 @@
                                                             class="form-check-input"
                                                             type="checkbox"
                                                             value="option"
-                                                            id="checkAll" />
+                                                            id="checkAll"
+                                                        />
                                                         <label
                                                             class="form-check-label"
-                                                            for="checkAll"></label>
+                                                            for="checkAll"
+                                                        ></label>
                                                     </div>
                                                 </th>
                                                 <th class="sort cursor-pointer">
@@ -107,46 +123,55 @@
                                         <tbody class="list">
                                             <% if (!statuses[0]) { %>
                                             <tr>
-                                                <td colspan="100%"
-                                                    class="text-center">
+                                                <td
+                                                    colspan="100%"
+                                                    class="text-center"
+                                                >
                                                     No Data
                                                 </td>
                                             </tr>
-                                            <% } else { %>
-                                            <% statuses.forEach(function(status) { %>
+                                            <% } else { %> <%
+                                            statuses.forEach(function(status) {
+                                            %>
                                             <tr>
                                                 <td>
                                                     <div class="form-check">
                                                         <input
                                                             class="form-check-input"
                                                             type="checkbox"
-                                                            name="chk_child" />
+                                                            name="chk_child"
+                                                        />
                                                         <label
-                                                            class="form-check-label"></label>
+                                                            class="form-check-label"
+                                                        ></label>
                                                     </div>
                                                 </td>
                                                 <td class="type">
                                                     <%= status.type ?
-status.type : '' %>
+                                                    status.type : '' %>
                                                 </td>
                                                 <td class="name">
                                                     <%= status.name ?
-status.name : '' %>
+                                                    status.name : '' %>
                                                 </td>
                                                 <td>
                                                     <div
-                                                        class="dropdown position-static">
+                                                        class="dropdown position-static"
+                                                    >
                                                         <button
                                                             class="btn btn-subtle-secondary btn-sm btn-icon"
                                                             role="button"
                                                             data-bs-toggle="dropdown"
-                                                            aria-expanded="false">
+                                                            aria-expanded="false"
+                                                        >
                                                             <i
-                                                                class="bi bi-three-dots-vertical"></i>
+                                                                class="bi bi-three-dots-vertical"
+                                                            ></i>
                                                         </button>
 
                                                         <ul
-                                                            class="dropdown-menu dropdown-menu-end">
+                                                            class="dropdown-menu dropdown-menu-end"
+                                                        >
                                                             <!-- <li>
                                                                 <a
                                                                     class="dropdown-item"
@@ -158,38 +183,44 @@ status.name : '' %>
                                                                 >
                                                             </li> -->
                                                             <li>
-                                                                <a class="dropdown-item edit-item-btn"
+                                                                <a
+                                                                    class="dropdown-item edit-item-btn"
                                                                     data-bs-toggle="modal"
                                                                     data-name="Category"
                                                                     href="#showEditModal"
                                                                     id="edit_btn"
-                                                                    data-model="<%= JSON.stringify(status) %>"><i
-                                                                        class="ph-pencil align-middle me-1"></i>
+                                                                    data-model="<%= JSON.stringify(status) %>"
+                                                                    ><i
+                                                                        class="ph-pencil align-middle me-1"
+                                                                    ></i>
                                                                     Edit
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a class="dropdown-item remove-item-btn"
+                                                                <a
+                                                                    class="dropdown-item remove-item-btn"
                                                                     data-bs-toggle="modal"
                                                                     href="#deleteRecordModal"
-                                                                    data-id="<%= status._id %>"><i
-                                                                        class="ph-trash align-middle me-1"></i>
-                                                                    Remove</a>
+                                                                    data-id="<%= status._id %>"
+                                                                    ><i
+                                                                        class="ph-trash align-middle me-1"
+                                                                    ></i>
+                                                                    Remove</a
+                                                                >
                                                             </li>
                                                         </ul>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <% }); %>
-                                            
-                                            <% } %>
+                                            <% }); %> <% } %>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="noresult" style="display: none">
                                     <div class="text-center py-4">
                                         <i
-                                            class="ph-magnifying-glass fs-1 text-primary"></i>
+                                            class="ph-magnifying-glass fs-1 text-primary"
+                                        ></i>
                                         <h5 class="mt-2">
                                             Sorry! No Result Found
                                         </h5>
@@ -200,8 +231,10 @@ status.name : '' %>
                                         </p>
                                     </div>
                                 </div>
-                                <div class="align-items-center mt-4 justify-content-between row text-center text-sm-start"
-                                    id="pagination-element">
+                                <div
+                                    class="align-items-center mt-4 justify-content-between row text-center text-sm-start"
+                                    id="pagination-element"
+                                >
                                     <div class="col-sm">
                                         <div class="text-muted">
                                             Showing
@@ -213,14 +246,21 @@ status.name : '' %>
                                     </div>
                                     <div class="col-sm-auto mt-3 mt-sm-0">
                                         <div
-                                            class="pagination-wrap hstack gap-2">
-                                            <a class="page-item pagination-prev disabled"
-                                                href="">Previous</a>
+                                            class="pagination-wrap hstack gap-2"
+                                        >
+                                            <a
+                                                class="page-item pagination-prev disabled"
+                                                href="javascript:void(0)"
+                                                >Previous</a
+                                            >
                                             <ul
-                                                class="pagination listjs-pagination mb-0">
-                                            </ul>
-                                            <a class="page-item pagination-next"
-                                                href="">Next</a>
+                                                class="pagination listjs-pagination mb-0"
+                                            ></ul>
+                                            <a
+                                                class="page-item pagination-next"
+                                                href="javascript:void(0)"
+                                                >Next</a
+                                            >
                                         </div>
                                     </div>
                                 </div>
@@ -240,20 +280,27 @@ status.name : '' %>
 <!-- END layout-wrapper -->
 
 <!-- Add Status Modal -->
-<div class="modal fade" id="showModal" tabindex="-1"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+    class="modal fade"
+    id="showModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+>
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light p-3">
                 <h5 class="modal-title" id="exampleModalLabel">Add Status</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close" id="close-ordermodal"></button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    id="close-ordermodal"
+                ></button>
             </div>
-            <form class="tablelist-form" id="submitForm">
+            <form class="tablelist-form" id="submitForm" autocomplete="off">
                 <div class="modal-body">
-                    <div id="alert-error-msg"
-                        class="d-none alert alert-danger py-2"></div>
-
                     <input type="hidden" id="id-field" />
                     <div class="mb-3">
                         <label for="type-field" class="form-label">Type</label>
@@ -266,23 +313,34 @@ status.name : '' %>
                             <option value="product">Product</option>
                             <option value="order">Order</option>
                             <option value="user">User</option>
+                            <option value="transaction">Transaction</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="name-field" class="form-label">Name</label>
-                        <input type="text" id="name-field" class="form-control"
-                            name="name" placeholder="Enter name" />
+                        <input
+                            type="text"
+                            id="name-field"
+                            class="form-control"
+                            name="name"
+                            placeholder="Enter name"
+                        />
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
-                        <button type="button" class="btn btn-light"
-                            data-bs-dismiss="modal">
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal"
+                        >
                             Close
                         </button>
-                        <button type="submit" class="btn btn-success"
-                            id="add-btn">
+                        <button
+                            type="submit"
+                            class="btn btn-success"
+                            id="add-btn"
+                        >
                             Add Status
                         </button>
                     </div>
@@ -293,51 +351,70 @@ status.name : '' %>
 </div>
 <!-- end Add Status Modal -->
 
-
 <!-- Edit Status Modal -->
-<div class="modal fade" id="showEditModal" tabindex="-1"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+    class="modal fade"
+    id="showEditModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+>
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light p-3">
                 <h5 class="modal-title" id="exampleModalLabel">Edit Status</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close" id="close-ordermodal"></button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    id="close-ordermodal"
+                ></button>
             </div>
             <form class="tablelist-form" id="editform">
                 <div class="modal-body">
-                    <div id="alert-error-msg"
-                        class="d-none alert alert-danger py-2"></div>
-
                     <input type="hidden" id="editIdField" name="editid" />
                     <div class="mb-3">
                         <label for="type" class="form-label">Type</label>
-                        <select class="form-control" id="type" name="type">
+                        <select class="form-control" id="edit_type" name="type">
                             <option value="" disabled selected>
                                 Select Type
                             </option>
                             <option value="category">Category</option>
                             <option value="brand">Brand</option>
                             <option value="product">Product</option>
-                            <option value="order">Order</option>
                             <option value="user">User</option>
+                            <option value="order">Order</option>
+                            <option value="transaction">Transaction</option>
+                            <option value="rating">Rating</option>
+                            <option value="pages">Pages</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" id="name" class="form-control"
-                            name="name" placeholder="Enter name" />
+                        <input
+                            type="text"
+                            id="name"
+                            class="form-control"
+                            name="name"
+                            placeholder="Enter name"
+                        />
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
-                        <button type="button" class="btn btn-light"
-                            data-bs-dismiss="modal">
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal"
+                        >
                             Close
                         </button>
-                        <button type="submit" class="btn btn-success"
-                            id="add-btn">
+                        <button
+                            type="submit"
+                            class="btn btn-success"
+                            id="add-btn"
+                        >
                             Add Status
                         </button>
                     </div>
@@ -349,13 +426,22 @@ status.name : '' %>
 <!-- Edit Status Modal -->
 
 <!-- deleteRecordModal -->
-<div id="deleteRecordModal" class="modal fade zoomIn" tabindex="-1"
-    aria-hidden="true">
+<div
+    id="deleteRecordModal"
+    class="modal fade zoomIn"
+    tabindex="-1"
+    aria-hidden="true"
+>
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="btn-close" id="deleteRecord-close"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    id="deleteRecord-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
             </div>
             <div class="modal-body p-md-5">
                 <div class="text-center">
@@ -370,12 +456,18 @@ status.name : '' %>
                     </div>
                 </div>
                 <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                    <button type="button" class="btn w-sm btn-light btn-hover"
-                        data-bs-dismiss="modal">
+                    <button
+                        type="button"
+                        class="btn w-sm btn-light btn-hover"
+                        data-bs-dismiss="modal"
+                    >
                         Close
                     </button>
-                    <button type="button" class="btn w-sm btn-danger btn-hover"
-                        id="delete-record">
+                    <button
+                        type="button"
+                        class="btn w-sm btn-danger btn-hover"
+                        id="delete-record"
+                    >
                         Yes, Delete It!
                     </button>
                 </div>
@@ -390,18 +482,17 @@ status.name : '' %>
 <script>
     var addform = $("#submitForm");
     addform.on("submit", submitFormHandler);
-
     function submitFormHandler(e) {
         e.preventDefault();
         var formData = getFormData(addform);
-        console.log(formData);
+
         // DO POST
         $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: "/admin/status/add",
-                data: JSON.stringify(formData),
-            })
+            type: "POST",
+            contentType: "application/json",
+            url: "/admin/status/add",
+            data: JSON.stringify(formData),
+        })
             .done((res) => {
                 if (res.status == 200) {
                     iziToast.success({
@@ -409,9 +500,10 @@ status.name : '' %>
                         message: res.message,
                         position: "topRight",
                     });
-                    setTimeout(function() {
+                    $("#showModal").modal("hide");
+                    setTimeout(function () {
                         location.reload();
-                    }, 1000);
+                    }, 500);
                 } else {
                     iziToast.error({
                         title: "Error",
@@ -420,7 +512,7 @@ status.name : '' %>
                     });
                 }
             })
-            .fail(function(xhr, status, error) {
+            .fail(function (xhr, status, error) {
                 iziToast.error({
                     title: "Error",
                     message: xhr.responseText,
@@ -429,27 +521,26 @@ status.name : '' %>
             });
     }
 
-
-
-
-    $(document).on("click", "#edit_btn", function(e) {
+    $(document).on("click", "#edit_btn", function (e) {
         var data = $(this).attr("data-model");
-        const status_data = JSON.parse(data);
+        status_data = JSON.parse(data);
         $("#editIdField").val(status_data._id);
-        $("#type").val(status_data.type);
+        $("#edit_type option").prop("selected", false);
         $("#name").val(status_data.name);
 
-        console.log(status_data._id)
-        console.log(status_data.type)
-        console.log(status_data.name)
-
+        // Set the selected option in the dropdown
+        $("#edit_type option").each(function () {
+            if ($(this).val() === status_data.type) {
+                $(this).prop("selected", true);
+            }
+        });
     });
 
     function getFormData($form) {
         var unindexed_array = $form.serializeArray();
         var indexed_array = {};
 
-        $.map(unindexed_array, function(n, i) {
+        $.map(unindexed_array, function (n, i) {
             indexed_array[n["name"]] = n["value"];
         });
 
@@ -466,25 +557,24 @@ status.name : '' %>
         formData.editid = $("#editIdField").val(); // Ensure the ID is included
 
         $.ajax({
-                type: "POST",
-                url: "/admin/status/edit",
-                contentType: "application/json",
-                processData: false,
-                data: JSON.stringify(formData),
-            })
+            type: "POST",
+            url: "/admin/status/edit",
+            contentType: "application/json",
+            processData: false,
+            data: JSON.stringify(formData),
+        })
             .done((res) => {
-
                 iziToast.success({
                     title: "Success",
                     message: res.message,
                     position: "topRight",
                 });
-                setTimeout(function() {
+                $("#showEditModal").modal("hide");
+                setTimeout(function () {
                     location.reload();
-                }, 1000);
-
+                }, 500);
             })
-            .fail(function(xhr, status, error) {
+            .fail(function (xhr, status, error) {
                 iziToast.error({
                     title: "Error",
                     message: xhr.responseText,
@@ -493,38 +583,40 @@ status.name : '' %>
             });
     }
 
-
-
     //#region Delete status
     let statusIdToDelete;
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Show the modal and store the status ID to delete
-        $(".remove-item-btn").click(function() {
+        $(".remove-item-btn").click(function () {
             statusIdToDelete = $(this).data("id");
         });
 
         // AJAX request to delete the status
-        $("#delete-record").click(function() {
+        $("#delete-record").click(function () {
             $.ajax({
-                    type: "POST",
-                    contentType: "application/json",
-                    url: "/admin/status/delete/" +
-                        statusIdToDelete,
-                })
+                type: "POST",
+                contentType: "application/json",
+                url: "/admin/status/delete/" + statusIdToDelete,
+            })
                 .done((res) => {
-
-                    iziToast.success({
-                        title: "Success",
-                        message: res.message,
-                        position: "topRight",
-                    });
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1000);
-
-
+                    if (res.status == 200) {
+                        iziToast.success({
+                            title: "Success",
+                            message: res.message,
+                            position: "topRight",
+                        });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        iziToast.error({
+                            title: "Error",
+                            message: res.message,
+                            position: "topRight",
+                        });
+                    }
                 })
-                .fail(function(xhr, status, error) {
+                .fail(function (xhr, status, error) {
                     iziToast.error({
                         title: "Error",
                         message: xhr.responseText,

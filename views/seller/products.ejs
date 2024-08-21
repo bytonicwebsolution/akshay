@@ -18,7 +18,7 @@
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item">
-                                        <a href="/seller/dashboard"
+                                        <a href="javascript: void(0);"
                                             >Dashboard</a
                                         >
                                     </li>
@@ -38,7 +38,10 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row g-3">
-                                        <div class="col-xxl-4">
+                                        <div class="col-xxl-3">
+                                            <label class="form-label"
+                                                >Search</label
+                                            >
                                             <div class="search-box">
                                                 <input
                                                     type="text"
@@ -51,71 +54,128 @@
                                             </div>
                                         </div>
                                         <!--end col-->
-                                        
-                                        
-                                        <div class="col-xxl-4 col-sm-6">
+                                        <!-- <div class="col-xxl-3 col-sm-6">
+                                            <label class="form-label"
+                                                >Brands</label
+                                            >
+                                            <div>
+                                                <select
+                                                    class="form-control"
+                                                    data-choices
+                                                    data-choices-search-false
+                                                    data-choices-removeItem
+                                                >
+                                                    <option
+                                                        value=""
+                                                        disabled
+                                                        selected
+                                                    >
+                                                        Select Brand
+                                                    </option>
+                                                    <%brand.forEach(function(element){
+                                                    %>
+                                                    <option
+                                                        value="<%= element._id %>"
+                                                    >
+                                                        <%= element.name%>
+                                                    </option>
+                                                    <% }); %>
+                                                </select>
+                                            </div>
+                                        </div> -->
+                                        <!--end col-->
+                                        <div class="col-xxl-3 col-sm-6">
+                                            <label class="form-label"
+                                                >Category</label
+                                            >
                                             <div>
                                                 <select
                                                     class="form-control"
                                                     id="idCategory"
+                                                >
+                                                    <option
+                                                        value=""
+                                                        disabled
+                                                        selected
+                                                    >
+                                                        Select Category
+                                                    </option>
+                                                    <%
+                                                    categoriesForDropdown.forEach(function(category)
+                                                    { %>
+                                                    <option
+                                                        value="<%= category._id %>"
+                                                    >
+                                                        <%= category.prefix
+                                                        %><%= category.name %>
+                                                    </option>
+                                                    <% if (category.children &&
+                                                    category.children.length >
+                                                    0) { %> <%
+                                                    category.children.forEach(function(child)
+                                                    { %>
+                                                    <option
+                                                        value="<%= child._id %>"
+                                                    >
+                                                        <%= child.name %>
+                                                    </option>
+                                                    <% }); %> <% } %> <% }); %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <!-- <div class="col-xxl-2 col-sm-6">
+                                            <label class="form-label"
+                                                >Discount</label
+                                            >
+                                            <div>
+                                                <select
+                                                    class="form-control"
+                                                    id="idDiscount"
                                                     data-choices
                                                     data-choices-search-false
                                                     data-choices-removeItem
                                                 >
                                                     <option value="all">
-                                                        Select Category
+                                                        Select All Discount
                                                     </option>
-                                                    <option value="Appliances">
-                                                        Appliances
+                                                    <option value="50">
+                                                        50% or more
                                                     </option>
-                                                    <option
-                                                        value="Automotive Accessories"
-                                                    >
-                                                        Automotive Accessories
+                                                    <option value="40">
+                                                        40% or more
                                                     </option>
-                                                    <option value="Electronics">
-                                                        Electronics
+                                                    <option value="30">
+                                                        30% or more
                                                     </option>
-                                                    <option value="Fashion">
-                                                        Fashion
+                                                    <option value="20">
+                                                        20% or more
                                                     </option>
-                                                    <option value="Furniture">
-                                                        Furniture
+                                                    <option value="10">
+                                                        10% or more
                                                     </option>
-                                                    <option value="Grocery">
-                                                        Grocery
-                                                    </option>
-                                                    <option value="Headphones">
-                                                        Headphones
-                                                    </option>
-                                                    <option value="Kids">
-                                                        Kids
-                                                    </option>
-                                                    <option value="Luggage">
-                                                        Luggage
-                                                    </option>
-                                                    <option value="Sports">
-                                                        Sports
-                                                    </option>
-                                                    <option value="Watches">
-                                                        Watches
+                                                    <option value="0">
+                                                        Less than 10%
                                                     </option>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <!--end col-->
-                                       
-                                        <div class="col-xxl-1 col-sm-6 ms-auto">
+                                        <div
+                                            class="col-xxl-1 col-sm-6"
+                                            style="margin-top: 40px"
+                                        >
                                             <button
                                                 type="button"
                                                 class="btn btn-secondary w-100 pd-new"
                                                 onclick="filterData();"
                                             >
-                                                <i class="bi bi-funnel align-baseline me-1"></i>
+                                                <i
+                                                    class="bi bi-funnel align-baseline me-1"
+                                                ></i>
                                                 Filters
                                             </button>
                                         </div>
-                                        
                                         <!--end col-->
                                     </div>
                                     <!--end row-->
@@ -137,8 +197,10 @@
                                             Products
                                             <span
                                                 class="badge bg-dark-subtle text-dark ms-1"
-                                                >254</span
                                             >
+                                                <%= totalItems ? totalItems : 0
+                                                %>
+                                            </span>
                                         </h5>
                                     </div>
                                     <div class="flex-shrink-0">
@@ -169,6 +231,7 @@
                                     <div class="table-responsive">
                                         <table
                                             class="table table-centered align-middle table-nowrap mb-0"
+                                            id="products"
                                         >
                                             <thead class="table-active">
                                                 <tr>
@@ -210,18 +273,18 @@
                                                     >
                                                         Price
                                                     </th>
-                                                    <th
+                                                    <!-- <th
                                                         class="sort cursor-pointer"
                                                         data-sort="orders"
                                                     >
                                                         Orders
-                                                    </th>
-                                                    <th
+                                                    </th> -->
+                                                    <!-- <th
                                                         class="sort cursor-pointer"
                                                         data-sort="rating"
                                                     >
                                                         Rating
-                                                    </th>
+                                                    </th> -->
                                                     <th
                                                         class="sort cursor-pointer"
                                                         data-sort="published"
@@ -250,11 +313,23 @@
                                                                 class="form-check-input"
                                                                 type="checkbox"
                                                                 name="chk_child"
+                                                                value="<%= products._id %>"
                                                             />
                                                             <label
                                                                 class="form-check-label"
                                                             ></label>
                                                         </div>
+                                                    </td>
+                                                    <td
+                                                        class="id"
+                                                        style="display: none"
+                                                    >
+                                                        <a
+                                                            href="javascript:void(0);"
+                                                            class="fw-medium link-primary"
+                                                            ><%= products._id
+                                                            %></a
+                                                        >
                                                     </td>
                                                     <td class="products">
                                                         <div
@@ -264,8 +339,8 @@
                                                                 class="avatar-xs bg-light rounded p-1 me-2"
                                                             >
                                                                 <img
-                                                                    src="../../dist/product/<%- products.thumbnail %>"
-                                                                    alt="<%- products.thumbnail %>"
+                                                                    src="<%- products.thumbnail ? '../../dist/product/' + products.thumbnail : '../../assets/images/default/mart-demo-img.jpg' %>"
+                                                                    onerror="this.src='../../assets/images/default/mart-demo-img.jpg';"
                                                                     class="img-fluid d-block"
                                                                 />
                                                             </div>
@@ -273,31 +348,30 @@
                                                                 <h6
                                                                     class="mb-0"
                                                                 >
-                                                                    <a
+                                                                    <!-- <a
                                                                         href="apps-ecommerce-product-details.html"
                                                                         class="text-reset products"
-                                                                    >
-                                                                        <%-
-                                                                        products.product_name
-                                                                        ?
-                                                                        products.product_name
-                                                                        : '' %>
-                                                                    </a>
+                                                                    > -->
+                                                                    <%-
+                                                                    products.product_name
+                                                                    ?
+                                                                    products.product_name
+                                                                    : '' %>
+                                                                    <!-- </a> -->
                                                                 </h6>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="category">
+                                                    <td class="category" data-category-id="<%= products.category_id ? products.category_id._id : '' %>">
                                                         <%=
                                                         products.category_id?
                                                         products.category_id.name:
                                                         ''%>
                                                     </td>
-                                                    
                                                     <td class="stock">
                                                         <%=
-                                                        products.min_stock_quantity?
-                                                        products.min_stock_quantity:
+                                                        products.totalStock ?
+                                                        products.totalStock :
                                                         ''%>
                                                     </td>
                                                     <td class="price">
@@ -305,18 +379,24 @@
                                                         products.unit_price:
                                                         ''%>
                                                     </td>
-                                                     <td class="orders">48</td>
-                                                    <td class="rating">
+                                                    <!-- <td class="orders">48</td> -->
+                                                    <!-- <td class="rating">
                                                         <span
                                                             class="badge bg-warning-subtle text-warning"
                                                             ><i
                                                                 class="bi bi-star-fill align-baseline me-1"
                                                             ></i>
-                                                            4.9</span>
-                                                    </td> 
+                                                            4.9</span
+                                                        >
+                                                    </td> -->
+                                                    <% 
+                                                     const date = new Date(products.created_at);
+                                                     const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                                                     %>
                                                     <td class="date">
-                                                        <%= products.created_at.split(' ').slice(1, 4).join(' ') %>
+                                                        <%= formattedDate ? formattedDate : ""%>
                                                     </td>
+
                                                     <td>
                                                         <div
                                                             class="dropdown position-static"
@@ -335,7 +415,7 @@
                                                             <ul
                                                                 class="dropdown-menu dropdown-menu-end"
                                                             >
-                                                                <li>
+                                                                <!-- <li>
                                                                     <a
                                                                         class="dropdown-item"
                                                                         href="apps-ecommerce-product-details.html"
@@ -344,12 +424,11 @@
                                                                         ></i>
                                                                         View</a
                                                                     >
-                                                                </li>
+                                                                </li> -->
                                                                 <li>
                                                                     <a
                                                                         class="dropdown-item edit-item-btn"
-                                                                        data-bs-toggle="modal"
-                                                                        href="#showModal"
+                                                                        href="edit/<%= products._id %>"
                                                                         ><i
                                                                             class="ph-pencil align-middle me-1"
                                                                         ></i>
@@ -361,6 +440,7 @@
                                                                         class="dropdown-item remove-item-btn"
                                                                         data-bs-toggle="modal"
                                                                         href="#deleteRecordModal"
+                                                                        data-id="<%= products._id %>"
                                                                         ><i
                                                                             class="ph-trash align-middle me-1"
                                                                         ></i>
@@ -407,12 +487,18 @@
                                                 class="text-muted text-center text-sm-start"
                                             >
                                                 Showing
-                                                <span class="fw-semibold"
-                                                    >10</span
+                                                <span
+                                                    class="fw-semibold"
+                                                    id="current-items"
+                                                    ><%= Math.min(currentPage *
+                                                    pageSize, totalItems)
+                                                    %></span
                                                 >
                                                 of
-                                                <span class="fw-semibold"
-                                                    >35</span
+                                                <span
+                                                    class="fw-semibold"
+                                                    id="total-items"
+                                                    ><%= totalItems %></span
                                                 >
                                                 Results
                                             </div>
@@ -517,3 +603,115 @@
 <!-- /deleteRecordModal -->
 
 <%- include('partials/footer') %>
+<script>
+    //#region Delete product
+    let productID;
+    $(document).ready(function () {
+        // Show the modal and store the product ID to delete
+        $(".remove-item-btn").click(function () {
+            productID = $(this).data("id");
+        });
+
+        // AJAX request to delete the product
+        $("#delete-record").click(function () {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/seller/product/delete/" + productID,
+            })
+                .done((res) => {
+                    if (res.status == 200) {
+                        iziToast.success({
+                            title: "Success",
+                            message: res.message,
+                            position: "topRight",
+                        });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        iziToast.error({
+                            title: "Error",
+                            message: res.message,
+                            position: "topRight",
+                        });
+                    }
+                })
+                .fail(function (xhr, status, error) {
+                    iziToast.error({
+                        title: "Error",
+                        message: xhr.responseText,
+                        position: "topRight",
+                    });
+                });
+        });
+    });
+    //#endregion Delete product
+
+    function deleteMultiple() {
+        const ids_array = [];
+        const checkboxes = document.getElementsByName("chk_child");
+
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                const productID = checkboxes[i].value;
+                ids_array.push(productID);
+            }
+        }
+
+        if (ids_array.length > 0) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn btn-primary w-xs me-2 mt-2",
+                cancelButtonClass: "btn btn-danger w-xs mt-2",
+                confirmButtonText: "Yes, delete it!",
+                buttonsStyling: false,
+                showCloseButton: true,
+            }).then(function (result) {
+                if (result.value) {
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/seller/product/delete",
+                        data: JSON.stringify({ ids: ids_array }),
+                    })
+                        .done((res) => {
+                            if (res.status == 200) {
+                                iziToast.success({
+                                    title: "Success",
+                                    message: res.message,
+                                    position: "topRight",
+                                });
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000);
+                            } else {
+                                iziToast.error({
+                                    title: "Error",
+                                    message: res.message,
+                                    position: "topRight",
+                                });
+                            }
+                        })
+                        .fail(function (xhr, status, error) {
+                            iziToast.error({
+                                title: "Error",
+                                message: xhr.responseText,
+                                position: "topRight",
+                            });
+                        });
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "Please select at least one checkbox",
+                confirmButtonClass: "btn btn-info",
+                buttonsStyling: false,
+                showCloseButton: true,
+            });
+        }
+    }
+</script>

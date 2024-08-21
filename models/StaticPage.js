@@ -11,19 +11,22 @@ const schema = new mongoose.Schema({
     },
     meta_title: {
         type: String,
-        require: true,
     },
     meta_description: {
         type: String,
-        require: true,
     },
     meta_keywords: {
         type: String,
-        require: true,
+    },
+    slug: {
+        type: String,
     },
     status_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Status",
+    },
+    image: {
+        type: String,
     },
     created_at: {
         type: String,

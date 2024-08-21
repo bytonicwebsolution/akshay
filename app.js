@@ -1,14 +1,17 @@
 const express = require("express");
+var { rainbow } = require("handy-log");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const AdminRoutes = require("./admin-routes");
-const SellerRoutes = require("./seller-routes.js");
+const SellerRoutes = require("./seller-routes");
 const bodyParser = require("body-parser");
 const createAdmin = require("./config/createAdmin");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 var cors = require("cors");
 const WebsiteRoutes = require("./website-routes");
+const { LoggedIn } = require("./middlewares/Adminauth");
+const { SellerLoggedIn } = require("./middlewares/Sellerauth");
 
 // create admin
 const result = createAdmin();
@@ -48,16 +51,29 @@ sessionStore = new MongoStore({
     url: DB_CONNECT,
 });
 
-// Use the session middleware
+// Admin panel session
 app.use(
+    "/admin", // Apply session to /admin routes only
     session({
-        secret: process.env.SESSION_SECRET,
+        name: "admin_sid",
+        secret: process.env.ADMIN_SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
         store: sessionStore,
-        cookie: {
-            maxAge: 14 * 24 * 60 * 60, // = 14 days. Default
-        },
+        cookie: { secure: false }, // Set `true` in production with HTTPS
+    })
+);
+
+// Seller panel session
+app.use(
+    "/seller", // Apply session to /seller routes only
+    session({
+        name: "seller_sid", // Alag cookie name
+        secret: process.env.SELLER_SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        store: sessionStore,
+        cookie: { secure: false }, // Set `true` in production with HTTPS
     })
 );
 
@@ -68,9 +84,13 @@ app.use(
     })
 );
 
+// Use the middleware
+app.use(LoggedIn);
+app.use(SellerLoggedIn);
+
 //routes
 AdminRoutes(app);
-SellerRoutes(app)
+SellerRoutes(app);
 WebsiteRoutes(app);
 
 module.exports = app;

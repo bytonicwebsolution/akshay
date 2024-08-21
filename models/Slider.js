@@ -7,14 +7,13 @@ const sliderSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true,
     },
     url: {
         type: String,
     },
-    image:{
+    image: {
         type: String,
-        required:true,
+        required: true,
     },
     status_id: {
         type: mongoose.Schema.Types.ObjectId,

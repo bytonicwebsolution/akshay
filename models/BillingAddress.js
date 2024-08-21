@@ -5,10 +5,11 @@ const Schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Order",
     },
-    name: {
+    first_name: {
         type: String,
-        min: 4,
-        max: 30,
+    },
+    last_name: {
+        type: String,
     },
     email: {
         type: String,
@@ -30,6 +31,12 @@ const Schema = new mongoose.Schema({
         type: String,
     },
     state: {
+        type: String,
+    },
+    post_code: {
+        type: String,
+    },
+    company_name: {
         type: String,
     },
     created_at: {

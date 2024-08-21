@@ -20,9 +20,8 @@ const Schema = new mongoose.Schema({
     },
     sku: {
         type: String,
-        required:true,
+        required: true,
     },
-
     created_at: {
         type: String,
         default: Date,

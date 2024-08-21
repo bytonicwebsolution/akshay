@@ -2,18 +2,6 @@ const Status = require("../../models/Status");
 let msg = "Something went wrong please try again later";
 
 class StatusController {
-    static datatable_data = async (req, res) => {
-        try {
-            const params = req.body;
-            const query = datatablesQuery(Status);
-            const raw = await query.run(params);
-            return res.send(raw);
-        } catch (error) {
-            console.log(error);
-            return res.status(500).send(msg);
-        }
-    };
-
     static list = async (req, res) => {
         try {
             let statuses = await Status.find().sort({
@@ -35,7 +23,6 @@ class StatusController {
             });
             await insertRecord.save();
             return res.send({
-                success: true,
                 status: 200,
                 message: "Status Added successfully",
             });
@@ -62,7 +49,6 @@ class StatusController {
                 }
             );
             return res.send({
-                success: true,
                 status: 200,
                 status,
                 message: "Status updated successfully",
@@ -77,7 +63,6 @@ class StatusController {
         try {
             await Status.findByIdAndDelete(req.params.id);
             return res.send({
-                success: true,
                 status: 200,
                 message: "Status Deleted successfully",
             });

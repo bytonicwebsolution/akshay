@@ -1,13 +1,21 @@
 const User = require("../../models/User");
-// const Coupon = require("../../models/Coupon");
+const Coupon = require("../../models/Coupon");
+const Status = require("../../models/Status");
+const Rating = require("../../models/Rating");
+const Wishlist = require("../../models/Wishlist");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const path = require("path");
 const root = process.cwd();
+const mongoose = require("mongoose");
 const moment = require("moment");
-const baseURL = `http://192.168.29.130:3000`;
+require("dotenv").config();
+const baseURL = process.env.BaseURL;
+const fs = require("fs");
+const defaultImage = baseURL + "/assets/images/default/user-dummy-img.jpg";
 const imageFilter = require("../../config/imageFilter");
+const config = require("../../config/createStatus");
 
 // Set The Storage Engine
 const storage = multer.diskStorage({
@@ -23,6 +31,26 @@ const storage = multer.diskStorage({
 // Init Upload
 const upload = multer({
     storage: storage,
+    limits: {
+        fileSize: 5000000,
+    },
+    fileFilter: imageFilter,
+}).single("image");
+
+// Set The Storage Engine
+const storage1 = multer.diskStorage({
+    destination: path.join(root, "/public/dist/ratings"),
+    filename: function (req, file, cb) {
+        cb(
+            null,
+            file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+        );
+    },
+});
+
+// Init Upload
+const uploadR = multer({
+    storage: storage1,
     limits: {
         fileSize: 5000000,
     },
@@ -59,14 +87,21 @@ class webauthController {
                     message: "User already exists",
                 });
             }
+
+            await config.createUserStatus();
+            let status = await Status.findOne({
+                name: { $regex: new RegExp("^active$", "i") },
+                type: { $regex: new RegExp("^user$", "i") },
+            });
+
             const user = await User({
-                // image: req.file.filename,
                 user_type: "u",
                 first_name: first_name,
                 last_name: last_name,
                 email: email,
                 password: hashedpassword,
                 confirm_password: hashedconfirm_password,
+                status: status._id,
             });
             await user.save();
             return res.send({
@@ -97,7 +132,6 @@ class webauthController {
                 });
             const user = await User.findOne({
                 email: email,
-                
             });
             if (!user)
                 return res.send({
@@ -214,10 +248,26 @@ class webauthController {
                     success: false,
                 });
 
+            // set default image if necessary
+            if (user.image && user.image.trim() !== "") {
+                const imagePath = path.join(
+                    __dirname,
+                    "../../public/dist/users/",
+                    user.image
+                );
+                try {
+                    await fs.promises.access(imagePath, fs.constants.F_OK);
+                    user.image = mediaUrl + user.image.trim();
+                } catch (error) {
+                    user.image = defaultImage;
+                }
+            } else {
+                user.image = defaultImage;
+            }
+
             res.send({
                 user: {
                     user_type: user.user_type,
-                    name: user.name,
                     first_name: user.first_name,
                     last_name: user.last_name,
                     email: user.email,
@@ -228,7 +278,7 @@ class webauthController {
                     city: user.city,
                     pincode: user.pincode,
                     additional_info: user.additional_info,
-                    image: user.image ? mediaUrl + user.image : null,
+                    image: user.image,
                 },
                 mediaUrl,
             });
@@ -246,9 +296,7 @@ class webauthController {
             upload(req, res, async function (err) {
                 var token = req.body.token;
                 const payload = jwt.decode(token, process.env.TOKEN_SECRET);
-                console.log(payload)
                 const user = await User.findById(payload.id);
-                console.log(user)
                 if (!user)
                     return res.status(401).send({
                         message: "User not found",
@@ -258,7 +306,6 @@ class webauthController {
 
                 let data = {
                     image: req.file ? req.file.filename : "",
-                    name: req.body.name,
                     first_name: req.body.first_name,
                     last_name: req.body.last_name,
                     email: req.body.email,
@@ -350,42 +397,364 @@ class webauthController {
         }
     };
 
-    // static coupon_verify = async (req, res) => {
-    //     try {
-    //         var token = req.body.token;
-    //         var coupon_code = req.body.coupon_code;
-    //         const payload = jwt.decode(token, process.env.TOKEN_SECRET);
-    //         const user = await User.findById(payload.id);
-    //         if (!user) return res.status(401).send("User not found");
+    static coupon_verify = async (req, res) => {
+        try {
+            var token = req.body.token;
+            var coupon_code = req.body.coupon_code;
+            const payload = jwt.decode(token, process.env.TOKEN_SECRET);
+            const user = await User.findById(payload.id);
+            if (!user)
+                return res.status(401).send({
+                    message: "User not found",
+                    status: false,
+                    success: false,
+                });
 
-    //         let findData = { coupon_code: coupon_code, isActive: true };
+            let findData = {
+                coupon_code: coupon_code,
+                date_range: { $exists: true, $ne: null },
+            };
+            let findRec = await Coupon.findOne(findData);
+            if (!findRec)
+                return res.status(401).send({ message: "Invalid Coupon!" });
 
-    //         let findRec = await Coupon.findOne(findData);
-    //         if (!findRec) return res.status(401).send("Invalid coupon");
+            if (findRec.is_applied === true)
+                return res.status(401).send({
+                    message: "Coupon already applied",
+                });
 
-    //         if (findRec.is_used == true)
-    //             return res.status(401).send("Coupon already used");
-    //         if (new Date() > findRec.expiry_date)
-    //             return res.status(401).send("Coupon has expired");
+            // check coupon expiry date
+            if (findRec.date_range) {
+                const currentDate = new Date();
+                const [startDateString, endDateString] =
+                    findRec.date_range.split(" - ");
 
-    //         return res.send({
-    //             message: "Coupon verified successfully",
-    //             success: true,
-    //             data: {
-    //                 coupon_code: coupon_code,
-    //                 discount: findRec.discount,
-    //                 valid_start_date: findRec.valid_start_date,
-    //                 expiry_date: findRec.expiry_date,
-    //             },
-    //         });
-    //     } catch (error) {
-    //         console.log(error);
-    //         return res.status(500).send({
-    //             message: "Something went wrong please try again later",
-    //             error: error.message,
-    //         });
-    //     }
-    // };
+                const parseDate = (dateString) => {
+                    const [datePart, timePart, period] = dateString.split(" ");
+                    const [day, month, year] = datePart.split("/");
+                    const [hour, minute] = timePart.split(":");
+                    let hours = parseInt(hour, 10);
+                    if (period === "PM" && hours !== 12) {
+                        hours += 12;
+                    }
+                    if (period === "AM" && hours === 12) {
+                        hours = 0;
+                    }
+                    return new Date(
+                        `${year}-${month}-${day}T${hours
+                            .toString()
+                            .padStart(2, "0")}:${minute}:00Z`
+                    );
+                };
+
+                const startDate = parseDate(startDateString);
+                const endDate = parseDate(endDateString);
+
+                if (currentDate >= startDate && currentDate <= endDate) {
+                    return res.send({
+                        message: "Coupon verified successfully",
+                        success: true,
+                        data: {
+                            coupon_code: coupon_code,
+                            type: findRec.type,
+                            discount: findRec.discount,
+                            valid_start_date: findRec.valid_start_date,
+                            expiry_date: findRec.expiry_date,
+                        },
+                    });
+                } else {
+                    return res.status(401).send({
+                        message: "Coupon expired",
+                    });
+                }
+            }
+            return res.send({
+                message: "Coupon verified successfully",
+                success: true,
+                data: {
+                    coupon_code: coupon_code,
+                    discount: findRec.discount,
+                    date_range: findRec.date_range,
+                },
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                message: "Something went wrong please try again later",
+                error: error.message,
+            });
+        }
+    };
+
+    static product_rating = async (req, res) => {
+        try {
+            uploadR(req, res, async function (err) {
+                var token = req.body.token;
+                const payload = jwt.decode(token, process.env.TOKEN_SECRET);
+                const user = await User.findById(payload.id);
+                if (!user)
+                    return res.status(401).send({
+                        message: "User not found",
+                        status: false,
+                        success: false,
+                    });
+
+                await config.createRatingStatus();
+                let status = await Status.findOne({
+                    name: { $regex: new RegExp("^active$", "i") },
+                    type: { $regex: new RegExp("^rating$", "i") },
+                });
+
+                let data = {
+                    product_id: req.body.product_id,
+                    user_id: user._id,
+                    rating: req.body.rating,
+                    comment: req.body.comment,
+                    image: req.file ? req.file.filename : "",
+                    status_id: status._id,
+                };
+
+                let ratingData = {};
+                for (let i in data) {
+                    if (data[i] != "") {
+                        ratingData[i] = data[i]; // json object
+                    }
+                }
+                const rating = await Rating(ratingData);
+                await rating.save();
+                return res.status(201).send({
+                    message: "Product Rating Successfully",
+                    status: true,
+                    success: true,
+                    data: rating,
+                });
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                message: "Something went wrong please try again later",
+                error: error.message,
+            });
+        }
+    };
+
+    static get_product_ratings = async (req, res) => {
+        try {
+            const product_id = req.body.product_id;
+
+            const ratings = await Rating.find({
+                product_id: product_id,
+            }).populate("user_id");
+
+            if (!ratings)
+                return res.status(401).send({
+                    message: "No ratings found",
+                });
+
+            return res.send({
+                message: "Ratings fetched successfully",
+                success: true,
+                data: ratings,
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                message: "Something went wrong please try again later",
+                error: error.message,
+            });
+        }
+    };
+
+    static product_wishlist = async (req, res) => {
+        try {
+            var token = req.body.token;
+            const product_id = req.body.product_id;
+            var is_wishlist =
+                req.body.is_wishlist && req.body.is_wishlist == "true"
+                    ? Boolean(req.body.is_wishlist)
+                    : false;
+
+            const payload = jwt.decode(token, process.env.TOKEN_SECRET);
+            if (!payload || !payload.id) {
+                return res.status(401).send({
+                    message: "Invalid token",
+                    status: false,
+                    success: false,
+                });
+            }
+
+            const user = await User.findById(payload.id);
+            if (!user) {
+                return res.status(401).send({
+                    message: "User not found",
+                    status: false,
+                    success: false,
+                });
+            }
+
+            let findData = {
+                product_id: product_id,
+                user_id: user._id,
+            };
+
+            let findRec = await Wishlist.findOne(findData);
+
+            if (is_wishlist) {
+                if (findRec) {
+                    findRec.is_wishlist = is_wishlist;
+                    await findRec.save();
+                } else {
+                    let saveObj = { ...findData, is_wishlist: is_wishlist };
+                    await Wishlist.create(saveObj);
+                }
+            } else {
+                if (findRec) {
+                    findRec.is_wishlist = false;
+                    await findRec.save();
+                }
+            }
+
+            let returnObj = {
+                message: "Product added in wishlist successfully",
+                data: {
+                    product_id: product_id,
+                    user_id: user._id,
+                    is_wishlist: is_wishlist,
+                },
+            };
+
+            return res.send(returnObj);
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                message: "Something went wrong, please try again later",
+                error: error.message,
+            });
+        }
+    };
+
+    static get_wishlist = async (req, res) => {
+        try {
+            const { token, product_id } = req.body;
+            const payload = jwt.decode(token, process.env.TOKEN_SECRET);
+            const user = await User.findById(payload.id);
+
+            if (!user) {
+                return res.status(401).send({
+                    message: "User not found",
+                    status: false,
+                    success: false,
+                });
+            }
+
+            let wishlistQuery = { user_id: user._id };
+            if (product_id) {
+                wishlistQuery.product_id = product_id;
+            }
+
+            const wishlist = await Wishlist.find(wishlistQuery).populate(
+                "product_id"
+            );
+
+            if (!wishlist || wishlist.length === 0) {
+                return res.status(401).send({
+                    message: "No products found in wishlist",
+                    success: false,
+                });
+            }
+
+            // set default image if necessary
+            let mediaUrl = baseURL + "/dist/product/";
+            for (let item of wishlist) {
+                if (
+                    item.product_id &&
+                    item.product_id.thumbnail &&
+                    item.product_id.thumbnail.trim() !== ""
+                ) {
+                    const imagePath = path.join(
+                        __dirname,
+                        "../../public/dist/product/",
+                        item.product_id.thumbnail
+                    );
+                    try {
+                        fs.accessSync(imagePath, fs.constants.F_OK);
+                        item.product_id.thumbnail =
+                            mediaUrl + item.product_id.thumbnail.trim();
+                    } catch (error) {
+                        item.product_id.thumbnail = defaultImage;
+                    }
+                } else {
+                    item.product_id.thumbnail = defaultImage;
+                }
+
+                // Convert product_id to a plain JavaScript object
+                let productObj = item.product_id.toObject();
+
+                // Calculate special_price for the product
+                let special_price = 0;
+                if (productObj.special_discount_type === "flat") {
+                    special_price =
+                        productObj.unit_price - productObj.special_discount;
+                } else if (productObj.special_discount_type === "percentage") {
+                    const discountAmount =
+                        (productObj.unit_price * productObj.special_discount) /
+                        100;
+                    special_price = productObj.unit_price - discountAmount;
+                }
+
+                // Add special_price to the plain object
+                productObj.special_price = special_price.toFixed(2);
+
+                // Calculate average rating
+                const ratings = await Rating.aggregate([
+                    {
+                        $match: {
+                            product_id: mongoose.Types.ObjectId(
+                                item.product_id._id
+                            ),
+                        },
+                    },
+                    { $group: { _id: "$rating", count: { $sum: 1 } } },
+                ]);
+
+                const ratingsMap = ratings.reduce(
+                    (acc, rating) => {
+                        acc[rating._id] = rating.count;
+                        return acc;
+                    },
+                    { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+                );
+
+                const totalRatings = Object.keys(ratingsMap).reduce(
+                    (acc, key) => acc + ratingsMap[key],
+                    0
+                );
+                const totalScore = Object.keys(ratingsMap).reduce(
+                    (acc, key) => acc + ratingsMap[key] * key,
+                    0
+                );
+                const averageRating = totalRatings
+                    ? totalScore / totalRatings
+                    : 0;
+
+                productObj.average_rating = averageRating.toFixed(2);
+                item.product_id = productObj;
+            }
+
+            return res.status(200).send({
+                message: "Wishlist fetched successfully",
+                success: true,
+                data: wishlist,
+            });
+        } catch (error) {
+            console.error("Error fetching wishlist:", error);
+            return res.status(500).send({
+                message: "An error occurred while fetching wishlist",
+                success: false,
+                error: error.message,
+            });
+        }
+    };
 }
 
 module.exports = webauthController;

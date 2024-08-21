@@ -1,21 +1,9 @@
 <%- include ('partials/header.ejs') %>
-<link
-    rel="stylesheet"
-    href="https://multivendor1.clientweb.xyz/public/admin/css/select2.min.css"
-/>
-<link
-    rel="stylesheet"
-    type="text/css"
-    href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
-/>
 <style>
     #attributeDropdownContainer,
     #attValDrpdwnContainer,
     #variantTable {
         display: none;
-    }
-    .select2.select2-container.select2-container--default {
-        width: 100% !important;
     }
 </style>
 <!-- Begin page -->
@@ -36,7 +24,7 @@
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item">
-                                        <a href="/seller/product/list">
+                                        <a href="javascript: void(0);">
                                             Product</a
                                         >
                                     </li>
@@ -152,26 +140,71 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-xxl-12">
-                                                    <div class="row">
+                                                    
+                                                        <div
+                                                            class="col-lg-6 mb-3"
+                                                        >                                                    
+                                                            <input
+                                                                type="hidden"
+                                                                name="vendor_id"
+                                                                id="vendor_id"
+                                                            />
+                                                        </div>
+                                                        <div class="row">
                                                         <div
                                                             class="col-lg-6 mb-3"
                                                         >
                                                             <label
-                                                                for="productTitle"
+                                                                for="productCategories"
                                                                 class="form-label"
-                                                                >Product Name
+                                                                >Select
+                                                                Categories
                                                                 <span
                                                                     class="text-danger"
                                                                     >*</span
                                                                 ></label
                                                             >
-                                                            <input
-                                                                type="text"
+                                                            <select
                                                                 class="form-control"
-                                                                id="product_name"
-                                                                name="product_name"
-                                                                placeholder="Enter product name"
-                                                            />
+                                                                id="category-field"
+                                                                name="category_id"
+                                                            >
+                                                                <option
+                                                                    value=""
+                                                                    selected
+                                                                >
+                                                                    Select
+                                                                    Category
+                                                                </option>
+                                                                <%
+                                                                categoriesForDropdown.forEach(function(category)
+                                                                { %>
+                                                                <option
+                                                                    value="<%= category._id %>"
+                                                                >
+                                                                    <%=
+                                                                    category.prefix
+                                                                    %><%=
+                                                                    category.name
+                                                                    %>
+                                                                </option>
+                                                                <% if
+                                                                (category.children
+                                                                &&
+                                                                category.children.length
+                                                                > 0) { %> <%
+                                                                category.children.forEach(function(child)
+                                                                { %>
+                                                                <option
+                                                                    value="<%= child._id %>"
+                                                                >
+                                                                    <%=
+                                                                    child.name
+                                                                    %>
+                                                                </option>
+                                                                <% }); %> <% }
+                                                                %> <% }); %>
+                                                            </select>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <div class="mb-3">
@@ -208,6 +241,29 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
+                                                        <div
+                                                            class="col-lg-8 mb-3"
+                                                        >
+                                                            <label
+                                                                for="productTitle"
+                                                                class="form-label"
+                                                                >Product Name
+                                                                <span
+                                                                    class="text-danger"
+                                                                    >*</span
+                                                                ></label
+                                                            >
+                                                            <input
+                                                                type="text"
+                                                                class="form-control"
+                                                                id="product_name"
+                                                                name="product_name"
+                                                                placeholder="Enter product name"
+                                                            />
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="row">
                                                         <div class="col-lg-6">
                                                             <div class="mb-3">
                                                                 <label
@@ -215,15 +271,41 @@
                                                                     class="form-label"
                                                                     >Unit</label
                                                                 >
-                                                                <input
-                                                                    type="text"
+                                                                <select
                                                                     class="form-control"
-                                                                    id="productUnit"
-                                                                    name="unit"
-                                                                    placeholder="Enter product unit"
-                                                                />
+                                                                    id="unit_id"
+                                                                    name="unit_id"
+                                                                >
+                                                                    <option
+                                                                        value=""
+                                                                        disabled
+                                                                        selected
+                                                                    >
+                                                                        Select
+                                                                        Unit
+                                                                    </option>
+                                                                    <%
+                                                                    unit.forEach(function(element)
+                                                                    { %>
+                                                                    <option
+                                                                        value="<%= element._id %>"
+                                                                    >
+                                                                        <%=
+                                                                        element._id
+                                                                        ===
+                                                                        element.unit_id
+                                                                        ?
+                                                                        'selected'
+                                                                        : ''
+                                                                        %><%=
+                                                                        element.name
+                                                                        %>
+                                                                    </option>
+                                                                    <% }); %>
+                                                                </select>
                                                             </div>
                                                         </div>
+
                                                         <div class="col-lg-6">
                                                             <label
                                                                 for="productStyle"
@@ -284,37 +366,30 @@
                                                     </div>
 
                                                     <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <!-- status   -->
-                                                            <div class="mb-3">
+                                                        <div
+                                                            class="col-lg-6 mt-2"
+                                                        >
+                                                            <div
+                                                                class="form-group row"
+                                                            >
                                                                 <label
-                                                                    for="choices-publish-status-input"
-                                                                    class="form-label"
+                                                                    class="col-lg-2 col-from-label form-label"
                                                                     >Status</label
                                                                 >
-                                                                <select
-                                                                    class="form-control"
-                                                                    id="status_id"
-                                                                    name="status_id"
+                                                                <div
+                                                                    class="col-lg-7 form-check form-switch"
                                                                 >
-                                                                    <option
-                                                                        value=""
-                                                                        disabled
-                                                                        selected
-                                                                    >
-                                                                        Select
-                                                                        Status
-                                                                    </option>
-                                                                    <%status.forEach(function(element){
-                                                                    %>
-                                                                    <option
-                                                                        value="<%= element._id %>"
-                                                                    >
-                                                                        <%=
-                                                                        element.name%>
-                                                                    </option>
-                                                                    <% }); %>
-                                                                </select>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        name="status_id"
+                                                                        id="status_id"
+                                                                        class="form-check-input form-check-input-lg"
+                                                                        checked
+                                                                    />
+                                                                    <span
+                                                                        class="custom-switch-indicator"
+                                                                    ></span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -356,6 +431,19 @@
                                                                 name="thumbnail"
                                                                 placeholder="Upload thumbnail"
                                                             />
+
+                                                            <div
+                                                                class="mb-2 mt-2"
+                                                                id="previewthumbnailicon"
+                                                                style="
+                                                                    display: none;
+                                                                "
+                                                            >
+                                                                <img
+                                                                    src=""
+                                                                    id="display_preview_thumbnail_icon"
+                                                                />
+                                                            </div>
                                                         </div>
 
                                                         <div class="mb-3">
@@ -375,6 +463,18 @@
                                                                 multiple
                                                                 placeholder="Upload gallery image"
                                                             />
+                                                            <div
+                                                                class="mb-2 mt-2"
+                                                                id="previewgalleryicon"
+                                                                style="
+                                                                    display: none;
+                                                                "
+                                                            >
+                                                                <img
+                                                                    src=""
+                                                                    id="display_preview_gallery_icon"
+                                                                />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="card">
@@ -430,24 +530,35 @@
                                                             >
                                                                 <div>
                                                                     <label
-                                                                        for="manufacturer-name-input"
                                                                         class="form-label"
+                                                                        for="product-price-input"
                                                                         >Unit
                                                                         Price
                                                                         <span
                                                                             class="text-danger"
                                                                             >*</span
+                                                                        ></label
+                                                                    >
+                                                                    <div
+                                                                        class="input-group has-validation"
+                                                                    >
+                                                                        <span
+                                                                            class="input-group-text"
+                                                                            id="product-price-addon"
+                                                                            >₹</span
                                                                         >
-                                                                    </label>
-                                                                    <input
-                                                                        type="number"
-                                                                        class="form-control"
-                                                                        id="unit_price"
-                                                                        name="unit_price"
-                                                                        step="any"
-                                                                        min="0"
-                                                                        placeholder="Enter unit price"
-                                                                    />
+                                                                        <input
+                                                                            type="number"
+                                                                            class="form-control"
+                                                                            id="unit_price"
+                                                                            name="unit_price"
+                                                                            step="any"
+                                                                            min="0"
+                                                                            placeholder="Enter unit price"
+                                                                            aria-label="Price"
+                                                                            aria-describedby="product-price-addon"
+                                                                        />
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <!--end col-->
@@ -494,19 +605,29 @@
                                                             >
                                                                 <div>
                                                                     <label
-                                                                        for="productStocks"
                                                                         class="form-label"
+                                                                        for="product-discount-input"
+                                                                        >Special
+                                                                        Discount</label
                                                                     >
-                                                                        Special
-                                                                        Discount
-                                                                    </label>
-                                                                    <input
-                                                                        type="number"
-                                                                        class="form-control"
-                                                                        id="special_discount"
-                                                                        name="special_discount"
-                                                                        placeholder="Enter discount"
-                                                                    />
+                                                                    <div
+                                                                        class="input-group"
+                                                                    >
+                                                                        <span
+                                                                            class="input-group-text"
+                                                                            id="product-discount-addon"
+                                                                            >%</span
+                                                                        >
+                                                                        <input
+                                                                            type="number"
+                                                                            class="form-control"
+                                                                            id="special_discount"
+                                                                            name="special_discount"
+                                                                            placeholder="Enter discount"
+                                                                            aria-label="discount"
+                                                                            aria-describedby="product-discount-addon"
+                                                                        />
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div
@@ -655,11 +776,35 @@
                                                                         ></label
                                                                     >
                                                                     <input
-                                                                        type="number"
+                                                                        type="text"
                                                                         class="form-control"
                                                                         id="sku"
                                                                         name="sku"
                                                                         placeholder="Enter SKU"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div
+                                                                class="col-lg-6"
+                                                                id="stockContainer"
+                                                            >
+                                                                <div>
+                                                                    <label
+                                                                        for="current_stock"
+                                                                        class="form-label"
+                                                                        >Current Stock
+                                                                        <span
+                                                                            class="text-danger"
+                                                                            >*</span
+                                                                        ></label
+                                                                    >
+                                                                    <input
+                                                                        type="text"
+                                                                        class="form-control"
+                                                                        id="current_stock"
+                                                                        name="current_stock"
+                                                                        min="0"
+                                                                        placeholder="Enter current stock"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -700,7 +845,6 @@
                                                                             multiple=""
                                                                             tabindex="-1"
                                                                             aria-hidden="true"
-                                                                            onchange="showAttributeValues()"
                                                                         >
                                                                             <%attributes.forEach(function(element){
                                                                             %>
@@ -746,8 +890,6 @@
                                                                             type="text"
                                                                             class="form-control"
                                                                             id="attribute_value_input"
-                                                                            value=""
-                                                                            disabled=""
                                                                         />
                                                                     </div>
                                                                     <div
@@ -872,7 +1014,7 @@
                                                         <textarea
                                                             type="text"
                                                             class="form-control"
-                                                            id="long_description"
+                                                            id="editor"
                                                             name="long_description"
                                                             placeholder="Enter Long Description"
                                                         ></textarea>
@@ -891,8 +1033,22 @@
                                                             class="form-control"
                                                             id="description_image"
                                                             name="description_image"
+                                                            multiple
                                                             placeholder="Upload description image"
                                                         />
+
+                                                        <div
+                                                            class="mb-2 mt-2"
+                                                            id="previewdescriptionicon"
+                                                            style="
+                                                                display: none;
+                                                            "
+                                                        >
+                                                            <img
+                                                                src=""
+                                                                id="display_preview_description_icon"
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -919,6 +1075,18 @@
                                                             name="pdf"
                                                             placeholder="Upload pdf"
                                                         />
+                                                        <div
+                                                            class="mb-2 mt-2"
+                                                            id="previewpdficon"
+                                                            style="
+                                                                display: none;
+                                                            "
+                                                        >
+                                                            <embed
+                                                                src=""
+                                                                id="display_preview_pdf_icon"
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1097,8 +1265,22 @@
                                                                         class="form-control"
                                                                         id="meta_image"
                                                                         name="meta_image"
+                                                                        multiple
                                                                         placeholder="Upload Meta Image"
                                                                     />
+
+                                                                    <div
+                                                                        class="mb-2 mt-2"
+                                                                        id="previewmetaicon"
+                                                                        style="
+                                                                            display: none;
+                                                                        "
+                                                                    >
+                                                                        <img
+                                                                            src=""
+                                                                            id="display_preview_meta_icon"
+                                                                        />
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1129,47 +1311,29 @@
 <!-- END layout-wrapper -->
 
 <%- include ('partials/footer.ejs') %>
-<!-- JAVASCRIPT -->
-<script src="/assets/libs/dropzone/dropzone-min.js"></script>
-<script src="/assets/libs/%40ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
-<script src="/assets/js/pages/ecommerce-create-product.init.js"></script>
-<script
-    type="text/javascript"
-    src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
-></script>
-<script
-    type="text/javascript"
-    src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
-></script>
-<script src="https://multivendor1.clientweb.xyz/public/admin/js/select2.min.js"></script>
-<script type="text/javascript">
-    // Select2
-    if (jQuery().select2) {
-        $(".select2").select2();
-    }
-</script>
+<script src="/admin/js/ckeditor/ckeditor.js"></script>
+<script src="/admin/js/ck.js"></script>
 
 <!-- toggleVariant javascript -->
 <script>
-    function toggleVariant() {
+     function toggleVariant() {
         const variantCheckbox = document.getElementById("variant");
         const skuContainer = document.getElementById("skuContainer");
-        const attributeDropdownContainer = document.getElementById(
-            "attributeDropdownContainer"
-        );
-        const attValDrpdwnContainer = document.getElementById(
-            "attValDrpdwnContainer"
-        );
+        const attributeDropdownContainer = document.getElementById("attributeDropdownContainer");
+        const attValDrpdwnContainer = document.getElementById("attValDrpdwnContainer");
         const variantTable = document.getElementById("variantTable");
+        const stockContainer = document.getElementById("stockContainer");
 
         if (variantCheckbox.checked) {
             skuContainer.style.display = "none";
             attributeDropdownContainer.style.display = "block";
+            stockContainer.style.display = "none"; // Hide stock container when variant is on
         } else {
             skuContainer.style.display = "block";
             attributeDropdownContainer.style.display = "none";
             attValDrpdwnContainer.style.display = "none";
             variantTable.style.display = "none";
+            stockContainer.style.display = "block"; // Show stock container when variant is off
         }
     }
 </script>
@@ -1203,19 +1367,119 @@
             }
         );
     });
+    document
+        .getElementById("special_discount_type")
+        .addEventListener("change", function () {
+            const discountType = this.value;
+            const discountAddon = document.getElementById(
+                "product-discount-addon"
+            );
+
+            if (discountType === "flat") {
+                discountAddon.textContent = "₹"; // Use ₹ for flat discount
+            } else if (discountType === "percentage") {
+                discountAddon.textContent = "%"; // Use % for percentage discount
+            } else {
+                discountAddon.textContent = ""; // Clear if no type is selected
+            }
+        });
 </script>
 
 <!--function script showAttributeValues showTable -->
 <script>
+    $(document).on("change", ".attribute-sets", function (e) {
+        var form = $("#addProductForm");
+        var formData = form.serializeArray();
+        var jsonData = {};
+
+        $.each(formData, function () {
+            if (jsonData[this.name]) {
+                // If the name already exists, push the new value to the array
+                if (Array.isArray(jsonData[this.name])) {
+                    jsonData[this.name].push(this.value);
+                } else {
+                    jsonData[this.name] = [jsonData[this.name], this.value];
+                }
+            } else {
+                // If the name does not exist, create it
+                jsonData[this.name] = this.value;
+            }
+        });
+        if (jsonData["attribute_sets_id"]) {
+            jsonData.attributeSetIds = jsonData["attribute_sets_id"];
+            delete jsonData["attribute_sets_id"];
+        }
+
+        const attValDrpdwnContainer = document.getElementById(
+            "attValDrpdwnContainer"
+        );
+        attValDrpdwnContainer.innerHTML = "";
+        const attValTable = document.getElementById("variantTable");
+        attValTable.innerHTML = "";
+        $.ajax({
+            url: "/seller/product/get-attribute-values",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(jsonData),
+            success: function (attributeValues) {
+                attValDrpdwnContainer.innerHTML = attributeValues;
+                $(".select2").select2();
+            },
+            error: function (data) {},
+        });
+        $("#attValDrpdwnContainer").show();
+    });
+
+    $(document).on("change", ".variant", function (e) {
+        var form = $("#addProductForm");
+        var formData = form.serializeArray();
+        var jsonData = {};
+
+        $.each(formData, function () {
+            if (jsonData[this.name]) {
+                // If the name already exists, push the new value to the array
+                if (Array.isArray(jsonData[this.name])) {
+                    jsonData[this.name].push(this.value);
+                } else {
+                    jsonData[this.name] = [jsonData[this.name], this.value];
+                }
+            } else {
+                // If the name does not exist, create it
+                jsonData[this.name] = this.value;
+            }
+        });
+        if (jsonData["attribute_sets_id[]"]) {
+            jsonData.attributeSetIds = Array.isArray(
+                jsonData["attribute_sets_id"]
+            )
+                ? jsonData["attribute_sets_id"]
+                : [jsonData["attribute_sets_id"]];
+
+            delete jsonData["attribute_sets_id"];
+        }
+        const attValTable = document.getElementById("variantTable");
+        attValTable.innerHTML = "";
+        $.ajax({
+            url: "/seller/product/get-variant",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(jsonData),
+            success: function (attributeValues) {
+                attValTable.innerHTML = attributeValues;
+            },
+            error: function (data) {},
+        });
+        $("#variantTable").show();
+    });
+
+    let selectedAttributeValues = {};
     function showAttributeValues() {
         const attributeDropdown = document.getElementById("attribute_sets_id");
         const attValDrpdwnContainer = document.getElementById(
             "attValDrpdwnContainer"
         );
-        const variantTable = document.getElementById("variantTable");
-
         attValDrpdwnContainer.innerHTML = "";
-        var attributeSets = JSON.parse("<%- JSON.stringify(attributes) %>");
+        var attributeSets = JSON.parse('<%- JSON.stringify(attributes) %>');
         var selectedAttributeSets = $("#attribute_sets_id").val();
 
         if (selectedAttributeSets.length > 0) {
@@ -1225,10 +1489,21 @@
                 ) {
                     return element._id === attributeSetId;
                 });
+                if (!selectedAttributeValues[attributeSetId]) {
+                    selectedAttributeValues[attributeSetId] = [];
+                }
+                var form = $("#addProductForm");
+                var formData = form.serializeArray();
+                var jsonData = {};
+
+                $.each(formData, function () {
+                    jsonData[this.name] = this.value;
+                });
+
                 $.ajax({
-                    url: "/admin/product/get-attribute-values",
+                    url: "/seller/product/get-attribute-values",
                     type: "POST",
-                    data: JSON.stringify({ attributeSetIds: [attributeSetId] }),
+                    data: JSON.stringify(jsonData),
                     contentType: "application/json",
                     success: function (attributeValues) {
                         var attributeValueSelect =
@@ -1236,14 +1511,28 @@
                         attributeValueSelect.className =
                             "form-control select2 variant";
                         attributeValueSelect.name = "attribute_value_id";
-                        // attributeValueSelect.id = "attribute_value_id_" + attributeSetId;
                         attributeValueSelect.multiple = true;
-                        attributeValueSelect.onchange = showTable;
+                        attributeValueSelect.setAttribute(
+                            "data-set-name",
+                            selectedAttributeSet.title
+                        );
+                        attributeValueSelect.onchange = function () {
+                            selectedAttributeValues[attributeSetId] =
+                                $(this).val();
+                            showTable();
+                        };
 
                         attributeValues.forEach(function (element) {
                             var option = document.createElement("option");
                             option.value = element._id;
                             option.textContent = element.value;
+                            if (
+                                selectedAttributeValues[
+                                    attributeSetId
+                                ].includes(element._id)
+                            ) {
+                                option.selected = true;
+                            }
                             attributeValueSelect.appendChild(option);
                         });
 
@@ -1292,7 +1581,7 @@
 
     function showTable() {
         var attributeValues = JSON.parse(
-            "<%- JSON.stringify(attributeValues) %>"
+           '<%- JSON.stringify(attributeValues) %>'
         );
         var selectedAttributeValues = [];
 
@@ -1303,47 +1592,55 @@
                     selectedAttributeValues.concat(values);
             }
         });
-        var variantTableBody = $("#variantTableBody");
-        variantTableBody.empty();
-
         selectedAttributeValues.forEach(function (attributeValueId) {
             var attributeValue = attributeValues.find(function (element) {
                 return element._id === attributeValueId;
             });
 
-            var row = `
-            <tr>
-                       <td width="18%">
-                    
-                    <label class="font-normal">${attributeValue.value}</label>
-                     </td>
-                        <td width="18%">
-                            <input type="number" lang="en" name="price" id="price" value="0" min="0" step="any" class="form-control" />
-                        </td>
-                        <td width="18%">
-                            <input type="text" name="sku" id="sku" class="form-control" />
-                        </td>
-                        <td width="18%">
-                            <input type="number" lang="en" name="current_stock" id="current_stock" value="" min="0" step="1" class="form-control" />
-                        </td>
-                        <td width="22%">
-                            <div>
-                                <input type="file" name="image" id="image" class="form-control" />
-                            </div>
-                        </td>
-                        <td width="6%">
-                            <button type="button" class="btn btn-icon btn-sm btn-danger remove-menu-row" onclick="$(this).closest('tr').remove();">
-                                <i class="bx bx-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-            `;
+            // Check if a row already exists for this attribute value
+            var existingRow = $("#variantTableBody").find(
+                `tr[data-value-id="${attributeValueId}"]`
+            );
 
-            variantTableBody.append(row);
-        }),
-            (document.getElementById("variantTable").style.display = "block");
+            if (existingRow.length > 0) {
+                existingRow.find('input[name="price"]').val();
+                existingRow.find('input[name="sku"]').val();
+                existingRow.find('input[name="current_stock"]').val();
+            } else {
+                var row = `
+                <tr data-value-id="${attributeValueId}">
+                    <td width="18%">
+                        <label class="font-normal">${attributeValue.value}</label>
+                    </td>
+                    <td width="18%">
+                        <input type="number" lang="en" name="price" id="price" value="0" min="0" step="any" class="form-control" />
+                    </td>
+                    <td width="18%">
+                        <input type="text" name="sku" id="sku" class="form-control" />
+                    </td>
+                    <td width="18%">
+                        <input type="number" lang="en" name="current_stock" id="current_stock" value="" min="0" step="1" class="form-control" />
+                    </td>
+                    <td width="22%">
+                        <div>
+                            <input type="file" name="image" id="image" multiple class="form-control" />
+                        </div>
+                    </td>
+                    <td width="6%">
+                        <button type="button" class="btn btn-icon btn-sm btn-danger remove-menu-row" onclick="$(this).closest('tr').remove();">
+                            <i class="bx bx-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+                $("#variantTableBody").append(row);
+            }
+        });
+        // Ensure the variant table is visible
+        $("#variantTable").show();
     }
 </script>
+
 
 <!-- Script for addProductForm Ajax -->
 <script>
@@ -1352,17 +1649,6 @@
 
     function submitFormHandler(e) {
         e.preventDefault();
-
-        function getFormData($form) {
-            var unindexed_array = $form.serializeArray();
-            var indexed_array = {};
-
-            $.map(unindexed_array, function (n, i) {
-                indexed_array[n["name"]] = n["value"];
-            });
-
-            return indexed_array;
-        }
 
         if ($("#product_name").val() == "") {
             iziToast.warning({
@@ -1388,7 +1674,10 @@
             });
             return;
         }
-        if ($("#category-field").val() == "") {
+        if (
+            $("#category-field").val() == null ||
+            $("#category-field").val() == ""
+        ) {
             iziToast.warning({
                 title: "Warning",
                 message: "Category is required",
@@ -1416,6 +1705,14 @@
             iziToast.warning({
                 title: "Warning",
                 message: "Unit Price is required",
+                position: "topRight",
+            });
+            return;
+        }
+        if ($("#status_id").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Status is required",
                 position: "topRight",
             });
             return;
@@ -1459,6 +1756,15 @@
             formData.image = images.filter((val) => val);
         } else {
             var sku = $("#sku").val();
+
+            if (!sku) {
+                iziToast.error({
+                    title: "Error",
+                    message: "SKU is required for non-variant product",
+                    position: "topRight",
+                });
+                return;
+            }
             formData = getFormData($("#addProductForm"));
             formData.sku = sku;
         }
@@ -1468,7 +1774,6 @@
             currentForm.querySelector('input[type="file"]').files.length > 0;
         if (hasImages) {
             formData = new FormData(currentForm);
-            console.log(formData);
         } else {
             formData = getFormData(addform);
         }
@@ -1496,7 +1801,7 @@
                     });
                 }
                 setTimeout(function () {
-                    location.reload();
+                    window.location.href = "/seller/product/list";
                 }, 1000);
             })
             .fail(function (xhr, status, error) {
@@ -1507,4 +1812,36 @@
                 });
             });
     }
+
+    $("#thumbnail").change(function () {
+        displayPP(this, $("#previewthumbnailicon"));
+    });
+    $("#gallery_image").change(function () {
+        displayPP(this, $("#previewgalleryicon"));
+    });
+    $("#description_image").change(function () {
+        displayPP(this, $("#previewdescriptionicon"));
+    });
+    $("#pdf").change(function () {
+        displayPDF(this, $("#previewpdficon"));
+    });
+    $("#meta_image").change(function () {
+        displayPP(this, $("#previewmetaicon"));
+    });
+</script>
+
+<!-- Slug generation script -->
+<script>
+    function generateSlug(name) {
+        return name
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .replace(/\s+/g, "-");
+    }
+
+    // Generate slug when product name is entered
+    $("#product_name").on("input", function () {
+        var slug = generateSlug($(this).val());
+        $("#slug").val(slug);
+    });
 </script>

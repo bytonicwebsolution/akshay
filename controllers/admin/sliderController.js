@@ -11,59 +11,29 @@ const { title } = require("process");
 class SliderController {
     static list = async (req, res) => {
         try {
-            let sliders = await Slider.aggregate([
-                {
-                    $lookup: {
-                        from: "sliders",
-                        localField: "parent_id",
-                        foreignField: "_id",
-                        as: "parent",
-                    },
-                },
-                {
-                    $lookup: {
-                        from: "statuses",
-                        localField: "status_id",
-                        foreignField: "_id",
-                        as: "status",
-                    },
-                },
-                {
-                    $unwind: {
-                        path: "$status",
-                        preserveNullAndEmptyArrays: true,
-                    },
-                },
-                {
-                    $addFields: {
-                        parent_name: { $arrayElemAt: ["$parent.name", 0] },
-                        parent_id: { $arrayElemAt: ["$parent", 0] },
-                        status_name: "$status",
-                    },
-                },
-                {
-                    $project: {
-                        _id: 1,
-                        title: 1,
-                        image: 1,
-                        description: 1,
-                        url: 1,
-                        status_id: 1,
-                    },
-                },
-                {
-                    $sort: {
-                        created_at: -1,
-                    },
-                },
-            ]).exec();
-            await Slider.populate(sliders, { path: "status_id" });
+            let sliders = await Slider.find({})
+                .sort({ created_at: -1 })
+                .populate("status_id");
+
+            await config.createSliderStatus();
+            const activeStatus = await Status.findOne({
+                type: "slider",
+                name: { $regex: new RegExp("^active$", "i") },
+            });
+            const page = parseInt(req.query.page) || 1; // Current page number, default to 1
+            const pageSize = parseInt(req.query.pageSize) || 10; // Items per page, default to 10
+
+            const totalItems = await Slider.countDocuments();
             return res.render("admin/slider", {
                 sliders,
+                activeStatus,
+                currentPage: page,
+                pageSize,
+                totalItems,
             });
         } catch (error) {
             return res.status(500).send({
-                message: "Error fetching categories: " + error.message,
+                message: "Error fetching sliders: " + error.message,
             });
         }
     };
@@ -75,7 +45,6 @@ class SliderController {
                     return res.send(req.fileValidationError);
                 } else if (!req.file) {
                     return res.send({
-                        success: false,
                         status: 400,
                         message: "Please upload an image",
                     });
@@ -111,7 +80,6 @@ class SliderController {
                 });
                 await insertRecord.save();
                 return res.send({
-                    success: true,
                     status: 200,
                     message: "Slider added successfully",
                 });
@@ -170,7 +138,7 @@ class SliderController {
                 };
 
                 if (req.file) {
-                    updatedData.image = req.file.filename;
+                    updatedData.image = req.file ? req.file.filename : null;
                 }
                 await Slider.findOneAndUpdate(
                     { _id: req.body.editid },
@@ -180,10 +148,7 @@ class SliderController {
 
                 if (req.file && slider.image) {
                     fs.unlink(
-                        path.join(
-                            root,
-                            "/public/dist/slider/" + slider.image
-                        ),
+                        path.join(root, "/public/dist/slider/" + slider.image),
                         (err) => {
                             if (err) {
                                 console.log(err);
@@ -192,7 +157,6 @@ class SliderController {
                     );
                 }
                 return res.send({
-                    success: true,
                     status: 200,
                     message: "Slider updated successfully",
                 });
@@ -208,7 +172,6 @@ class SliderController {
         try {
             await Slider.findByIdAndDelete(req.params.id);
             return res.send({
-                success: true,
                 status: 200,
                 message: "Slider deleted successfully",
             });

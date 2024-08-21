@@ -4,7 +4,15 @@ class UnitController {
     static list = async (req, res) => {
         try {
             let units = await Unit.find().sort({ created_at: -1 });
-            return res.render("admin/unit", { units });
+            const page = parseInt(req.query.page) || 1; // Current page number, default to 1
+            const pageSize = parseInt(req.query.pageSize) || 10; // Items per page, default to 10
+            const totalItems = await Unit.countDocuments();
+            return res.render("admin/unit", {
+                units,
+                currentPage: page,
+                pageSize,
+                totalItems,
+            });
         } catch (error) {
             console.log(error);
             return res.status(500).send({
@@ -23,17 +31,15 @@ class UnitController {
                 symbol: req.body.symbol,
                 symbol_international: req.body.symbol_international,
             });
-
             await insertRecord.save();
             return res.send({
-                success: true,
                 status: 200,
                 message: "Unit added successfully",
             });
         } catch (error) {
             console.error(error);
             return res.status(500).send({
-                message: "Error adding unit: " + error.message,
+                message: "Error add unit: " + error.message,
             });
         }
     };
@@ -49,6 +55,7 @@ class UnitController {
                 edit_symbol,
                 edit_symbol_international,
             } = req.body;
+
             const unit = await Unit.findOne({
                 _id: editid,
             });
@@ -67,30 +74,29 @@ class UnitController {
                 }
             );
             return res.send({
-                success: true,
                 status: 200,
                 message: "Units updated successfully",
             });
         } catch (error) {
             console.log(error);
             return res.status(500).send({
-                message: "Error updating units: " + error.message,
+                message: "Error update units: " + error.message,
             });
         }
     };
 
     static delete = async (req, res) => {
         try {
-            await Unit.findByIdAndDelete(req.params.id);
+            const { id } = req.params;
+            await Unit.findByIdAndDelete(id);
             return res.send({
-                success: true,
                 status: 200,
-                message: "AttributeSet Deleted successfully",
+                message: "Unit Deleted successfully",
             });
         } catch (error) {
             console.log(error);
             return res.status(500).send({
-                message: "Error deleting attribute sets: " + error.message,
+                message: "Error delete unit: " + error.message,
             });
         }
     };

@@ -1,13 +1,11 @@
-const express = require("express");
-const router = express.Router();
-const UserController = require("../../controllers/admin/userController");
+const router = require("express").Router();
 const { NotLoggedIn } = require("../../middlewares/Adminauth");
+const UserController = require("../../controllers/admin/userController");
 
 router.get("/list", NotLoggedIn, UserController.list);
-router.post("/add", NotLoggedIn, UserController.add);
-router.post("/edit",NotLoggedIn, UserController.edit );
-router.post("/delete/:id", NotLoggedIn, UserController.delete)
-
-
+router.post("/add", NotLoggedIn, UserController.create);
+router.post("/edit", NotLoggedIn, UserController.edit);
+router.get("/order-view/:id", NotLoggedIn, UserController.view);
+router.post("/delete/:id", NotLoggedIn, UserController.delete);
 
 module.exports = router;

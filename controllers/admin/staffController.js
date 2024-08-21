@@ -8,11 +8,12 @@ const fs = require("fs");
 
 // Set storage engine for users
 const storage = multer.diskStorage({
-    destination: (req, res, cb) => {
-        cb(null, path.join(root, "/public/dist/staff"));
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}.jpg`);
+    destination: path.join(root, "/public/dist/staff"),
+    filename: function (req, file, cb) {
+        cb(
+            null,
+            file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+        );
     },
 });
 
@@ -45,29 +46,21 @@ class staffController {
             });
         } catch (error) {
             return res.status(500).send({
-                message: "Error fetching categories: " + error.message,
+                message: "Error fetching staff: " + error.message,
             });
         }
     };
-    static GETadd = async (req, res) => {
+    static addGET = async (req, res) => {
         try {
-            // let staff = await Staff.aggregate([
-            //     {
-            //         $sort: {
-            //             created_at: -1,
-            //         },
-            //     },
-            // ]).exec();
-
-            res.render("admin/staff-add");
+            return res.render("admin/add-staff");
         } catch (error) {
             return res.status(500).send({
-                message: "Error fetching categories: " + error.message,
+                message: "Error fetching staff: " + error.message,
             });
         }
     };
 
-    static POSTadd = async (req, res) => {
+    static create = async (req, res) => {
         upload(req, res, async (err) => {
             if (err) {
                 return res.status(400).send({ message: err.message });
@@ -80,10 +73,10 @@ class staffController {
                 email,
                 phone,
                 password,
-                currentpassword,
+                confirm_password,
             } = req.body;
 
-            if (password !== currentpassword) {
+            if (password !== confirm_password) {
                 return res.status(401).json({
                     message: "Password and Confirm Password do not match",
                 });
@@ -96,7 +89,7 @@ class staffController {
 
                 const staffExists = await Adminauth.findOne({
                     email: email,
-                    username:username,
+                    username: username,
                     type: "s",
                 });
 
@@ -109,7 +102,7 @@ class staffController {
                 const staff = new Adminauth({
                     image: req.file.filename,
                     type: "s",
-                    username:username,
+                    username: username,
                     first_name: first_name,
                     last_name: last_name,
                     email: email,
@@ -117,16 +110,14 @@ class staffController {
                     password: hashedPassword,
                 });
 
-
                 await staff.save();
-                
-                return res.json({
-                    message: "Staff registered successfully",
-                    success: true,
+                return res.send({
+                    status: 200,
+                    message: "Staff Add successfully",
                 });
             } catch (error) {
                 console.error(error);
-                return res.status(500).json({
+                return res.status(500).send({
                     message: "Something went wrong, please try again later",
                     error: error.message,
                 });
@@ -173,10 +164,7 @@ class staffController {
 
                 if (req.file && staff.image) {
                     fs.unlink(
-                        path.join(
-                            root,
-                            "/public/dist/staff/" + staff.image
-                        ),
+                        path.join(root, "/public/dist/staff/" + staff.image),
                         (err) => {
                             if (err) {
                                 console.log(err);
@@ -185,7 +173,6 @@ class staffController {
                     );
                 }
                 return res.send({
-                    success: true,
                     status: 200,
                     message: "Staff updated successfully",
                 });
@@ -204,15 +191,14 @@ class staffController {
             await Adminauth.findByIdAndDelete(req.params.id);
 
             return res.send({
-                success: true,
                 status: 200,
-                message: " Staff deleted successfully",
+                message: "Staff deleted successfully",
             });
         } catch (error) {
             console.log(error);
             return res
                 .status(500)
-                .send({ message: "Error deleting slider: " + error.message });
+                .send({ message: "Error deleting staff: " + error.message });
         }
     };
 }

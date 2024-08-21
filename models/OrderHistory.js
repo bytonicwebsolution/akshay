@@ -18,6 +18,18 @@ const orderHistorySchema = new mongoose.Schema({
         type: String,
         default: null,
     },
+    attribute_value_id: [
+        {
+            type: String,
+            default: null,
+        },
+    ],
+    variants: [
+        {
+            type: String,
+            default: null,
+        },
+    ],
     unit_price: {
         type: Number,
         required: true,

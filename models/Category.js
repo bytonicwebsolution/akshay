@@ -9,10 +9,10 @@ const Schema = new mongoose.Schema({
         type: String,
         // required: true
     },
-
     slug: {
         type: String,
         required: true,
+        unique: true,
     },
     parent_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -25,17 +25,21 @@ const Schema = new mongoose.Schema({
     meta_description: {
         type: String,
     },
-    is_featured:{
+    is_featured: {
         type: Boolean,
-        default:false
+        default: false,
     },
-    commision_type: {
-        type: String,
-        default: null,
-    },
-    commision: {
+    // commision_type: {
+    //     type: String,
+    //     default: null,
+    // },
+    commission: {
         type: Number,
         default: 0,
+    },
+    description: {
+        type: String,
+        default: null,
     },
     status_id: {
         type: mongoose.Schema.Types.ObjectId,

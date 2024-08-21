@@ -51,7 +51,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-xxl-3 col-sm-6">
+                                        <!-- <div class="col-xxl-3 col-sm-6">
                                             <div>
                                                 <select
                                                     class="form-control"
@@ -100,9 +100,9 @@
                                                     </option>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> -->
 
-                                        <div class="col-xxl-1 col-sm-6 ms-auto">
+                                        <!-- <div class="col-xxl-1 col-sm-6 ms-auto">
                                             <button
                                                 type="button"
                                                 class="btn btn-secondary w-100 pd-new"
@@ -113,7 +113,7 @@
                                                 ></i>
                                                 Filters
                                             </button>
-                                        </div>
+                                        </div> -->
                                         <!--end col-->
                                     </div>
                                     <!--end row-->
@@ -132,7 +132,7 @@
                                 >
                                     <div class="flex-grow-1">
                                         <h5 class="card-title mb-0">
-                                            Products
+                                            Categories
                                         </h5>
                                     </div>
                                     <div class="flex-shrink-0">
@@ -177,7 +177,7 @@
                                                     </th>
                                                     <th
                                                         class="sort cursor-pointer"
-                                                        data-sort="products"
+                                                        data-sort="category"
                                                     >
                                                         Request
                                                     </th>
@@ -189,30 +189,31 @@
                                                     </th>
                                                     <th
                                                         class="sort cursor-pointer"
-                                                        data-sort="stock"
+                                                        data-sort="status"
                                                     >
                                                         Status
                                                     </th>
                                                     <th
                                                         class="sort cursor-pointer"
-                                                        data-sort="price"
+                                                        data-sort="published"
                                                     >
                                                         Date
                                                     </th>
-
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="list form-check-all">
-                                                <!-- <tr>
+                                                <% if(!reqcategories[0]) { %>
+                                                <tr>
                                                     <td
                                                         colspan="100%"
                                                         class="text-center"
                                                     >
                                                         No Data
                                                     </td>
-                                                </tr> -->
-
+                                                </tr>
+                                                <% } else {%> <%
+                                                reqcategories.forEach(function(reqcategories,index){%>
                                                 <tr>
                                                     <td>
                                                         <div class="form-check">
@@ -226,22 +227,39 @@
                                                             ></label>
                                                         </div>
                                                     </td>
-                                                    <td class="request">
-                                                        Test Request
+                                                    <td class="category">
+                                                        <%=
+                                                        reqcategories.req_category_name?reqcategories.req_category_name:''
+                                                        %>
                                                     </td>
 
-                                                    <td class="root_category">
-                                                        Wall Tiles
+                                                    <td class="category">
+                                                        <%=
+                                                        reqcategories.parent_id
+                                                        ?
+                                                        reqcategories.parent_id.name
+                                                        : '' %>
                                                     </td>
-                                                    <td class="rating">
+                                                    <td class="status">
                                                         <span
                                                             class="badge bg-success-subtle text-success"
                                                         >
-                                                            Active</span
-                                                        >
+                                                            <%=
+                                                            reqcategories.status
+                                                            == 1 ? "Approved" :
+                                                            "Pending" %>
+                                                        </span>
                                                     </td>
+                                                    <% const date = new
+                                                    Date(reqcategories.created_at);
+                                                    const formattedDate =
+                                                    date.toLocaleString('en-GB',
+                                                    { day: '2-digit', month:
+                                                    'short', year: 'numeric' });
+                                                    %>
                                                     <td class="date">
-                                                        12 Oct, 2022
+                                                        <%= formattedDate ?
+                                                        formattedDate : ""%>
                                                     </td>
 
                                                     <td>
@@ -262,7 +280,7 @@
                                                             <ul
                                                                 class="dropdown-menu dropdown-menu-end"
                                                             >
-                                                                <li>
+                                                                <!-- <li>
                                                                     <a
                                                                         class="dropdown-item"
                                                                         href="apps-ecommerce-product-details.html"
@@ -271,7 +289,7 @@
                                                                         ></i>
                                                                         View</a
                                                                     >
-                                                                </li>
+                                                                </li> -->
                                                                 <li>
                                                                     <a
                                                                         class="dropdown-item edit-item-btn"
@@ -288,6 +306,7 @@
                                                                         class="dropdown-item remove-item-btn"
                                                                         data-bs-toggle="modal"
                                                                         href="#deleteRecordModal"
+                                                                        data-id="<%= reqcategories._id %>"
                                                                         ><i
                                                                             class="ph-trash align-middle me-1"
                                                                         ></i>
@@ -298,6 +317,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                <% }); %> <% } %>
                                             </tbody>
                                         </table>
                                     </div>
@@ -305,40 +325,38 @@
 
                                     <div class="noresult" style="display: none">
                                         <div class="text-center py-4">
-                                            <div class="avatar-md mx-auto mb-4">
-                                                <div
-                                                    class="avatar-title bg-light text-primary rounded-circle fs-4xl"
-                                                >
-                                                    <i class="bi bi-search"></i>
-                                                </div>
-                                            </div>
+                                            <i
+                                                class="ph-magnifying-glass fs-1 text-primary"
+                                            ></i>
                                             <h5 class="mt-2">
                                                 Sorry! No Result Found
                                             </h5>
                                             <p class="text-muted mb-0">
                                                 We've searched more than 150+
-                                                products We did not find any
-                                                products for you search.
+                                                categories We did not find any
+                                                categories for you search.
                                             </p>
                                         </div>
                                     </div>
-                                    <!-- end noresult -->
-
                                     <div
-                                        class="row mt-3 align-items-center"
+                                        class="align-items-center mt-4 justify-content-between row text-center text-sm-start"
                                         id="pagination-element"
                                     >
                                         <div class="col-sm">
-                                            <div
-                                                class="text-muted text-center text-sm-start"
-                                            >
+                                            <div class="text-muted">
                                                 Showing
-                                                <span class="fw-semibold"
-                                                    >10</span
+                                                <span
+                                                    class="fw-semibold"
+                                                    id="current-items"
+                                                    ><%= Math.min(currentPage *
+                                                    pageSize, totalItems)
+                                                    %></span
                                                 >
                                                 of
-                                                <span class="fw-semibold"
-                                                    >35</span
+                                                <span
+                                                    class="fw-semibold"
+                                                    id="total-items"
+                                                    ><%= totalItems %></span
                                                 >
                                                 Results
                                             </div>
@@ -350,23 +368,17 @@
                                             >
                                                 <a
                                                     class="page-item pagination-prev disabled"
-                                                    href="#"
+                                                    href="javascript:void(0)"
+                                                    >Previous</a
                                                 >
-                                                    <i
-                                                        class="mdi mdi-chevron-left align-middle"
-                                                    ></i>
-                                                </a>
                                                 <ul
                                                     class="pagination listjs-pagination mb-0"
                                                 ></ul>
                                                 <a
                                                     class="page-item pagination-next"
-                                                    href="#"
+                                                    href="javascript:void(0)"
+                                                    >Next</a
                                                 >
-                                                    <i
-                                                        class="mdi mdi-chevron-right align-middle"
-                                                    ></i>
-                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -399,7 +411,9 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light p-3">
-                <h5 class="modal-title" id="exampleModalLabel">Request Category</h5>
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Request Category
+                </h5>
                 <button
                     type="button"
                     class="btn-close"
@@ -410,8 +424,6 @@
             </div>
             <form class="tablelist-form" id="submitForm">
                 <div class="modal-body">
-                    <input type="hidden" id="id-field" />
-
                     <div class="text-center mb-3"></div>
                     <div class="mb-3">
                         <label for="brandname-field" class="form-label"
@@ -419,27 +431,31 @@
                         >
                         <input
                             type="text"
-                            id="brandname-field"
+                            id="name-field"
                             class="form-control"
-                            name="name"
+                            name="req_category_name"
                             placeholder="Enter Request"
                         />
                     </div>
 
-                    <div>
-                        <label for="status-field" class="form-label"
+                    <div class="mb-3">
+                        <label for="parent_id" class="form-label"
                             >Root Category</label
                         >
                         <select
                             class="form-control"
-                            id="status-field"
-                            name="status_id"
+                            id="parent_id"
+                            name="parent_id"
                         >
-                            <option value="" disabled selected>
-                                Select Category
+                            <option value="" selected>Select Category</option>
+                            <% categories.forEach(function(element) { %>
+                            <option
+                                value="<%= element._id %>"
+                                class="category-option"
+                            >
+                                <%= element.name %>
                             </option>
-
-                            <option value=""></option>
+                            <% }); %>
                         </select>
                     </div>
                 </div>
@@ -466,6 +482,7 @@
     </div>
 </div>
 <!-- end Add Category Modal -->
+
 <!-- deleteRecordModal -->
 <div
     id="deleteRecordModal"
@@ -505,7 +522,7 @@
                         Close
                     </button>
                     <button
-                        type="button"
+                        type="submit"
                         class="btn w-sm btn-danger btn-hover"
                         id="delete-record"
                     >
@@ -520,6 +537,101 @@
 </div>
 <!-- /deleteRecordModal -->
 
-
-
 <%- include('partials/footer') %>
+
+<script>
+    var addform = $("#submitForm");
+    addform.on("submit", submitFormHandler);
+
+    function submitFormHandler(e) {
+        e.preventDefault();
+
+        //validation
+        if ($("#name-field").val()== "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Please enter request category",
+                position: "topRight",
+            });
+            return;
+        }
+        var formData = getFormData(addform);
+        // DO POST
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/seller/category/request-add",
+            data: JSON.stringify(formData),
+        })
+            .done((res) => {
+                if (res.status == 200) {
+                    iziToast.success({
+                        title: "Success",
+                        message: res.message,
+                        position: "topRight",
+                    });
+                    $("#showModal").modal("hide");
+                    setTimeout(function () {
+                        location.reload();
+                    }, 500);
+                } else {
+                    iziToast.error({
+                        title: "Error",
+                        message: res.message,
+                        position: "topRight",
+                    });
+                }
+            })
+            .fail(function (xhr, status, error) {
+                iziToast.error({
+                    title: "Error",
+                    message: xhr.responseText,
+                    position: "topRight",
+                });
+            });
+    }
+
+    //#region Delete Category
+    let categoryIdToDelete;
+    $(document).ready(function () {
+        // Show the modal and store the category ID to delete
+        $(".remove-item-btn").click(function () {
+            categoryIdToDelete = $(this).data("id");
+        });
+
+        // AJAX request to delete the category
+        $("#delete-record").click(function () {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/seller/category/request-delete/" + categoryIdToDelete,
+            })
+                .done((res) => {
+                    if (res.status == 200) {
+                        iziToast.success({
+                            title: "Success",
+                            message: res.message,
+                            position: "topRight",
+                        });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 500);
+                    } else {
+                        iziToast.error({
+                            title: "Error",
+                            message: res.message,
+                            position: "topRight",
+                        });
+                    }
+                })
+                .fail(function (xhr, status, error) {
+                    iziToast.error({
+                        title: "Error",
+                        message: xhr.responseText,
+                        position: "topRight",
+                    });
+                });
+        });
+    });
+    //#endregion Delete Category
+</script>

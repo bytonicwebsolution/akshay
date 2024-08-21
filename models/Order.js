@@ -16,6 +16,7 @@ const orderSchema = new mongoose.Schema({
     },
     order_date: {
         type: String,
+        default: Date,
     },
     order_total_amount: {
         type: Number,
@@ -29,6 +30,9 @@ const orderSchema = new mongoose.Schema({
     order_subtotal_amount: {
         type: Number,
     },
+    additional_info: {
+        type: String,
+    },
     created_at: {
         type: String,
         default: Date,
@@ -40,5 +44,3 @@ const orderSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Order", orderSchema);
-
-// There are 4 collection, I have to populate the all the data using user_id, write only the populate code, dont write again all the modals

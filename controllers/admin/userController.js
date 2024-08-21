@@ -1,38 +1,44 @@
 const User = require("../../models/User");
-// const Coupon = require("../../models/Coupon");
-const jwt = require("jsonwebtoken");
+const Status = require("../../models/Status");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const path = require("path");
 const root = process.cwd();
-const moment = require("moment");
-const baseURL = `http://192.168.29.130:3000`;
 const imageFilter = require("../../config/imageFilter");
 const fs = require("fs");
-const Status = require("../../models/Status");
-require("dotenv").config;
+const config = require("../../config/createStatus");
+const Order = require("../../models/Order");
 
+// Set The Storage Engine
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        const dir = path.join(__dirname, "/public/dist/users/");
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
-        }
-        cb(null, dir);
-    },
+    destination: path.join(root, "/public/dist/users"),
     filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
+        cb(
+            null,
+            file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+        );
     },
 });
 
-const upload = multer({ storage: storage }).single("image"); // Update 'image' to your actual field name if different
+// Init Upload
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 5000000,
+    },
+    fileFilter: imageFilter,
+}).single("image");
 
 class UserController {
     static list = async (req, res) => {
         try {
-            let statuses = await Status.find().sort({ created_at: -1 });
             const users = await User.find({
                 user_type: "u",
+            });
+            let statuses = await Status.find({
+                type: "user",
+            }).sort({
+                created_at: -1,
             });
             return res.render("admin/user", { users, statuses });
         } catch (error) {
@@ -42,54 +48,61 @@ class UserController {
         }
     };
 
-    static add = async (req, res) => {
-        const {
-            first_name,
-            last_name,
-            email,
-            password,
-            confirmpassword: confirm_password,
-            status_id,
-        } = req.body;
-
-        if (password !== confirm_password) {
-            return res.status(401).json({
-                message: "Password and Confirm Password do not match",
-            });
-        }
-
+    static create = async (req, res) => {
         try {
-            const saltRounds = 10;
-            const salt = await bcrypt.genSalt(saltRounds);
-            const hashedPassword = await bcrypt.hash(password, salt);
+            const first_name = req.body.first_name;
+            const last_name = req.body.last_name;
+            const email = req.body.email;
+            const password = req.body.password;
+            const confirm_password = req.body.confirm_password;
+            const status_id = req.body.status_id;
+
+            if (password !== confirm_password)
+                return res.status(401).send({
+                    message: "Password and Confirm Password do not match",
+                });
+
+            const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS));
+            const hashedpassword = await bcrypt.hash(password, salt);
+            const hashedconfirm_password = await bcrypt.hash(
+                confirm_password,
+                salt
+            );
 
             const userExists = await User.findOne({
                 email: email,
                 user_type: "u",
             });
-
             if (userExists) {
-                return res.status(401).json({ message: "User already exists" });
+                return res.status(401).send({
+                    message: "User already exists",
+                });
             }
 
-            const user = new User({
+            await config.createUserStatus();
+            const activeStatus = await Status.findOne({
+                type: "user",
+                name: { $regex: new RegExp("^active$", "i") },
+            });
+
+            const user = await User({
                 user_type: "u",
                 first_name: first_name,
                 last_name: last_name,
                 email: email,
-                password: hashedPassword,
-                status_id: status_id,
+                password: hashedpassword,
+                confirm_password: hashedconfirm_password,
+                status: status_id ? status_id : activeStatus._id,
             });
-
             await user.save();
-            return res.json({
-                message: "User registered successfully",
-                success: true,
+            return res.send({
+                status: 200,
+                message: "User Add successfully",
             });
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({
-                message: "Something went wrong, please try again later",
+            console.log(error);
+            return res.status(500).send({
+                message: "Something went wrong please try again later",
                 error: error.message,
             });
         }
@@ -109,13 +122,11 @@ class UserController {
                 }
 
                 const user = await User.findOne({ _id: req.body.editid });
-
                 if (!user) {
                     return res.status(404).send({ message: "user not found" });
                 }
 
                 let updatedData = {
-                    image: req.file ? req.file.filename : "",
                     first_name: req.body.edit_first_name,
                     last_name: req.body.edit_last_name,
                     email: req.body.edit_email,
@@ -123,21 +134,36 @@ class UserController {
                     dob: req.body.edit_dob,
                     address: req.body.edit_address,
                     pincode: req.body.edit_pincode,
-                    status_id: req.body.status_id,
                     additional_info: req.body.edit_additional_info,
+                    status_id: req.body.status_id,
                 };
-                let userData = {};
-                for (let i in updatedData) {
-                    if (updatedData[i] != "") {
-                        userData[i] = updatedData[i]; // json object
-                    }
+
+                if (req.file) {
+                    updatedData.image = req.file ? req.file.filename : null;
                 }
                 await User.findOneAndUpdate(
                     { _id: req.body.editid },
-                    updatedData
+                    updatedData,
+                    { new: true }
                 );
 
+                if (req.file && user.image) {
+                    const oldImagePath = path.join(
+                        root,
+                        "/public/dist/users/",
+                        user.image
+                    );
+
+                    if (fs.existsSync(oldImagePath)) {
+                        try {
+                            fs.unlinkSync(oldImagePath);
+                        } catch (err) {
+                            console.error("Error deleting old image:", err);
+                        }
+                    }
+                }
                 return res.status(200).send({
+                    status: 200,
                     message: "User Update Successfully",
                 });
             });
@@ -150,20 +176,53 @@ class UserController {
         }
     };
 
+    static view = async (req, res) => {
+        try {
+            let id = req.params.id;
+            let user = await User.findOne({ _id: id });
+            if (!user) {
+                return res.status(404).send("User not found");
+            }
+
+            const orders = await Order.find({ user_id: user._id }).populate(
+                "user_id status_id"
+            );
+            const totalOrdersCount = await Order.countDocuments();
+
+            return res.render("admin/orders", {
+                user,
+                orders,
+                totalOrdersCount,
+            });
+        } catch (error) {
+            console.error("Error fetching user:", error);
+            return res
+                .status(500)
+                .send("Error fetching user details", error.message);
+        }
+    };
+
     static delete = async (req, res) => {
         try {
+            const user = await User.findOne({ _id: req.params.id });
+            if (!user) {
+                return res.status(404).send({ message: "user not found" });
+            }
             await User.findByIdAndDelete(req.params.id);
-
+            if (user.image) {
+                fs.unlinkSync(
+                    path.join(root, "/public/dist/users/", user.image)
+                );
+            }
             return res.send({
-                success: true,
                 status: 200,
-                message: " User deleted successfully",
+                message: "User deleted successfully",
             });
         } catch (error) {
             console.log(error);
-            return res
-                .status(500)
-                .send({ message: "Error deleting slider: " + error.message });
+            return res.status(500).send({
+                message: "Error deleting user: " + error.message,
+            });
         }
     };
 }

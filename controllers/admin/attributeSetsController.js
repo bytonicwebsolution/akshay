@@ -1,4 +1,5 @@
 const AttributeSets = require("../../models/AttributeSets");
+const AttributeValue = require("../../models/AttributeValue");
 const Category = require("../../models/Category");
 
 class AttributeSetsController {
@@ -10,14 +11,34 @@ class AttributeSetsController {
                 })
                 .populate("category_id");
 
+            // Fetch the attribute values for each attribute set
+            const attributesWithValues = await Promise.all(
+                attributes.map(async (attribute) => {
+                    const attributeValues = await AttributeValue.find({
+                        attribute_sets_id: attribute._id,
+                    });
+                    return {
+                        ...attribute._doc,
+                        values: attributeValues,
+                    };
+                })
+            );
+
             let categories = await Category.find({
                 parent_id: null,
             }).sort({
                 created_at: -1,
             });
+            const page = parseInt(req.query.page) || 1; // Current page number, default to 1
+            const pageSize = parseInt(req.query.pageSize) || 10; // Items per page, default to 10
+
+            const totalItems = await AttributeSets.countDocuments();
             return res.render("admin/attribute-sets", {
-                attributes,
+                attributes: attributesWithValues,
                 categories,
+                currentPage: page,
+                pageSize,
+                totalItems,
             });
         } catch (error) {
             console.log(error);
@@ -38,7 +59,6 @@ class AttributeSetsController {
             });
             await insertRecord.save();
             return res.send({
-                success: true,
                 status: 200,
                 message: "AttributeSet Added successfully",
             });
@@ -66,7 +86,6 @@ class AttributeSetsController {
                 }
             );
             return res.send({
-                success: true,
                 status: 200,
                 attributes,
                 message: "AttributeSet updated successfully",
@@ -83,7 +102,6 @@ class AttributeSetsController {
         try {
             await AttributeSets.findByIdAndDelete(req.params.id);
             return res.send({
-                success: true,
                 status: 200,
                 message: "AttributeSet Deleted successfully",
             });

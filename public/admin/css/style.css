@@ -302,12 +302,13 @@ table {
     border-radius: 0px;
 } */
 
-.category-wrapper {
+/* Edit Vendor CSS */
+.wrapper {
     display: inline-block;
     white-space: nowrap;
 }
 
-.category-wrapper .badge {
+.wrapper .badge {
     margin-right: 5px;
     margin-bottom: 5px;
 }
@@ -318,8 +319,10 @@ table {
     font-weight: 400;
     color: white;
     border-radius: 3px;
-    cursor: pointer; /* Ensure cursor changes on hover */
+    background-color: #2dcb73;
+    cursor: pointer;
 }
+
 .status-ban {
     border: none;
     font-size: smaller;
@@ -328,15 +331,17 @@ table {
     background-color: #ec1e24 !important;
     color: white !important;
     cursor: not-allowed;
+    font-weight: bold;
 }
 .status-active {
     background-color: #2dcb73;
+    font-weight: bold;
 }
 .status-inactive {
     background-color: #ddddde;
     color: black;
+    font-weight: bold;
 }
-
 .form-check-input-lg {
     width: 1.5em;
     height: 1.5em;
@@ -344,29 +349,15 @@ table {
     transform-origin: center;
     margin-right: 20px;
 }
-
 .transform:hover {
-    transform: scale(1.7);
+    transform: scale(1.2);
 }
+/* Edit Vendor CSS */
 
-.staff-checkbox {
-    transform: scale(1.7);
+/* Edit FAQ CSS */
+.form-wrapper {
+    border: 1px solid #e5e1e1;
+    padding: 10px;
+    margin-bottom: 10px;
 }
-
- .accordion-button.collapsed {
-    color: var(--tb-accordion-active-color);
-    background-color: var(--tb-accordion-active-bg);
-    -webkit-box-shadow: inset 0 calc(-1 * var(--tb-accordion-border-width)) 0
-        var(--tb-accordion-border-color);
-    box-shadow: inset 0 calc(-1 * var(--tb-accordion-border-width)) 0
-        var(--tb-accordion-border-color);
-}
-
-.accordion-button:not(.collapsed) .accordion-button {
-    color: var(--tb-accordion-active-color);
-    background-color: var(--tb-accordion-active-bg);
-    -webkit-box-shadow: inset 0 calc(-1 * var(--tb-accordion-border-width)) 0
-        var(--tb-accordion-border-color);
-    box-shadow: inset 0 calc(-1 * var(--tb-accordion-border-width)) 0
-        var(--tb-accordion-border-color);
-}
+/* Edit FAQ CSS */

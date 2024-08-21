@@ -16,12 +16,12 @@
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item">
-                                        <a href="/admin/dashboard"
+                                        <a href="javascript: void(0);"
                                             >Dashboard</a
                                         >
                                     </li>
                                     <li class="breadcrumb-item active">
-                                        Customers
+                                        Slider
                                     </li>
                                 </ol>
                             </div>
@@ -57,24 +57,6 @@
                                                     ></i>
                                                     Add Slider
                                                 </button>
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-secondary"
-                                                >
-                                                    <i
-                                                        class="ph-cloud-arrow-down align-middle me-1"
-                                                    ></i>
-                                                    Import
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-subtle-info"
-                                                >
-                                                    <i
-                                                        class="ph-cloud-arrow-up align-middle me-1"
-                                                    ></i>
-                                                    Export
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -87,70 +69,6 @@
 
                     <div class="row">
                         <div class="col-xxl-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row gy-3">
-                                        <div class="col-xl-4">
-                                            <div class="search-box">
-                                                <input
-                                                    type="text"
-                                                    class="form-control search"
-                                                    placeholder="Search customer, email etc..."
-                                                />
-                                                <i
-                                                    class="ri-search-line search-icon"
-                                                ></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-md-4">
-                                            <div>
-                                                <select
-                                                    class="form-control"
-                                                    id="idStatus"
-                                                    data-choices
-                                                    data-choices-search-false
-                                                >
-                                                    <option value="all">
-                                                        All Select
-                                                    </option>
-                                                    <option value="Active">
-                                                        Active
-                                                    </option>
-                                                    <option value="Unactive">
-                                                        Unactive
-                                                    </option>
-                                                    <option value="Block">
-                                                        Block
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-md-4">
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                id="datepicker-range"
-                                                data-provider="flatpickr"
-                                                data-date-format="d M, Y"
-                                                data-range-date="true"
-                                                placeholder="Select date"
-                                            />
-                                        </div>
-                                        <div class="col-xl-2 col-md-4">
-                                            <button
-                                                class="btn btn-subtle-primary w-100"
-                                                onclick="filterData();"
-                                            >
-                                                <i
-                                                    class="bi bi-funnel align-baseline me-1"
-                                                ></i>
-                                                Filter
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end card-->
                             <div class="card">
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -238,6 +156,7 @@
                                                                     <img
                                                                         class="avatar-xs rounded-circle customer-image-elem"
                                                                         src="<%- sliders.image ? '../../dist/slider/' + sliders.image : '../../assets/images/default/mart-demo-img.jpg' %>"
+                                                                        onerror="this.src='../../assets/images/default/mart-demo-img.jpg';"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -338,8 +257,8 @@
                                             </h5>
                                             <p class="text-muted mb-0">
                                                 We've searched more than 150+
-                                                customers We did not find any
-                                                customers for you search.
+                                                slider We did not find any
+                                                slider for you search.
                                             </p>
                                         </div>
                                     </div>
@@ -350,23 +269,30 @@
                                         <div class="col-sm">
                                             <div class="text-muted">
                                                 Showing
-                                                <span class="fw-semibold"
-                                                    >10</span
+                                                <span
+                                                    class="fw-semibold"
+                                                    id="current-items"
+                                                    ><%= Math.min(currentPage *
+                                                    pageSize, totalItems)
+                                                    %></span
                                                 >
                                                 of
-                                                <span class="fw-semibold"
-                                                    >13</span
+                                                <span
+                                                    class="fw-semibold"
+                                                    id="total-items"
+                                                    ><%= totalItems %></span
                                                 >
                                                 Results
                                             </div>
                                         </div>
+
                                         <div class="col-sm-auto mt-3 mt-sm-0">
                                             <div
-                                                class="pagination-wrap hstack gap-2"
+                                                class="pagination-wrap hstack gap-2 justify-content-center"
                                             >
                                                 <a
                                                     class="page-item pagination-prev disabled"
-                                                    href=""
+                                                    href="javascript:void(0)"
                                                     >Previous</a
                                                 >
                                                 <ul
@@ -374,7 +300,7 @@
                                                 ></ul>
                                                 <a
                                                     class="page-item pagination-next"
-                                                    href=""
+                                                    href="javascript:void(0)"
                                                     >Next</a
                                                 >
                                             </div>
@@ -416,12 +342,8 @@
                     id="close-ordermodal"
                 ></button>
             </div>
-            <form class="tablelist-form" id="addSliderForm">
+            <form class="tablelist-form" id="addSliderForm" autocomplete="off">
                 <div class="modal-body">
-                    <div
-                        id="alert-error-msg"
-                        class="d-none alert alert-danger py-2"
-                    ></div>
                     <input type="hidden" id="id-field" />
 
                     <div class="text-center mb-3">
@@ -449,15 +371,12 @@
                                     id="image-input"
                                     name="image"
                                     type="file"
-                                    accept="image/png, image/gif, image/jpeg"
-                                    required
                                 />
                             </div>
                             <div class="avatar-lg">
                                 <div class="avatar-title bg-light rounded-3">
                                     <img
-                                        src="/assets/images/users/user-dummy-img.jpg"
-                                        alt=""
+                                        src=""
                                         id="image-preview"
                                         class="avatar-md h-auto rounded-3 object-fit-cover"
                                     />
@@ -466,9 +385,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="title" class="form-label"
-                            >Slider Title</label
-                        >
+                        <label for="title" class="form-label">Title</label>
                         <input
                             type="text"
                             id="title"
@@ -482,10 +399,10 @@
                     <div class="row mb-3">
                         <div class="col">
                             <label for="url-field" class="form-label"
-                                >Slider URL</label
+                                >URL</label
                             >
                             <input
-                                type="url"
+                                type="text"
                                 id="url-field"
                                 name="url"
                                 class="form-control"
@@ -576,10 +493,6 @@
             </div>
             <form class="tablelist-form" id="editform">
                 <div class="modal-body">
-                    <div
-                        id="alert-error-msg"
-                        class="d-none alert alert-danger py-2"
-                    ></div>
                     <input type="hidden" id="editid" name="editid" />
                     <div class="text-center mb-3">
                         <div class="position-relative d-inline-block">
@@ -615,8 +528,7 @@
                                     id="editpreviewimage"
                                 >
                                     <img
-                                        src=""
-                                        alt="Image Preview"
+                                        src="/assets/images/users/user-dummy-img.jpg"
                                         id="editimage-preview"
                                         class="avatar-md h-auto rounded-3 object-fit-cover"
                                     />
@@ -625,9 +537,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="title" class="form-label"
-                            >Slider Title</label
-                        >
+                        <label for="title" class="form-label">Title</label>
                         <input
                             type="text"
                             id="edit_title"
@@ -640,7 +550,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <label for="url-field" class="form-label"
-                                >Slider URL</label
+                                >URL</label
                             >
                             <input
                                 type="text"
@@ -770,6 +680,26 @@
         e.preventDefault();
 
         var formData = new FormData(addformSlider[0]);
+
+        // Validation
+        if ($("#title").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Title is required",
+                position: "topRight",
+            });
+            return false;
+        }
+
+        if ($("#image-input").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Image is required",
+                position: "topRight",
+            });
+            return false;
+        }
+
         // DO POST
         $.ajax({
             type: "POST",
@@ -787,9 +717,10 @@
                         message: res.message,
                         position: "topRight",
                     });
+                    $("#showModal").modal("hide");
                     setTimeout(function () {
                         location.reload();
-                    }, 1000);
+                    }, 500);
                 } else {
                     iziToast.error({
                         title: "Error",
@@ -816,13 +747,29 @@
     $(document).on("click", "#edit_btn", function (e) {
         var data = $(this).attr("data-model");
         data = JSON.parse(data);
+        const activeStatusId = "<%= activeStatus._id.toString() %>";
 
-        // Filling form fields with data according to the model
-        $("#editimage-preview").attr("src", "/dist/slider/" + data.image); // Update image preview
+        // Set the image URL based on whether the image exists in the folder
+        var imageUrl = "../../dist/slider/" + data.image;
+        var defaultImageUrl = "../../assets/images/default/mart-demo-img.jpg";
+
+        // Check if the image exists by trying to load it
+        var img = new Image();
+        img.onload = function () {
+            $("#editimage-preview").attr("src", imageUrl);
+        };
+        img.onerror = function () {
+            $("#editimage-preview").attr("src", defaultImageUrl);
+        };
+        img.src = imageUrl;
+
         $("#editid").val(data._id);
         $("#edit_title").val(data.title);
         $("#edit_url").val(data.url);
-        $("#edit_status_id").prop("checked", data.status_id);
+        $("#edit_status_id").prop(
+            "checked",
+            data.status_id._id == activeStatusId
+        );
         $("#edit_description").val(data.description);
     });
 
@@ -834,7 +781,11 @@
 
         // Validation
         if ($("#edit_title").val() == "") {
-            alert("Slider Title is required");
+            iziToast.error({
+                title: "Error",
+                message: "Title is required",
+                position: "topRight",
+            });
             return false;
         }
 
@@ -857,9 +808,10 @@
                         message: res.message,
                         position: "topRight",
                     });
+                    $("#showEditModal").modal("hide");
                     setTimeout(function () {
                         location.reload();
-                    }, 1000);
+                    }, 500);
                 } else {
                     iziToast.error({
                         title: "Error",

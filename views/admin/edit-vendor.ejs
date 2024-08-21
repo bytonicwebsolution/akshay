@@ -15,7 +15,7 @@
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item">
-                                        <a href="/admin/dashboard"
+                                        <a href="javascript: void(0);"
                                             >Dashboard</a
                                         >
                                     </li>
@@ -84,7 +84,7 @@
                             type="hidden"
                             id="editid"
                             name="editid"
-                            value="<%= users._id %>"
+                            value="<%= user._id %>"
                         />
                         <div class="tab-content">
                             <!-- Personal Info -->
@@ -288,7 +288,7 @@
                                             >
                                                 <label
                                                     for="image"
-                                                    class="form-label fw-semibold mb-2 block"
+                                                    class="form-label"
                                                 >
                                                     vendor Image
                                                 </label>
@@ -299,14 +299,14 @@
                                                         type="file"
                                                         id="image"
                                                         name="image"
-                                                        class="form-control block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200 focus:border-indigo-300"
+                                                        class="form-control"
                                                         accept="image/*"
                                                     />
                                                     <input
                                                         type="hidden"
-                                                        id="image"
-                                                        name="image"
-                                                        value="<%= users.image %>"
+                                                        id="edit_image"
+                                                        name="edit_image"
+                                                        value="<%= (user && user.image) ? user.image : '' %>"
                                                     />
                                                 </div>
                                                 <div
@@ -332,12 +332,10 @@
                                         <!-- Column 1 -->
                                         <div class="space-y-4">
                                             <!-- Aadhaar Card Front -->
-                                            <div
-                                                class="p-4 bg-white rounded shadow-md"
-                                            >
+                                            <div class="p-4">
                                                 <label
                                                     for="aadhar_front_photo"
-                                                    class="form-label fw-semibold mb-2 block"
+                                                    class="form-label"
                                                 >
                                                     Aadhaar Card Front
                                                 </label>
@@ -348,37 +346,37 @@
                                                         type="file"
                                                         id="aadhar_front_photo"
                                                         name="aadhar_front_photo"
-                                                        class="form-control block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200 focus:border-indigo-300"
+                                                        class="form-control"
                                                         accept="image/*"
                                                     />
                                                     <input
                                                         type="hidden"
-                                                        id="aadhar_front_photo"
-                                                        name="aadhar_front_photo"
-                                                        value="<%= vendors.aadhar_front_photo %>"
+                                                        id="edit_aadhar_front_photo"
+                                                        name="edit_aadhar_front_photo"
+                                                        value="<%= (vendors && vendors.aadhar_front_photo) ? vendors.aadhar_front_photo : '' %>"
                                                     />
                                                 </div>
                                                 <div
-                                                    class="flex-shrink-0 me-2 mt-3"
+                                                    class="me-2 mt-3"
                                                     id="preview_aadhar_front_photo"
                                                 >
                                                     <div>
                                                         <img
                                                             id="display_preview_aadhar_front_photo"
-                                                            class="avatar-lg border customer-image-elem"
-                                                            src=""
-                                                            alt="Aadhaar Front Preview"
+                                                            style="
+                                                                margin: 5px;
+                                                                width: 100px;
+                                                                height: 100px;
+                                                            "
                                                         />
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- Aadhaar Card Back -->
-                                            <div
-                                                class="p-4 bg-white rounded shadow-md"
-                                            >
+                                            <div class="p-4">
                                                 <label
                                                     for="aadhar_back_photo"
-                                                    class="form-label fw-semibold mb-2 block"
+                                                    class="form-label"
                                                     >Aadhaar Card Back</label
                                                 >
                                                 <div
@@ -388,26 +386,28 @@
                                                         type="file"
                                                         id="aadhar_back_photo"
                                                         name="aadhar_back_photo"
-                                                        class="form-control block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200 focus:border-indigo-300"
+                                                        class="form-control"
                                                         accept="image/*"
                                                     />
                                                     <input
                                                         type="hidden"
-                                                        id="aadhar_back_photo"
-                                                        name="aadhar_back_photo"
-                                                        value="<%= vendors.aadhar_back_photo %>"
+                                                        id="edit_aadhar_back_photo"
+                                                        name="edit_aadhar_back_photo"
+                                                        value="<%= (vendors && vendors.aadhar_back_photo) ? vendors.aadhar_back_photo : '' %>"
                                                     />
                                                 </div>
                                                 <div
-                                                    class="flex-shrink-0 me-2 mt-3"
+                                                    class="me-2 mt-3"
                                                     id="preview_aadhar_back_photo"
                                                 >
                                                     <div>
                                                         <img
                                                             id="display_preview_aadhar_back_photo"
-                                                            class="avatar-lg border customer-image-elem"
-                                                            src=""
-                                                            alt="Aadhaar Back Preview"
+                                                            style="
+                                                                margin: 5px;
+                                                                width: 100px;
+                                                                height: 100px;
+                                                            "
                                                         />
                                                     </div>
                                                 </div>
@@ -417,87 +417,45 @@
 
                                     <!-- Column 2 -->
                                     <div class="col-lg-6">
-                                        <div class="space-y-4">
-                                            <!-- PAN Card Front -->
-                                            <div
-                                                class="p-4 bg-white rounded shadow-md"
+                                        <!-- PAN Card Front -->
+                                        <div class="p-4">
+                                            <label
+                                                for="pan_front_photo"
+                                                class="form-label"
+                                                >Pan Card Front</label
                                             >
-                                                <label
-                                                    for="pan_front_photo"
-                                                    class="form-label fw-semibold mb-2 block"
-                                                    >Pan Card Front</label
-                                                >
-                                                <div
-                                                    class="d-flex align-items-center"
-                                                >
-                                                    <input
-                                                        type="file"
-                                                        id="pan_front_photo"
-                                                        name="pan_front_photo"
-                                                        class="form-control block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200 focus:border-indigo-300"
-                                                        accept="image/*"
+                                            <div
+                                                class="d-flex align-items-center"
+                                            >
+                                                <input
+                                                    type="file"
+                                                    id="pan_front_photo"
+                                                    name="pan_front_photo"
+                                                    class="form-control"
+                                                    accept="image/*"
+                                                />
+                                                <input
+                                                    type="hidden"
+                                                    id="edit_pan_front_photo"
+                                                    name="edit_pan_front_photo"
+                                                    value="<%= (vendors && vendors.pan_front_photo) ? vendors.pan_front_photo : '' %>"
+                                                />
+                                            </div>
+                                            <div
+                                                class="mt-3"
+                                                id="preview_pan_front_photo"
+                                            >
+                                                <div>
+                                                    <img
+                                                        id="display_preview_pan_front_photo"
+                                                        style="
+                                                            margin: 5px;
+                                                            width: 100px;
+                                                            height: 100px;
+                                                        "
                                                     />
-                                                    <input
-                                                        type="hidden"
-                                                        id="pan_front_photo"
-                                                        name="pan_front_photo"
-                                                        value="<%= vendors.pan_front_photo %>"
-                                                    />
-                                                </div>
-                                                <div
-                                                    class="flex-shrink-0 me-2 mt-3"
-                                                    id="preview_pan_front_photo"
-                                                >
-                                                    <div>
-                                                        <img
-                                                            id="display_preview_pan_front_photo"
-                                                            class="avatar-lg border customer-image-elem"
-                                                            src=""
-                                                            alt="Pan Front Preview"
-                                                        />
-                                                    </div>
                                                 </div>
                                             </div>
-                                            <!-- Signature -->
-                                            <!-- <div
-                                                class="p-4 bg-white rounded shadow-md"
-                                            >
-                                                <label
-                                                    for="signature"
-                                                    class="form-label fw-semibold mb-2 block"
-                                                    >Vendor Signature</label
-                                                >
-                                                <div
-                                                    class="d-flex align-items-center"
-                                                >
-                                                    <input
-                                                        type="file"
-                                                        name="signature"
-                                                        id="signature"
-                                                        class="form-control block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200 focus:border-indigo-300"
-                                                        accept="image/*"
-                                                        onchange="previewImage(event, 'signaturePreview')"
-                                                    />
-                                                    <input
-                                                        type="hidden"
-                                                        id="signature"
-                                                        name="signature"
-                                                        value="<%= vendors.signature %>"
-                                                    />
-                                                </div>
-                                                <div
-                                                    class="flex-shrink-0 me-2 mt-3"
-                                                >
-                                                    <div>
-                                                        <img
-                                                            id="signaturePreview"
-                                                            class="avatar-lg border customer-image-elem"
-                                                            src=""
-                                                            alt="Signature Preview"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div> -->
                                         </div>
                                     </div>
 
@@ -632,32 +590,17 @@
 <%- include('partials/footer.ejs') %>
 
 <script>
-  $("#image").change(function () {
-    displayPP(this, $("#previewimage"));
-});
-$("#aadhar_front_photo").change(function () {
-    displayPP(this, $("#preview_aadhar_front_photo"));
-});
-$("#aadhar_back_photo").change(function () {
-    displayPP(this, $("#preview_aadhar_back_photo"));
-});
-$("#pan_front_photo").change(function () {
-    displayPP(this, $("#preview_pan_front_photo"));
-});
-
-
     $(document).ready(function () {
         const vendor = JSON.parse(
             '<%- JSON.stringify(vendors).replace(/\\n/g, "\\\\n").replace(/\\r/g, "\\\\r").replace(/\\t/g, "\\\\t").replace(/\\f/g, "\\\\f") %>'
         );
         const user = JSON.parse(
-            '<%- JSON.stringify(users).replace(/\\n/g, "\\\\n").replace(/\\r/g, "\\\\r").replace(/\\t/g, "\\\\t").replace(/\\f/g, "\\\\f") %>'
+            '<%- JSON.stringify(user).replace(/\\n/g, "\\\\n").replace(/\\r/g, "\\\\r").replace(/\\t/g, "\\\\t").replace(/\\f/g, "\\\\f") %>'
         );
 
         $("#first_name").val(user.first_name);
         $("#last_name").val(user.last_name);
         $("#email").val(user.email);
-        $("#name").val(user.name);
         $("#pincode").val(user.pincode);
         $("#phone").val(user.phone);
         $("#address").val(user.address);
@@ -704,8 +647,21 @@ $("#pan_front_photo").change(function () {
         $("#gst_no").val(vendor.gst_no);
         $("#ifsc_code").val(vendor.ifsc_code);
     });
+</script>
 
-   
+<script>
+    $("#image").change(function () {
+        displayPP(this, $("#previewimage"));
+    });
+    $("#aadhar_front_photo").change(function () {
+        displayPP(this, $("#preview_aadhar_front_photo"));
+    });
+    $("#aadhar_back_photo").change(function () {
+        displayPP(this, $("#preview_aadhar_back_photo"));
+    });
+    $("#pan_front_photo").change(function () {
+        displayPP(this, $("#preview_pan_front_photo"));
+    });
 
     var editform = $("#EditVendorForm");
     editform.on("submit", submitFormHandler);
@@ -719,9 +675,6 @@ $("#pan_front_photo").change(function () {
         const hasImages = Array.from(fileInputs).some(
             (input) => input.files.length > 0
         );
-
-        
-
         if (hasImages) {
             // If there are files selected, create FormData from the current form
             formData = new FormData(currentForm);
@@ -735,7 +688,6 @@ $("#pan_front_photo").change(function () {
             url: "/admin/vendor/update",
             data: hasImages ? formData : JSON.stringify(formData),
             cache: false,
-            enctype:"multipart/form-data",
             contentType: hasImages ? false : "application/json",
             processData: !hasImages,
         })
@@ -748,7 +700,7 @@ $("#pan_front_photo").change(function () {
                     });
                     setTimeout(function () {
                         location.reload();
-                    }, 1000);
+                    }, 500);
                 } else {
                     iziToast.error({
                         title: "Error",

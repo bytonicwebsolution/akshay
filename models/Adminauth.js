@@ -29,7 +29,7 @@ const schema = new mongoose.Schema({
     },
     phone: {
         type: String,
-
+        unique: true,
     },
     image: {
         type: String,

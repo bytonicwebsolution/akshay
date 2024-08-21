@@ -5,19 +5,19 @@ const Schema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    code: {
-        type: String,
-        required: true,
-    },
-    code_name: {
-        type: String,
-    },
+    // code: {
+    //     type: String,
+    //     required: true,
+    // },
+    // code_name: {
+    //     type: String,
+    // },
     symbol: {
         type: String,
     },
-    symbol_international: {
-        type: String,
-    },
+    // symbol_international: {
+    //     type: String,
+    // },
     default: {
         type: Boolean,
         default: false,

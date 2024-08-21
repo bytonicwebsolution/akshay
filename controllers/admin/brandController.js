@@ -1,5 +1,6 @@
 const Brand = require("../../models/Brand");
 const Status = require("../../models/Status");
+const config = require("../../config/createStatus");
 
 class BrandController {
     static list = async (req, res) => {
@@ -9,10 +10,22 @@ class BrandController {
                     created_at: -1,
                 })
                 .populate("status_id");
-            let statuses = await Status.find().sort({
-                created_at: -1,
+            await config.createBrandStatus();
+            const activeStatus = await Status.findOne({
+                type: "brand",
+                name: { $regex: new RegExp("^active$", "i") },
             });
-            return res.render("admin/brand", { brands, statuses });
+            const page = parseInt(req.query.page) || 1; // Current page number, default to 1
+            const pageSize = parseInt(req.query.pageSize) || 10; // Items per page, default to 10
+
+            const totalItems = await Brand.countDocuments();
+            return res.render("admin/brand", {
+                brands,
+                activeStatus,
+                currentPage: page,
+                pageSize,
+                totalItems,
+            });
         } catch (error) {
             return res.status(500).send({
                 message: "Error fetching brands: " + error.message,
@@ -22,11 +35,26 @@ class BrandController {
 
     static add = async (req, res) => {
         try {
-            const { name, status_id } = req.body;
-            const insertRecord = new Brand({ name, status_id });
+            await config.createBrandStatus();
+            // Fetch the active and inactive statuses
+            const activeStatus = await Status.findOne({
+                type: "brand",
+                name: { $regex: new RegExp("^active$", "i") },
+            });
+
+            const inactiveStatus = await Status.findOne({
+                type: "brand",
+                name: { $regex: new RegExp("^inactive$", "i") },
+            });
+            const insertRecord = new Brand({
+                name: req.body.name,
+                status_id:
+                    req.body.status_id === "on"
+                        ? activeStatus._id
+                        : inactiveStatus._id,
+            });
             await insertRecord.save();
             return res.send({
-                success: true,
                 status: 200,
                 message: "Brand added successfully",
             });
@@ -41,17 +69,30 @@ class BrandController {
             const brand = await Brand.findOne({
                 _id: req.body.editid,
             });
+
+            await config.createBrandStatus();
+            const activeStatus = await Status.findOne({
+                type: "brand",
+                name: { $regex: new RegExp("^active$", "i") },
+            });
+
+            const inactiveStatus = await Status.findOne({
+                type: "brand",
+                name: { $regex: new RegExp("^inactive$", "i") },
+            });
             await Brand.findByIdAndUpdate(
                 {
                     _id: req.body.editid,
                 },
                 {
                     name: req.body.name,
-                    status_id: req.body.status_id,
+                    status_id:
+                        req.body.status_id === "on"
+                            ? activeStatus._id
+                            : inactiveStatus._id,
                 }
             );
             return res.send({
-                success: true,
                 status: 200,
                 message: "Brand updated successfully",
             });
@@ -68,7 +109,6 @@ class BrandController {
             await Brand.findByIdAndDelete(req.params.id);
 
             return res.send({
-                success: true,
                 status: 200,
                 message: "Brand deleted successfully",
             });

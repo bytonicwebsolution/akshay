@@ -3,9 +3,14 @@ const mongoose = require("mongoose");
 const ProductStockSchema = new mongoose.Schema({
     attribute_value_id: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "AttributeValue",
-            required: true,
+            type: String,
+            default: null,
+        },
+    ],
+    name: [
+        {
+            type: String,
+            default: null,
         },
     ],
     product_id: {
@@ -16,6 +21,7 @@ const ProductStockSchema = new mongoose.Schema({
     sku: [
         {
             type: String,
+            unique: true,
             default: null,
         },
     ],
@@ -34,7 +40,6 @@ const ProductStockSchema = new mongoose.Schema({
     image: [
         {
             type: String,
-            default: Date.now,
         },
     ],
     created_at: {

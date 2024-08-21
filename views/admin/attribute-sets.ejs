@@ -17,7 +17,7 @@
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item">
-                                        <a href="/admin/dashboard"
+                                        <a href="javascript: void(0);"
                                             >Dashboard</a
                                         >
                                     </li>
@@ -31,33 +31,34 @@
                 </div>
                 <!-- end page title -->
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div
-                                    class="d-flex align-items-center flex-wrap gap-3"
-                                >
-                                    <div class="flex-grow-1">
-                                        <h3 class="card-title mb-0">
-                                            Attributes List
-                                        </h3>
-                                    </div>
-                                    <div>
-                                        <div class="d-flex flex-wrap gap-2">
-                                            <button
-                                                type="button"
-                                                class="btn btn-thm add-btn"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#showModal"
-                                                data-name="Attributes"
-                                            >
-                                                <i
-                                                    class="bi bi-plus-circle align-baseline me-1"
-                                                ></i>
-                                                Add Attributes
-                                            </button>
-                                            <!-- <button
+                <div id="productList">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div
+                                        class="d-flex align-items-center flex-wrap gap-3"
+                                    >
+                                        <div class="flex-grow-1">
+                                            <h3 class="card-title mb-0">
+                                                Attributes List
+                                            </h3>
+                                        </div>
+                                        <div>
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-thm add-btn"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#showModal"
+                                                    data-name="Attributes"
+                                                >
+                                                    <i
+                                                        class="bi bi-plus-circle align-baseline me-1"
+                                                    ></i>
+                                                    Add Attributes
+                                                </button>
+                                                <!-- <button
                                                 type="button"
                                                 class="btn btn-secondary"
                                             >
@@ -75,119 +76,172 @@
                                                 ></i>
                                                 Export
                                             </button> -->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row gy-3">
+                                        <div class="col-xl-4">
+                                            <div class="search-box">
+                                                <input
+                                                    type="text"
+                                                    class="form-control search"
+                                                    placeholder="Search name, date etc..."
+                                                />
+                                                <i
+                                                    class="ri-search-line search-icon"
+                                                ></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end card-->
                         </div>
+                        <!--end col-->
                     </div>
-                    <!--end col-->
-                </div>
-                <!--end row-->
+                    <!--end row-->
 
-                <div class="row" id="attributes-list">
-                    <div class="col-xxl-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive table-card">
-                                    <table
-                                        class="table align-middle table-nowrap"
-                                    >
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    <div class="form-check">
-                                                        <input
-                                                            class="form-check-input"
-                                                            type="checkbox"
-                                                            value="option"
-                                                            id="checkAll"
-                                                        />
-                                                        <label
-                                                            class="form-check-label"
-                                                            for="checkAll"
-                                                        ></label>
-                                                    </div>
-                                                </th>
-                                                <th class="sort cursor-pointer">
-                                                    Title
-                                                </th>
-                                                <th class="sort cursor-pointer " >
-                                                    Category
-                                                </th>
-                                                <th class="sort cursor-pointer">
-                                                    Action
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="list">
-                                            <% if(!attributes[0]) { %>
-                                            <tr>
-                                                <td
-                                                    colspan="100%"
-                                                    class="text-center"
-                                                >
-                                                    No Data
-                                                </td>
-                                            </tr>
-                                            <% } else {%> <%
-                                            attributes.forEach(function(attributes){%>
-                                            <tr>
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input
-                                                            class="form-check-input"
-                                                            type="checkbox"
-                                                            name="chk_child"
-                                                        />
-                                                        <label
-                                                            class="form-check-label"
-                                                        ></label>
-                                                    </div>
-                                                </td>
-                                                <td class="title">
-                                                    <%= attributes.title?
-                                                    attributes.title: ''%>
-                                                </td>
-                                                <td class="category" id="category-size">
-                                                    <% if (attributes.category_id && attributes.category_id.length > 0) { %>
-                                                        <div class="category-wrapper">
-                                                            <% attributes.category_id.forEach((category, index) => { %>
-                                                                <span class="badge bg-secondary-subtle text-secondary"><%= category.name %></span>
-                                                                <% if (index < attributes.category_id.length - 1) { %>
-                                                                    <% if ((index + 1) % 4 === 0) { %>
-                                                                        <br> 
-                                                                    <% } else { %>
-                                                                        
-                                                                    <% } %>
-                                                                <% } %>
-                                                            <% }); %>
+                    <div class="row">
+                        <div class="col-xxl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table
+                                            class="table table-centered align-middle table-nowrap mb-0"
+                                        >
+                                            <thead class="table-active">
+                                                <tr>
+                                                    <th>
+                                                        <div class="form-check">
+                                                            <input
+                                                                class="form-check-input"
+                                                                type="checkbox"
+                                                                value="option"
+                                                                id="checkAll"
+                                                            />
+                                                            <label
+                                                                class="form-check-label"
+                                                                for="checkAll"
+                                                            ></label>
                                                         </div>
-                                                    <% } else { %>
-                                                        <!-- Handle case where there are no categories -->
-                                                    <% } %>
-                                                </td>
-                                                
-                                                  
-                                                <td>
-                                                    <div
-                                                        class="dropdown position-static"
+                                                    </th>
+                                                    <th>#</th>
+                                                    <th
+                                                        class="sort cursor-pointer"
+                                                        data-sort="products"
                                                     >
-                                                        <button
-                                                            class="btn btn-subtle-secondary btn-sm btn-icon"
-                                                            role="button"
-                                                            data-bs-toggle="dropdown"
-                                                            aria-expanded="false"
+                                                        Title
+                                                    </th>
+                                                    <th
+                                                        class="sort cursor-pointer"
+                                                        data-sort="category"
+                                                    >
+                                                        Values
+                                                    </th>
+                                                    <th
+                                                        class="sort cursor-pointer"
+                                                        data-sort="category"
+                                                    >
+                                                        Category
+                                                    </th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="list form-check-all">
+                                                <% if(!attributes[0]) { %>
+                                                <tr>
+                                                    <td
+                                                        colspan="100%"
+                                                        class="text-center"
+                                                    >
+                                                        No Data
+                                                    </td>
+                                                </tr>
+                                                <% } else {%> <%
+                                                attributes.forEach(function(attributes,index){%>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check">
+                                                            <input
+                                                                class="form-check-input"
+                                                                type="checkbox"
+                                                                name="chk_child"
+                                                            />
+                                                            <label
+                                                                class="form-check-label"
+                                                            ></label>
+                                                        </div>
+                                                    </td>
+                                                    <td><%= index + 1 %></td>
+                                                    <td class="category">
+                                                        <%= attributes.title?
+                                                        attributes.title: ''%>
+                                                    </td>
+                                                    <td width="30%">
+                                                        <% attributes.values.forEach(value => { %>
+                                                            <div class="wrapper">
+                                                                 <span class="badge bg-secondary-subtle text-secondary">
+                                                                    <%= value.value ? value.value : '' %>
+                                                                </span>
+                                                            </div>
+                                                        <% }) %>
+                                                    </td>
+                                                    <td class="category">
+                                                        <% if
+                                                        (attributes.category_id
+                                                        &&
+                                                        attributes.category_id.length
+                                                        > 0) { %>
+                                                        <div class="wrapper">
+                                                            <%
+                                                            attributes.category_id.forEach((category,
+                                                            index) => { %>
+                                                            <span
+                                                                class="badge bg-secondary-subtle text-secondary"
+                                                                ><%=
+                                                                category.name
+                                                                %></span
+                                                            >
+                                                            <% if (index <
+                                                            attributes.category_id.length
+                                                            - 1) { %> <% if
+                                                            ((index + 1) % 4 ===
+                                                            0) { %>
+                                                            <br />
+                                                            <% } else { %> <% }
+                                                            %> <% } %> <% }); %>
+                                                        </div>
+                                                        <% } else { %>
+                                                        <span
+                                                            class="badge bg-secondary-subtle text-secondary"
+                                                            >No Category</span
                                                         >
-                                                            <i
-                                                                class="bi bi-three-dots-vertical"
-                                                            ></i>
-                                                        </button>
+                                                        <% } %>
+                                                    </td>                                                  
+                                                    
+                                                    <td>
+                                                        <div
+                                                            class="dropdown position-static"
+                                                        >
+                                                            <button
+                                                                class="btn btn-subtle-secondary btn-sm btn-icon"
+                                                                role="button"
+                                                                data-bs-toggle="dropdown"
+                                                                aria-expanded="false"
+                                                            >
+                                                                <i
+                                                                    class="bi bi-three-dots-vertical"
+                                                                ></i>
+                                                            </button>
 
-                                                        <ul
-                                                            class="dropdown-menu dropdown-menu-end"
-                                                        >
-                                                            <!-- <li>
+                                                            <ul
+                                                                class="dropdown-menu dropdown-menu-end"
+                                                            >
+                                                                <!-- <li>
                                                                 <a
                                                                     class="dropdown-item"
                                                                     href="apps-ecommerce-product-details.html"
@@ -197,92 +251,104 @@
                                                                     View</a
                                                                 >
                                                             </li> -->
-                                                            <li>
-                                                                <a
-                                                                    class="dropdown-item edit-item-btn"
-                                                                    data-bs-toggle="modal"
-                                                                    data-name="Category"
-                                                                    href="#showEditModal"
-                                                                    id="edit_btn"
-                                                                    data-model="<%= JSON.stringify(attributes) %>"
-                                                                    ><i
-                                                                        class="ph-pencil align-middle me-1"
-                                                                    ></i>
-                                                                    Edit
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a
-                                                                    class="dropdown-item remove-item-btn"
-                                                                    data-bs-toggle="modal"
-                                                                    href="#deleteRecordModal"
-                                                                    data-id="<%= attributes._id %>"
-                                                                    ><i
-                                                                        class="ph-trash align-middle me-1"
-                                                                    ></i>
-                                                                    Remove</a
-                                                                >
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <% }); %> <% } %>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="noresult" style="display: none">
-                                    <div class="text-center py-4">
-                                        <i
-                                            class="ph-magnifying-glass fs-1 text-primary"
-                                        ></i>
-                                        <h5 class="mt-2">
-                                            Sorry! No Result Found
-                                        </h5>
-                                        <p class="text-muted mb-0">
-                                            We've searched more than 150+
-                                            customers We did not find any
-                                            customers for you search.
-                                        </p>
+                                                                <li>
+                                                                    <a
+                                                                        class="dropdown-item edit-item-btn"
+                                                                        data-bs-toggle="modal"
+                                                                        data-name="Category"
+                                                                        href="#showEditModal"
+                                                                        id="edit_btn"
+                                                                        data-model="<%= JSON.stringify(attributes) %>"
+                                                                        ><i
+                                                                            class="ph-pencil align-middle me-1"
+                                                                        ></i>
+                                                                        Edit
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a
+                                                                        class="dropdown-item remove-item-btn"
+                                                                        data-bs-toggle="modal"
+                                                                        href="#deleteRecordModal"
+                                                                        data-id="<%= attributes._id %>"
+                                                                        ><i
+                                                                            class="ph-trash align-middle me-1"
+                                                                        ></i>
+                                                                        Remove</a
+                                                                    >
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <% }); %> <% } %>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </div>
-                                <div
-                                    class="align-items-center mt-4 justify-content-between row text-center text-sm-start"
-                                    id="pagination-element"
-                                >
-                                    <div class="col-sm">
-                                        <div class="text-muted">
-                                            Showing
-                                            <span class="fw-semibold">10</span>
-                                            of
-                                            <span class="fw-semibold">13</span>
-                                            Results
+                                    <div class="noresult" style="display: none">
+                                        <div class="text-center py-4">
+                                            <i
+                                                class="ph-magnifying-glass fs-1 text-primary"
+                                            ></i>
+                                            <h5 class="mt-2">
+                                                Sorry! No Result Found
+                                            </h5>
+                                            <p class="text-muted mb-0">
+                                                We've searched more than 150+
+                                                attributes We did not find any
+                                                attributes for you search.
+                                            </p>
                                         </div>
                                     </div>
-                                    <div class="col-sm-auto mt-3 mt-sm-0">
-                                        <div
-                                            class="pagination-wrap hstack gap-2"
-                                        >
-                                            <a
-                                                class="page-item pagination-prev disabled"
-                                                href=""
-                                                >Previous</a
+                                    <div
+                                        class="align-items-center mt-4 justify-content-between row text-center text-sm-start"
+                                        id="pagination-element"
+                                    >
+                                        <div class="col-sm">
+                                            <div class="text-muted">
+                                                Showing
+                                                <span
+                                                    class="fw-semibold"
+                                                    id="current-items"
+                                                    ><%= Math.min(currentPage *
+                                                    pageSize, totalItems)
+                                                    %></span
+                                                >
+                                                of
+                                                <span
+                                                    class="fw-semibold"
+                                                    id="total-items"
+                                                    ><%= totalItems %></span
+                                                >
+                                                Results
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-auto mt-3 mt-sm-0">
+                                            <div
+                                                class="pagination-wrap hstack gap-2 justify-content-center"
                                             >
-                                            <ul
-                                                class="pagination listjs-pagination mb-0"
-                                            ></ul>
-                                            <a
-                                                class="page-item pagination-next"
-                                                href=""
-                                                >Next</a
-                                            >
+                                                <a
+                                                    class="page-item pagination-prev disabled"
+                                                    href="javascript:void(0)"
+                                                    >Previous</a
+                                                >
+                                                <ul
+                                                    class="pagination listjs-pagination mb-0"
+                                                ></ul>
+                                                <a
+                                                    class="page-item pagination-next"
+                                                    href="javascript:void(0)"
+                                                    >Next</a
+                                                >
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!--end col-->
                     </div>
-                    <!--end col-->
                 </div>
                 <!--end row-->
             </div>
@@ -316,13 +382,8 @@
                     id="close-ordermodal"
                 ></button>
             </div>
-            <form class="tablelist-form" id="submitForm">
+            <form class="tablelist-form" id="submitForm" autocomplete="off">
                 <div class="modal-body">
-                    <div
-                        id="alert-error-msg"
-                        class="d-none alert alert-danger py-2"
-                    ></div>
-
                     <input type="hidden" id="id-field" />
 
                     <div class="mb-3">
@@ -333,6 +394,7 @@
                             class="form-control"
                             name="title"
                             placeholder="Enter Title"
+                            required
                         />
                     </div>
                     <div class="mb-3">
@@ -346,6 +408,7 @@
                             multiple=""
                             tabindex="-1"
                             aria-hidden="true"
+                            data-placeholder="Select Categories"
                         >
                             <%categories.forEach(function(element){ %>
                             <option value="<%= element._id %>">
@@ -424,6 +487,7 @@
                             multiple=""
                             tabindex="-1"
                             aria-hidden="true"
+                            data-placeholder="Select Categories"
                         >
                             <%categories.forEach(function(element){ %>
                             <option value="<%= element._id %>">
@@ -537,9 +601,10 @@
                         message: res.message,
                         position: "topRight",
                     });
+                    $("#showModal").modal("hide");
                     setTimeout(function () {
                         location.reload();
-                    }, 1000);
+                    }, 500);
                 } else {
                     iziToast.error({
                         title: "Error",
@@ -565,9 +630,11 @@
 
         $("#editid").val(attributes._id);
         $("#edit_title").val(attributes.title);
-         // Populate multi-select for categories
-    var categoryIds = attributes.category_id.map((category) => category._id);
-    $("#edit_category").val(categoryIds);
+        // Populate multi-select for categories
+        var categoryIds = attributes.category_id.map(
+            (category) => category._id
+        );
+        $("#edit_category").val(categoryIds);
     });
 
     function getFormData($form) {
@@ -588,7 +655,7 @@
         var categoryIds = $(this).find('select[name="category_id"]').val();
 
         var formData = getFormData(editform);
-        formData.category_id=categoryIds;
+        formData.category_id = categoryIds;
         $.ajax({
             type: "POST",
             url: "/admin/attribute/edit",
@@ -603,9 +670,10 @@
                         message: res.message,
                         position: "topRight",
                     });
+                    $("#showEditModal").modal("hide");
                     setTimeout(function () {
                         location.reload();
-                    }, 1000);
+                    }, 500);
                 } else {
                     iziToast.error({
                         title: "Error",

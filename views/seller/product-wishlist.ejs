@@ -51,7 +51,7 @@
                                             </div>
                                         </div>
                                         <!--end col-->
-                                       
+
                                         <div class="col-xxl-3 col-sm-6">
                                             <div>
                                                 <select
@@ -103,14 +103,16 @@
                                             </div>
                                         </div>
                                         <!--end col-->
-                                     
+
                                         <div class="col-xxl-1 col-sm-6 ms-auto">
                                             <button
                                                 type="button"
                                                 class="btn btn-secondary w-100 pd-new"
                                                 onclick="filterData();"
                                             >
-                                                <i class="bi bi-funnel align-baseline me-1"></i>
+                                                <i
+                                                    class="bi bi-funnel align-baseline me-1"
+                                                ></i>
                                                 Filters
                                             </button>
                                         </div>
@@ -175,24 +177,26 @@
                                                     >
                                                         Category
                                                     </th>
-                                                    <th
+                                                    <!-- <th
                                                         class="sort cursor-pointer"
                                                         data-sort="wishes"
                                                     >
                                                         Total Wishes
-                                                    </th>
+                                                    </th> -->
                                                 </tr>
                                             </thead>
                                             <tbody class="list form-check-all">
-                                                <!-- <tr>
+                                                <% if(!wishlist[0]) { %>
+                                                <tr>
                                                     <td
                                                         colspan="100%"
                                                         class="text-center"
                                                     >
                                                         No Data
                                                     </td>
-                                                </tr> -->
-
+                                                </tr>
+                                                <% } else {%> <%
+                                                wishlist.forEach(function(wishlist){%>
                                                 <tr>
                                                     <td>
                                                         <div class="form-check">
@@ -214,8 +218,8 @@
                                                                 class="avatar-xs bg-light rounded p-1 me-2"
                                                             >
                                                                 <img
-                                                                    src=""
-                                                                    alt=""
+                                                                    src="<%- wishlist.product_id.thumbnail ? '../../dist/product/' + wishlist.product_id.thumbnail : '../../assets/images/default/mart-demo-img.jpg' %>"
+                                                                    onerror="this.src='../../assets/images/default/mart-demo-img.jpg';"
                                                                     class="img-fluid d-block"
                                                                 />
                                                             </div>
@@ -223,17 +227,18 @@
                                                     </td>
 
                                                     <td class="products">
-                                                        Branded T-Shirts
+                                                        <%= wishlist.product_id ? wishlist.product_id.product_name : '' %>
                                                     </td>
                                                     <td class="category">
-                                                        Fashion
+                                                        <%= wishlist.product_id ? wishlist.product_id.category_id.name : '' %>
                                                     </td>
-                                                    <td
+                                                    <!-- <td
                                                         class="remaining_quantity"
                                                     >
                                                         12
-                                                    </td>
+                                                    </td> -->
                                                 </tr>
+                                                <% }); %> <% } %>
                                             </tbody>
                                         </table>
                                     </div>

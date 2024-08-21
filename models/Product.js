@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Schema = new mongoose.Schema({
     vendor_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Vendor",
+        ref: "User",
         default: null,
     },
     product_name: {
@@ -20,8 +20,9 @@ const Schema = new mongoose.Schema({
         ref: "Brand",
         default: null,
     },
-    unit: {
-        type: String,
+    unit_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Unit",
         default: null,
     },
     min_order_quantity: {
@@ -35,22 +36,22 @@ const Schema = new mongoose.Schema({
     },
     slug: {
         type: String,
+        unique: true,
         required: true,
     },
     status_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Status",
+        required: true,
     },
     thumbnail: {
         type: String,
         required: true,
-        default: Date.now,
     },
     gallery_image: [
         {
             type: String,
             required: true,
-            default: Date.now,
         },
     ],
     video_url: {
@@ -96,12 +97,10 @@ const Schema = new mongoose.Schema({
     description_image: [
         {
             type: String,
-            default: Date.now,
         },
     ],
     pdf: {
         type: String,
-        default: Date.now,
     },
     is_featured: {
         type: Boolean,
@@ -126,7 +125,25 @@ const Schema = new mongoose.Schema({
     meta_image: [
         {
             type: String,
-            default: Date.now,
+        },
+    ],
+    attribute_sets: [
+        {
+            type: String,
+            default: "",
+        },
+    ],
+    selected_variants: [
+        {
+            type: Map,
+            of: String,
+            default: {},
+        },
+    ],
+    selected_variants_ids: [
+        {
+            type: String,
+            default: "",
         },
     ],
     created_at: {

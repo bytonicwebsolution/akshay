@@ -1,28 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html
+    lang="en"
+    data-layout="vertical"
+    data-sidebar="dark"
+    data-sidebar-size="lg"
+    data-preloader="disable"
+    data-theme="default"
+    data-topbar="light"
+    data-bs-theme="light"
+>
     <head>
-        <link rel="stylesheet" href="/admin/css/style.css" />
-        <link
-            href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-            rel="stylesheet"
-            integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-            crossorigin="anonymous"
-        />
-        <link
-            href="https://use.fontawesome.com/releases/v5.0.6/css/all.css"
-            rel="stylesheet"
-        />
-        <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"
-        />
-        <link
-            rel="stylesheet"
-            href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"
-        />
-        <link rel="stylesheet" href="/admin/css/snackbar.min.css" />
-        <link rel="stylesheet" href="/admin/css/timepicker.css" />
-
         <meta charset="utf-8" />
         <title>Anuda Mart</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -30,7 +17,7 @@
         <meta content="Themesbrand" name="author" />
         <!-- App favicon -->
         <link rel="shortcut icon" href="/assets/images/favicon.png" />
-
+        <link rel="stylesheet" href="/admin/css/style.css" />
         <!-- Fonts css load -->
         <link rel="preconnect" href="https://fonts.googleapis.com/" />
         <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
@@ -40,18 +27,15 @@
             rel="stylesheet"
         />
         <link
+            href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+            rel="stylesheet"
+        />
+        <link
             rel="stylesheet"
             type="text/css"
             href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
         />
 
-        <link
-            rel="stylesheet"
-            href="https://multivendor1.clientweb.xyz/public/admin/css/select2.min.css"
-        />
-
-        <!-- Layout config Js -->
-        <script src="/assets/js/layout.js"></script>
         <!-- Bootstrap Css -->
         <link
             href="/assets/css/bootstrap.min.css"
@@ -69,6 +53,12 @@
         <!-- custom Css-->
         <link
             href="/assets/css/custom.min.css"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <!-- Sweet Alert css-->
+        <link
+            href="/assets/libs/sweetalert2/sweetalert2.min.css"
             rel="stylesheet"
             type="text/css"
         />
@@ -91,6 +81,19 @@
             rel="stylesheet"
             href="/assets/libs/izitoast/css/iziToast.min.css"
         />
+        <!-- leaflet Css -->
+        <link
+            href="/assets/libs/leaflet/leaflet.css"
+            rel="stylesheet"
+            type="text/css"
+        />
+
+        <!-- leaflet-routing-machine Css -->
+        <link
+            href="/assets/libs/leaflet-routing-machine/leaflet-routing-machine.css"
+            rel="stylesheet"
+            type="text/css"
+        />
 
         <style>
             .select2.select2-container.select2-container--default {
@@ -104,7 +107,7 @@
         <div class="app-menu navbar-menu">
             <!-- navbar-brand-box LOGO -->
             <div class="navbar-brand-box">
-                <a href="/seller/dashboard" class="logo logo-light">
+                <a href="/admin/dashboard" class="logo logo-light">
                     <span class="logo-sm">
                         <img
                             src="/assets/images/white-logo.png"
@@ -154,7 +157,7 @@
                                 aria-controls="sidebarProducts"
                             >
                                 <i class="ph-storefront"></i>
-                                <span data-key="t-ecommerce">Product</span>
+                                <span data-key="t-ecommerce">Products</span>
                             </a>
                             <div
                                 class="collapse menu-dropdown"
@@ -177,22 +180,6 @@
                                             >Add Product</a
                                         >
                                     </li>
-                                    <!-- <li class="nav-item">
-                                        <a
-                                            href="orders.html"
-                                            class="nav-link"
-                                            data-key="t-orders"
-                                            >Orders</a
-                                        >
-                                    </li>
-                                    <li class="nav-item">
-                                        <a
-                                            href="order-overview.html"
-                                            class="nav-link"
-                                            data-key="t-order-overview"
-                                            >Order Overview</a
-                                        >
-                                    </li> -->
                                     <li class="nav-item">
                                         <a
                                             href="/admin/category/list"
@@ -225,17 +212,16 @@
                                             >Attribute Values</a
                                         >
                                     </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/unit/list"
+                                            class="nav-link units"
+                                            data-key="t-products"
+                                            >Units</a
+                                        >
+                                    </li>
                                 </ul>
                             </div>
-                        </li>
-                        <li class="nav-item">
-                            <a
-                                href="/admin/status/list"
-                                class="nav-link menu-link status"
-                            >
-                                <i class="ph-slack-logo"></i>
-                                <span data-key="t-calendar">Status</span>
-                            </a>
                         </li>
 
                         <li class="nav-item">
@@ -243,7 +229,7 @@
                                 href="/admin/user/list"
                                 class="nav-link menu-link customers"
                             >
-                            <i class="ph ph-users"></i>
+                                <i class="ph-user-circle"></i>
                                 <span data-key="t-calendar">Customers</span>
                             </a>
                         </li>
@@ -253,52 +239,147 @@
                                 href="/admin/vendor/list"
                                 class="nav-link menu-link venders"
                             >
-                            <i class="bi bi-shop-window"></i>
+                                <i class="ph-users"></i>
                                 <span data-key="t-calendar">Venders</span>
                             </a>
                         </li>
+                        <!-- <li class="nav-item">
+                            <a
+                                href="/admin/status/list"
+                                class="nav-link menu-link status"
+                            >
+                                <i class="ph-slack-logo"></i>
+                                <span data-key="t-calendar">Status</span>
+                            </a>
+                        </li> -->
 
                         <li class="nav-item">
                             <a
-                                href="/admin/slider/list"
-                                class="nav-link menu-link sliders"
+                                href="#sidebarPages"
+                                class="nav-link menu-link collapsed staticpages"
+                                data-bs-toggle="collapse"
+                                role="button"
+                                aria-expanded="false"
+                                aria-controls="sidebarPages"
                             >
-                            <i class="ph ph-cards"></i>
-                                <span data-key="t-calendar">Slider</span>
+                                <i class="ph-file-text"></i>
+                                <span data-key="t-ecommerce">Static Pages</span>
+                            </a>
+                            <div
+                                class="collapse menu-dropdown"
+                                id="sidebarPages"
+                            >
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/static-pages/list"
+                                            class="nav-link pages"
+                                            data-key="pages"
+                                            >Static Pages List</a
+                                        >
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a
+                                href="#sidebarStoreFront"
+                                class="nav-link menu-link collapsed storefront"
+                                data-bs-toggle="collapse"
+                                role="button"
+                                aria-expanded="false"
+                                aria-controls="sidebarStoreFront"
+                            >
+                                <i class="ph-gear"></i>
+                                <span data-key="t-ecommerce">Store Front</span>
+                            </a>
+                            <div
+                                class="collapse menu-dropdown"
+                                id="sidebarStoreFront"
+                            >
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/faq/list"
+                                            class="nav-link faq"
+                                            data-key="t-products"
+                                            >FAQ</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/slider/list"
+                                            class="nav-link slider"
+                                            data-key="t-products"
+                                            >Slider</a
+                                        >
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a
+                                href="#sidebarMarketing"
+                                class="nav-link menu-link collapsed marketing"
+                                data-bs-toggle="collapse"
+                                role="button"
+                                aria-expanded="false"
+                                aria-controls="sidebarMarketing"
+                            >
+                                <i class="ph-paper-plane"></i>
+                                <span data-key="t-ecommerce">Marketing</span>
+                            </a>
+                            <div
+                                class="collapse menu-dropdown"
+                                id="sidebarMarketing"
+                            >
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/coupon/list"
+                                            class="nav-link coupons"
+                                            data-key="t-products"
+                                            >Coupons</a
+                                        >
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a
+                                href="/admin/order/list"
+                                class="nav-link menu-link orders"
+                                data-key="t-orders"
+                            >
+                                <i class="ph-shopping-bag"></i>
+                                <span data-key="t-calendar">Orders</span>
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a
-                                href="/admin/unit/list"
-                                class="nav-link menu-link units"
+                                href="/admin/contactus/list"
+                                class="nav-link menu-link contactus"
                             >
-                            <i class="bi bi-boxes"></i>
-                                <span data-key="t-calendar">Units</span>
+                                <i class="ph-chat-text"></i>
+                                <span data-key="t-calendar">Contact Us</span>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a
                                 href="/admin/staff/list"
-                                class="nav-link menu-link manage_staff"
+                                class="nav-link menu-link staffs"
                             >
-                            <i class="bi bi-person-vcard"></i>
-                                <span data-key="t-calendar">Manage Staffs</span>
+                                <i class="ph-users-three"></i>
+                                <span data-key="t-calendar"
+                                    >Manage Staffs
+                                </span>
                             </a>
                         </li>
-
-                        <!-- <li class="nav-item">
-                            <a href="/admin/profile" class="nav-link menu-link">
-                                <i class="ph-user-circle"></i>
-                                <span data-key="t-calendar">Profile</span>
-                            </a>
-                        </li> -->
-                        <!-- <li class="nav-item">
-                            <a href="customers.html" class="nav-link menu-link"
-                                ><i class="bi bi-people"></i>
-                                <span data-key="t-calendar">Customers</span></a
-                            >
-                        </li> -->
                         <!-- <li class="nav-item">
                             <a
                                 href="#sidebarInvoices"
@@ -354,7 +435,7 @@
                         </li> -->
                         <li class="nav-item">
                             <a
-                                href=""
+                                href="javascript:void(0)"
                                 class="nav-link menu-link logout"
                             >
                                 <i class="ph ph-sign-out"></i>
@@ -380,7 +461,7 @@
                     <div class="d-flex">
                         <!-- LOGO -->
                         <div class="navbar-brand-box horizontal-logo">
-                            <a href="/seller/dashboard" class="logo logo-light">
+                            <a href="/admin/dashboard" class="logo logo-light">
                                 <span class="logo-sm">
                                     <img
                                         src="/assets/images/white-logo.png"
@@ -453,13 +534,13 @@
                                         class="dropdown-item bg-transparent text-wrap"
                                     >
                                         <a
-                                            href="/seller/dashboard"
+                                            href="/admin/dashboard"
                                             class="btn btn-subtle-secondary btn-sm btn-rounded"
                                             >how to setup
                                             <i class="mdi mdi-magnify ms-1"></i
                                         ></a>
                                         <a
-                                            href="/seller/dashboard"
+                                            href="/admin/dashboard"
                                             class="btn btn-subtle-secondary btn-sm btn-rounded"
                                             >buttons
                                             <i class="mdi mdi-magnify ms-1"></i
@@ -476,7 +557,7 @@
 
                                     <!-- item-->
                                     <a
-                                        href=";"
+                                        href="javascript:void(0);"
                                         class="dropdown-item notify-item"
                                     >
                                         <i
@@ -487,7 +568,7 @@
 
                                     <!-- item-->
                                     <a
-                                        href=";"
+                                        href="javascript:void(0);"
                                         class="dropdown-item notify-item"
                                     >
                                         <i
@@ -498,7 +579,7 @@
 
                                     <!-- item-->
                                     <a
-                                        href=";"
+                                        href="javascript:void(0);"
                                         class="dropdown-item notify-item"
                                     >
                                         <i
@@ -519,7 +600,7 @@
                                     <div class="notification-list">
                                         <!-- item -->
                                         <a
-                                            href=";"
+                                            href="javascript:void(0);"
                                             class="dropdown-item notify-item py-2"
                                         >
                                             <div class="d-flex">
@@ -541,7 +622,7 @@
                                         </a>
                                         <!-- item -->
                                         <a
-                                            href=";"
+                                            href="javascript:void(0);"
                                             class="dropdown-item notify-item py-2"
                                         >
                                             <div class="d-flex">
@@ -563,7 +644,7 @@
                                         </a>
                                         <!-- item -->
                                         <a
-                                            href=";"
+                                            href="javascript:void(0);"
                                             class="dropdown-item notify-item py-2"
                                         >
                                             <div class="d-flex">
@@ -652,7 +733,7 @@
                                             </div>
                                             <div class="col-auto dropdown">
                                                 <a
-                                                    href=";"
+                                                    href="javascript:void(0);"
                                                     data-bs-toggle="dropdown"
                                                     class="link-secondary fs-md"
                                                     ><i
@@ -1018,23 +1099,27 @@
                                 <span class="d-flex align-items-center">
                                     <img
                                         class="rounded-circle header-profile-user"
-                                        src="/assets/images/users/32/avatar-1.jpg"
+                                        src="<%- (user && user.image) ? '../../../dist/profile/' + user.image : '../../../assets/images/default/user-dummy-img.jpg' %>"
                                         alt="Header Avatar"
+                                        onerror="this.src='../../../assets/images/default/user-dummy-img.jpg'"
                                     />
                                     <span class="text-start ms-xl-2">
                                         <span
                                             class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
-                                            >Richard Marshall</span
-                                        >
+                                            ><%= (user && user.first_name) ?
+                                            user.first_name + ' ' +
+                                            user.last_name : 'Admin' %>
+                                        </span>
                                     </span>
                                 </span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
                                 <h6 class="dropdown-header">
-                                    Welcome Richard!
+                                    Welcome <%= (user && user.first_name) ?
+                                    user.first_name : 'Guest' %>!
                                 </h6>
-                                <a class="dropdown-item" href="profile.html"
+                                <a class="dropdown-item" href="/admin/profile"
                                     ><i
                                         class="mdi mdi-account-circle text-muted fs-lg align-middle me-1"
                                     ></i>
@@ -1212,12 +1297,16 @@
                 "/admin/brand/list": "brands",
                 "/admin/attribute/list": "attribute_sets",
                 "/admin/attribute-values/list": "attribute_values",
-                "/admin/status/list": "status",
+                "/admin/unit/list": "units",
                 "/admin/user/list": "customers",
                 "/admin/vendor/list": "venders",
-                "/admin/slider/list": "sliders",
-                "/admin/unit/list": "units",
-                "/admin/staff/list": "manage_staff",
+                "/admin/static-pages/list": "pages",
+                "/admin/faq/list": "faq",
+                "/admin/slider/list": "slider",
+                "/admin/coupon/list": "coupons",
+                "/admin/order/list": "orders",
+                "/admin/contactus/list": "contactus",
+                "/admin/staff/list": "staffs",
             };
 
             const activeTabClass =
@@ -1238,6 +1327,54 @@
                             .getElementById("sidebarProducts")
                             .classList.add("show");
                         const note = document.querySelector(".product");
+                        note.style.backgroundColor = "#E40F15";
+                        note.style.color = "white";
+                    }
+
+                    if (
+                        document.getElementById("sidebarPages") &&
+                        activeTab.closest("#sidebarPages")
+                    ) {
+                        document
+                            .getElementById("sidebarPages")
+                            .classList.add("show");
+                        const note = document.querySelector(".staticpages");
+                        note.style.backgroundColor = "#E40F15";
+                        note.style.color = "white";
+                    }
+
+                    if (
+                        document.getElementById("sidebarStoreFront") &&
+                        activeTab.closest("#sidebarStoreFront")
+                    ) {
+                        document
+                            .getElementById("sidebarStoreFront")
+                            .classList.add("show");
+                        const note = document.querySelector(".storefront");
+                        note.style.backgroundColor = "#E40F15";
+                        note.style.color = "white";
+                    }
+
+                    if (
+                        document.getElementById("sidebarMarketing") &&
+                        activeTab.closest("#sidebarMarketing")
+                    ) {
+                        document
+                            .getElementById("sidebarMarketing")
+                            .classList.add("show");
+                        const note = document.querySelector(".marketing");
+                        note.style.backgroundColor = "#E40F15";
+                        note.style.color = "white";
+                    }
+
+                    if (
+                        document.getElementById("sidebarInvoices") &&
+                        activeTab.closest("#sidebarInvoices")
+                    ) {
+                        document
+                            .getElementById("sidebarInvoices")
+                            .classList.add("show");
+                        const note = document.querySelector(".invoices");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
                     }

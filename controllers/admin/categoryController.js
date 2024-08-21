@@ -55,6 +55,7 @@ class CategoryController {
                         commision: 1,
                         status_id: 1,
                         status_name: 1,
+                        description: 1,
                         created_at: 1,
                         updated_at: 1,
                     },
@@ -66,8 +67,22 @@ class CategoryController {
                 },
             ]).exec();
             await Category.populate(categories, { path: "status_id" });
+
+            await config.createCategoryStatus();
+            const activeStatus = await Status.findOne({
+                type: "category",
+                name: { $regex: new RegExp("^active$", "i") },
+            });
+            const page = parseInt(req.query.page) || 1; // Current page number, default to 1
+            const pageSize = parseInt(req.query.pageSize) || 10; // Items per page, default to 10
+
+            const totalItems = await Category.countDocuments();
             return res.render("admin/category", {
                 categories,
+                activeStatus,
+                currentPage: page,
+                pageSize,
+                totalItems,
             });
         } catch (error) {
             return res.status(500).send({
@@ -81,18 +96,22 @@ class CategoryController {
             upload(req, res, async function (err) {
                 if (req.fileValidationError) {
                     return res.send(req.fileValidationError);
-                } else if (!req.file) {
-                    return res.send({
-                        success: false,
-                        status: 400,
-                        message: "Please upload an image",
-                    });
                 } else if (err instanceof multer.MulterError) {
                     console.log(err);
                     return res.send(err);
                 } else if (err) {
                     console.log(err);
                     return res.send(err);
+                }
+
+                // Check if the slug already exists in the Category collection
+                const existingCategory = await Category.findOne({
+                    slug: req.body.slug,
+                });
+                if (existingCategory) {
+                    return res.status(400).send({
+                        message: "Slug must be unique",
+                    });
                 }
 
                 await config.createCategoryStatus();
@@ -108,15 +127,19 @@ class CategoryController {
                 });
 
                 const insertRecord = Category({
-                    icon: req.file.filename,
+                    icon: req.file ? req.file.filename : null,
                     name: req.body.name,
                     slug: req.body.slug,
                     meta_title: req.body.meta_title,
                     meta_description: req.body.meta_description,
                     is_featured: req.body.is_featured === "on" ? true : false,
-                    parent_id: req.body.parent_id,
+                    parent_id: req.body.parent_id ? req.body.parent_id : null,
                     commision_type: req.body.commision_type,
                     commision: req.body.commision,
+                    description: req.body.description.replace(
+                        /<\/?[^>]+(>|$)/g,
+                        ""
+                    ),
                     status_id:
                         req.body.status_id === "on"
                             ? activeStatus._id
@@ -124,7 +147,6 @@ class CategoryController {
                 });
                 await insertRecord.save();
                 return res.send({
-                    success: true,
                     status: 200,
                     message: "Category added successfully",
                 });
@@ -159,6 +181,16 @@ class CategoryController {
                         .send({ message: "editid not found" });
                 }
 
+                // Check if the slug already exists in the Category collection
+                const existingSlug = await Category.findOne({
+                    slug: req.body.edit_slug,
+                });
+                if (existingSlug && existingSlug._id != req.body.editid) {
+                    return res.status(400).send({
+                        message: "Slug must be unique",
+                    });
+                }
+
                 await config.createCategoryStatus();
                 const activeStatus = await Status.findOne({
                     type: "category",
@@ -175,9 +207,12 @@ class CategoryController {
                     slug: req.body.edit_slug,
                     meta_title: req.body.edit_meta_title,
                     meta_description: req.body.edit_meta_description,
-                    parent_id: req.body.edit_parent_id,
+                    parent_id: req.body.edit_parent_id
+                        ? req.body.edit_parent_id
+                        : null,
                     is_featured:
                         req.body.edit_is_featured === "on" ? true : false,
+                    description: req.body.edit_description,
                     status_id:
                         req.body.edit_status_id === "on"
                             ? activeStatus._id
@@ -188,7 +223,7 @@ class CategoryController {
                 };
 
                 if (req.file) {
-                    updatedData.icon = req.file.filename;
+                    updatedData.icon = req.file ? req.file.filename : null;
                 }
                 await Category.findOneAndUpdate(
                     { _id: req.body.editid },
@@ -210,7 +245,6 @@ class CategoryController {
                     );
                 }
                 return res.send({
-                    success: true,
                     status: 200,
                     message: "Category updated successfully",
                 });
@@ -226,7 +260,6 @@ class CategoryController {
         try {
             await Category.findByIdAndDelete(req.params.id);
             return res.send({
-                success: true,
                 status: 200,
                 message: "Category deleted successfully",
             });

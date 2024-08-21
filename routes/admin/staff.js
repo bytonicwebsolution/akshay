@@ -1,9 +1,11 @@
-const router = require('express').Router();
-const staffController = require("../../controllers/admin/staffController")
-router.get("/list", staffController.list)
-router.get("/add", staffController.GETadd)
-router.post("/add", staffController.POSTadd)
-router.post("/edit", staffController.edit)
-router.post("/delete/:id", staffController.delete)
+const router = require("express").Router();
+const { NotLoggedIn } = require("../../middlewares/Adminauth");
+const StaffController = require("../../controllers/admin/staffController");
 
-module.exports= router;
+router.get("/list", NotLoggedIn, StaffController.list);
+router.get("/add", NotLoggedIn, StaffController.addGET);
+router.post("/add", NotLoggedIn, StaffController.create);
+router.post("/edit", NotLoggedIn, StaffController.edit);
+router.post("/delete/:id", NotLoggedIn, StaffController.delete);
+
+module.exports = router;
