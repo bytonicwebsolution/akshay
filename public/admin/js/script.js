@@ -241,3 +241,34 @@ function sellerLogout() {
         ],
     });
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const imageContainers = document.getElementsByClassName("image-container");
+
+    Array.from(imageContainers).forEach(function (container) {
+        const imageInput = container.querySelector(".image-input");
+        const imagePreview = container.querySelector(".image-preview");
+        const removeImageButton = container.querySelector(".remove-image");
+
+        // Handle image selection
+        imageInput.addEventListener("change", function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                    removeImageButton.classList.remove("d-none"); // Show remove button
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle image removal
+        removeImageButton.addEventListener("click", function () {
+            imagePreview.src = "/assets/images/users/user-dummy-img.jpg"; // Reset to default image
+            imageInput.value = ""; // Clear the input
+            removeImageButton.classList.add("d-none"); // Hide remove button
+        });
+    });
+});

@@ -62,7 +62,7 @@ class WebsiteController {
                             name: child.name,
                             slug: child.slug,
                             commission: child.commission,
-                            commision_type: child.commision_type,
+                            commission_type: child.commission_type,
                             icon: child.icon,
                             parent_id: child.parent_id,
                             child: await fetchChildren(child), // Recursively fetch children
@@ -101,7 +101,7 @@ class WebsiteController {
                         name: category.name,
                         slug: category.slug,
                         commission: category.commission,
-                        commision_type: category.commision_type,
+                        commission_type: category.commission_type,
                         icon: category.icon,
                         parent_id: category.parent_id,
                         child: await fetchChildren(category), // Fetch child categories

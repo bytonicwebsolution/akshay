@@ -51,8 +51,8 @@ class CategoryController {
                         meta_title: 1,
                         meta_description: 1,
                         is_featured: 1,
-                        commision_type: 1,
-                        commision: 1,
+                        commission_type: 1,
+                        commission: 1,
                         status_id: 1,
                         status_name: 1,
                         description: 1,
@@ -134,8 +134,8 @@ class CategoryController {
                     meta_description: req.body.meta_description,
                     is_featured: req.body.is_featured === "on" ? true : false,
                     parent_id: req.body.parent_id ? req.body.parent_id : null,
-                    commision_type: req.body.commision_type,
-                    commision: req.body.commision,
+                    commission_type: req.body.commission_type,
+                    commission: req.body.commission,
                     description: req.body.description.replace(
                         /<\/?[^>]+(>|$)/g,
                         ""
@@ -217,8 +217,8 @@ class CategoryController {
                         req.body.edit_status_id === "on"
                             ? activeStatus._id
                             : inactiveStatus._id,
-                    commision_type: req.body.edit_commision_type,
-                    commision: req.body.edit_commision,
+                    commission_type: req.body.edit_commission_type,
+                    commission: req.body.edit_commission,
                     updated_at: Date.now(),
                 };
 

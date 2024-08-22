@@ -29,7 +29,7 @@ const Schema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    // commision_type: {
+    // commission_type: {
     //     type: String,
     //     default: null,
     // },

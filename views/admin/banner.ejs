@@ -1,0 +1,432 @@
+<%- include('partials/header.ejs') %>
+
+<div id="layout-wrapper">
+    <!-- Start right Content here -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div
+                            class="page-title-box d-sm-flex align-items-center justify-content-between"
+                        >
+                            <h4 class="mb-sm-0">Banners</h4>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item">
+                                        <a href="/seller/dashboard"
+                                            >Dashboard</a
+                                        >
+                                    </li>
+                                    <li class="breadcrumb-item active">
+                                        Banners
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+                <div class="row justify-content-center">
+                    <!--end col-->
+                    <div class="col-xxl-10">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">Banners</h6>
+                            </div>
+                            <div class="card-body">
+                                <form id="addBannerForm" autocomplete="off">
+                                    <!-- Home Banner Top -->
+                                    <div class="col-lg-12 mb-5">
+                                        <label class="form-label"
+                                            >Home Banner(Top)
+                                        </label>
+                                        <div class="mb-3">
+                                            <input
+                                                type="file"
+                                                class="form-control"
+                                                id="home_banner_top_image"
+                                                name="home_banner_top_image"
+                                                placeholder="Upload Image"
+                                            />
+
+                                            <div
+                                                class="mb-2 mt-2"
+                                                id="TopBanner_Preview"
+                                                style="display: none"
+                                            >
+                                                <img
+                                                    src="<%- home_banner_top_image ? '../../dist/banner/' + home_banner_top_image : '../../assets/images/default/mart-demo-img.jpg' %>"
+                                                                        onerror="this.src='../../assets/images/default/mart-demo-img.jpg';"
+                                                    id="DisplayTopBanner_Preview"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label"
+                                                >URL
+                                            </label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="home_banner_top_url"
+                                                name="home_banner_top_url"
+                                                placeholder="Enter URL"
+                                                value="<%= home_banner_top_url %>"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 mb-5">
+                                        <label class="form-label"
+                                            >Home Banner 2
+                                        </label>
+                                        <div class="mb-3">
+                                            <input
+                                                type="file"
+                                                class="form-control"
+                                                id="home_banner_2_image"
+                                                name="home_banner_2_image"
+                                                placeholder="Upload Image"
+                                            />
+
+                                            <div
+                                                class="mb-2 mt-2"
+                                                id="HomeBanner2_Preview"
+                                                style="display: none"
+                                            >
+                                                <img
+                                                    src=""
+                                                    id="DisplayHomeBanner2_Preview"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label"
+                                                >URL
+                                            </label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="home_banner_2_url"
+                                                name="home_banner_2_url"
+                                                placeholder="Enter URL"
+                                                value="<%=home_banner_2_url%>"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <!-- Home Banner 3 -->
+                                    <div class="col-lg-12 mb-5">
+                                        <label class="form-label"
+                                            >Home Banner 3
+                                        </label>
+                                        <div class="mb-3">
+                                            <input
+                                                type="file"
+                                                class="form-control"
+                                                id="home_banner_3_image"
+                                                name="home_banner_3_image"
+                                                placeholder="Upload thumbnail"
+                                            />
+
+                                            <div
+                                                class="mb-2 mt-2"
+                                                id="HomeBanner3_Preview"
+                                                style="display: none"
+                                            >
+                                                <img
+                                                    src=""
+                                                    id="DisplayHomeBanner3_Preview"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label"
+                                                >URL
+                                            </label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="home_banner_3_url"
+                                                name="home_banner_3_url"
+                                                placeholder="Enter URL"
+                                                value="<%= home_banner_3_url%>"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <!-- Home Banner 4 -->
+                                    <div class="col-lg-12 mb-5">
+                                        <label class="form-label"
+                                            >Home Banner 4
+                                        </label>
+                                        <div class="mb-3">
+                                            <input
+                                                type="file"
+                                                class="form-control"
+                                                id="home_banner_4_image"
+                                                name="home_banner_4_image"
+                                                placeholder="Upload thumbnail"
+                                            />
+
+                                            <div
+                                                class="mb-2 mt-2"
+                                                id="HomeBanner4_Preview"
+                                                style="display: none"
+                                            >
+                                                <img
+                                                    src=""
+                                                    id="DisplayHomeBanner4_Preview"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label"
+                                                >URL
+                                            </label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="home_banner_4_url"
+                                                name="home_banner_4_url"
+                                                placeholder="Enter URL"
+                                                value="<%=home_banner_4_url %>"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <!-- Subscription Banner -->
+                                    <div class="col-lg-12 mb-5">
+                                        <label class="form-label"
+                                            >Subscription Banner
+                                        </label>
+                                        <div class="mb-3">
+                                            <input
+                                                type="file"
+                                                class="form-control"
+                                                id="subscription_banner_image"
+                                                name="subscription_banner_image"
+                                                placeholder="Upload thumbnail"
+                                            />
+
+                                            <div
+                                                class="mb-2 mt-2"
+                                                id="SubscriptionBanner2_Preview"
+                                                style="display: none"
+                                            >
+                                                <img
+                                                    src=""
+                                                    id="DisplaySubscriptionBanner_Preview"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label"
+                                                >URL
+                                            </label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="subscription_banner_url"
+                                                name="subscription_banner_url"
+                                                placeholder="Enter URL"
+                                                 value="<%=subscription_banner_url %>"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div
+                                        class="d-flex align-items-center justify-content-end"
+                                    >
+                                        <div class="">
+                                            <button
+                                                type="submit"
+                                                class="btn btn-thm"
+                                            >
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end col-->
+                </div>
+
+                <!--end row-->
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+    </div>
+    <!-- end main content-->
+</div>
+
+<%- include('partials/footer.ejs') %>
+
+<script>
+    // Initialize the form
+    var addBannerform = $("#addBannerForm");
+
+    // Attach the submit event handler
+    addBannerform.on("submit", submitFormHandler);
+
+    // Function to handle form submission
+    function submitFormHandler(e) {
+        e.preventDefault();
+
+        if ($("#home_banner_top_image").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Home Banner(Top) is required",
+                position: "topRight",
+            });
+            return;
+        }
+        if ($("#home_banner_2_image").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Home Banner 2 is required",
+                position: "topRight",
+            });
+            return;
+        }
+        if ($("#home_banner_3_image").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Home Banner 3 is required",
+                position: "topRight",
+            });
+            return;
+        }
+        if ($("#home_banner_4_image").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Home Banner 4 is required",
+                position: "topRight",
+            });
+            return;
+        }
+        if ($("#subscription_banner_image").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Subscription Banner is required",
+                position: "topRight",
+            });
+            return;
+        }
+
+
+
+
+        if ($("#home_banner_top_url").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Top Banner URL is required",
+                position: "topRight",
+            });
+            return;
+        }
+        if ($("#home_banner_2_url").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Home URL 2 is required",
+                position: "topRight",
+            });
+            return;
+        }
+        if ($("#home_banner_3_url").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Home URL 3 is required",
+                position: "topRight",
+            });
+            return;
+        }
+        if ($("#home_banner_4_url").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Home URL 4 is required",
+                position: "topRight",
+            });
+            return;
+        }
+        if ($("#subscription_banner_url").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Subscription URL is required",
+                position: "topRight",
+            });
+            return;
+        }
+
+
+
+
+
+        
+
+        var formData = new FormData(addBannerform[0]);
+
+        console.log(formData);
+
+        // AJAX POST request
+        $.ajax({
+            type: "POST",
+            cache: false,
+            enctype: "multipart/form-data",
+            processData: false,
+            contentType: false,
+            url: "/admin/settings/banner/add",
+            data: formData,
+        })
+            .done((res) => {
+                if (res.status === 200) {
+                    iziToast.success({
+                        title: "Success",
+                        message: res.message,
+                        position: "topRight",
+                    });
+
+                    // Reload the page after a short delay
+                    setTimeout(function () {
+                        location.reload();
+                    }, 500);
+                } else {
+                    iziToast.error({
+                        title: "Error",
+                        message: res.message,
+                        position: "topRight",
+                    });
+                }
+            })
+            .fail(function (xhr, status, error) {
+                iziToast.error({
+                    title: "Error",
+                    message: xhr.responseText,
+                    position: "topRight",
+                });
+            });
+    }
+    $("#home_banner_top_image").change(function () {
+        displayPP(this, $("#TopBanner_Preview"));
+    });
+    $("#home_banner_2_image").change(function () {
+        displayPP(this, $("#HomeBanner2_Preview"));
+    });
+    $("#home_banner_3_image").change(function () {
+        displayPP(this, $("#HomeBanner3_Preview"));
+    });
+    $("#home_banner_4_image").change(function () {
+        displayPDF(this, $("#HomeBanner4_Preview"));
+    });
+    $("#subscription_banner_image").change(function () {
+        displayPP(this, $("#SubscriptionBanner2_Preview"));
+    });
+</script>

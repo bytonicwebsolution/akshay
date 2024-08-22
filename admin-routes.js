@@ -17,6 +17,7 @@ const coupon = require("./routes/admin/coupon");
 const sliderR = require("./routes/admin/slider");
 const contactusR = require("./routes/admin/contactus");
 const staffR = require("./routes/admin/staff");
+const settingsR = require("./routes/admin/settings");
 
 const AdminRoutes = (app) => {
     app.use("/", mainR);
@@ -38,6 +39,8 @@ const AdminRoutes = (app) => {
     app.use("/admin/slider", sliderR);
     app.use("/admin/contactus", contactusR);
     app.use("/admin/staff", staffR);
+    app.use("/admin/settings", settingsR);
+    
 };
 
 module.exports = AdminRoutes;
