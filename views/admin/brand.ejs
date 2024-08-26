@@ -173,24 +173,24 @@
                                                             ></label>
                                                         </div>
                                                     </th>
-                                                   
+                                                    <th>
+                                                        #
+                                                    </th>
                                                     <th
                                                         class="sort cursor-pointer"
-                                                        data-sort="brand"
+                                                        data-sort="products"
                                                     >
                                                         Brand Name
                                                     </th>
                                                     <th
                                                         class="sort cursor-pointer"
-                                                        data-sort="status"
+                                                        data-sort="price"
                                                     >
                                                         Status
                                                     </th>
-                                                    
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
-                      
                                             <tbody class="list form-check-all">
                                                 <%
                                                 brands.forEach(function(brand,index)
@@ -208,7 +208,9 @@
                                                             ></label>
                                                         </div>
                                                     </td>
-                                                    
+                                                    <td>
+                                                        <%= index + 1 %>
+                                                    </td>
 
                                                     <td class="category">
                                                         <div
@@ -242,20 +244,17 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <div
-                                                            class="dropdown position-static"
-                                                        >
+                                                        <div class="dropdown">
                                                             <button
-                                                                class="btn btn-subtle-secondary btn-sm btn-icon"
-                                                                role="button"
+                                                                class="btn btn-subtle-secondary btn-sm dropdown"
+                                                                type="button"
                                                                 data-bs-toggle="dropdown"
                                                                 aria-expanded="false"
                                                             >
                                                                 <i
-                                                                    class="bi bi-three-dots-vertical"
+                                                                    class="ri-more-fill align-middle"
                                                                 ></i>
                                                             </button>
-
                                                             <ul
                                                                 class="dropdown-menu dropdown-menu-end"
                                                             >
@@ -328,7 +327,7 @@
                                                 <span
                                                     class="fw-semibold"
                                                     id="total-items"
-                                                    ><%= totalItems %></span
+                                                    ><%= totalItems ? totalItems : 0%></span
                                                 >
                                                 Results
                                             </div>

@@ -59,6 +59,14 @@ class CouponController {
                 type: "coupon",
                 name: { $regex: new RegExp("^active$", "i") },
             });
+
+            const page = parseInt(req.query.page) || 1; // Current page number, default to 1
+            const pageSize = parseInt(req.query.pageSize) || 10; // Items per page, default to 10
+
+            const total_category_coupon = category_coupon.length;
+            const total_product_coupon = product_coupon.length;
+            const total_sub_total_coupon = sub_total_coupon.length;
+            
             return res.render("admin/coupons", {
                 category_coupon,
                 product_coupon,
@@ -66,6 +74,11 @@ class CouponController {
                 categories,
                 products,
                 activeStatus,
+                total_category_coupon,
+                total_product_coupon,
+                total_sub_total_coupon,
+                currentPage: page,
+                pageSize,
             });
         } catch (error) {
             console.log(error);

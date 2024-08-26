@@ -22,10 +22,18 @@ class CouponController {
                 type: "coupon",
                 name: { $regex: new RegExp("^active$", "i") },
             });
+
+            const page = parseInt(req.query.page) || 1; // Current page number, default to 1
+            const pageSize = parseInt(req.query.pageSize) || 10; // Items per page, default to 10
+
+            const totalItems = product_coupon.length;
             return res.render("seller/coupons", {
                 product_coupon,
                 products,
                 activeStatus,
+                currentPage: page,
+                pageSize,
+                totalItems,
             });
         } catch (error) {
             console.log(error);

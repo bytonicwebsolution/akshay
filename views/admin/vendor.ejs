@@ -185,7 +185,8 @@
                                                                 <div>
                                                                     <img
                                                                         class="avatar-sm rounded-circle customer-image-elem"
-                                                                        src="<%- user.image ? '../../dist/users/' + user.image : '/assets/images/users/user-dummy-img.jpg' %>"
+                                                                        src="<%- user.image ? '../../dist/users/' + user.image : '../../assets/images/default/user-dummy-img.jpg' %>"
+                                                                        onerror="this.src='../../assets/images/default/user-dummy-img.jpg';"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -396,45 +397,36 @@
                 class="tablelist-form"
                 autocomplete="off"
             >
-                <div class="modal-body ">         
+                <div class="modal-body">         
                     <input type="hidden" id="id-field" />
 
-                    <div class="text-center mb-3 image-container">
+                    <div class="text-center mb-3">
                         <div class="position-relative d-inline-block">
-                            <!-- Cross Button to Remove Image -->
-                            <button
-                                class="position-absolute my-3 mx-6 bg-black text-white rounded-circle d-none remove-image d-flex align-items-center justify-content-center"
-                                style="border: none; cursor: pointer; padding: 0; font-size: 0.75rem; width: 15px; height: 15px; margin-left: 73px; top: 6px;"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                title="Remove Image"
-                            >
-                                <i class="ri-close-fill"></i>
-                            </button>
                             <div
                                 class="position-absolute top-100 start-100 translate-middle"
                             >
                                 <label
-                                    class="mb-0 image-label"
+                                    for="image-input"
+                                    class="mb-0"
                                     data-bs-toggle="tooltip"
                                     data-bs-placement="right"
                                     title="Select Category photo"
                                 >
-                                <span class="avatar-xs d-inline-block">
-                                    <span
-                                        class="avatar-title bg-light border rounded-circle text-muted cursor-pointer"
-                                    >
-                                        <i class="ri-image-fill"></i>
+                                    <span class="avatar-xs d-inline-block">
+                                        <span
+                                            class="avatar-title bg-light border rounded-circle text-muted cursor-pointer"
+                                        >
+                                            <i class="ri-image-fill"></i>
+                                        </span>
                                     </span>
-                                </span>
-                                <!-- Hidden file input -->
+                                </label>
                                 <input
-                                    class="form-control d-none image-input"
-                                    name="icon"
+                                    class="form-control d-none"
+                                    id="image-input"
+                                    name="image"
                                     type="file"
                                     accept="image/png, image/gif, image/jpeg"
                                 />
-                            </label>
                             </div>
                             <div class="avatar-lg">
                                 <div class="avatar-title bg-light rounded-3">
@@ -442,7 +434,7 @@
                                         src="/assets/images/users/user-dummy-img.jpg"
                                         alt=""
                                         id="image-preview"
-                                        class="avatar-md h-auto rounded-3 object-fit-cover image-preview"
+                                        class="avatar-md h-auto rounded-3 object-fit-cover"
                                     />
                                 </div>
                             </div>

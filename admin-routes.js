@@ -39,8 +39,7 @@ const AdminRoutes = (app) => {
     app.use("/admin/slider", sliderR);
     app.use("/admin/contactus", contactusR);
     app.use("/admin/staff", staffR);
-    app.use("/admin/settings", settingsR);
-    
+    app.use("/admin", settingsR);
 };
 
 module.exports = AdminRoutes;

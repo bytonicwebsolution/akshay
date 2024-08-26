@@ -60,8 +60,6 @@
                         </div>
                         <div class="card">
                             <div class="tab-content">
-                               
-
                                 <!-- Product Tab -->
                                 <div
                                     class="tab-pane active"
@@ -421,12 +419,18 @@
                                                                         Showing
                                                                         <span
                                                                             class="fw-semibold"
-                                                                            >10</span
+                                                                            >
+                                                                            <%= Math.min(currentPage *
+                                                                                pageSize, totalItems)
+                                                                             %>                                                                            
+                                                                            </span
                                                                         >
                                                                         of
                                                                         <span
                                                                             class="fw-semibold"
-                                                                            >13</span
+                                                                            >
+                                                                            <%= totalItems ? totalItems : 0 %>
+                                                                            </span
                                                                         >
                                                                         Results
                                                                     </div>
@@ -511,6 +515,7 @@
                             multiple=""
                             tabindex="-1"
                             aria-hidden="true"
+                            data-placeholder="Select Products"
                         >
                             <%products.forEach(function(element){ %>
                             <option value="<%= element._id %>">
@@ -798,9 +803,22 @@
 </div>
 <!-- /deleteRecordModal -->
 
-
-
 <%- include ('partials/footer.ejs') %>
+<script>
+    $(document).ready(function () {
+        $("#product_id").select2({
+            placeholder: $(this).data("placeholder"),
+            width: "100%", // This makes sure the select box takes the full width
+        });
+    });
+    $(document).ready(function () {
+        $("#edit_product").select2({
+            placeholder: $(this).data("placeholder"),
+            width: "100%", // This makes sure the select box takes the full width
+        });
+    });
+</script>
+
 
 <script>
     //  Date Range Picker For Discount period

@@ -1,23 +1,18 @@
-const Support = require("../../models/Support")
+const Support = require("../../models/Support");
 const multer = require("multer");
 const path = require("path");
 const root = process.cwd();
 const imageFilter = require("../../config/imageFilter");
-const pdfFilter = require("../../config/pdfFilter");
-const fs = require("fs");
-const config = require("../../config/createStatus");
+
 class SupportController {
     static list = async (req, res) => {
-        let supports = await Support.find().sort({created_at:-1})
-        return res.render("seller/support",{
+        let supports = await Support.find().sort({ created_at: -1 });
+        return res.render("seller/support", {
             supports,
         });
     };
 
-
-    static add = async(req,res)=>{
-
-        
+    static add = async (req, res) => {
         try {
             upload(req, res, async function (err) {
                 if (err) {
@@ -31,36 +26,33 @@ class SupportController {
                     });
                 }
 
-
                 const data = req.body;
                 const files = req.files || {};
-                
-            const insertRecord = new Support({
-                subject : data.subject,
-                priority: data.priority,
-                description: data.description.replace(
-                    /<\/?[^>]+(>|$)/g,
-                    ""
-                ),
-                gallery_images: Array.isArray(files.gallery_images)
+
+                const insertRecord = new Support({
+                    subject: data.subject,
+                    priority: data.priority,
+                    description: data.description.replace(
+                        /<\/?[^>]+(>|$)/g,
+                        ""
+                    ),
+                    gallery_images: Array.isArray(files.gallery_images)
                         ? files.gallery_images.map((f) => f.filename)
                         : files.gallery_images
                         ? [files.gallery_images[0].filename]
                         : [],
-
+                });
+                await insertRecord.save();
+                return res.send({
+                    status: 200,
+                    message: "Enquiry Send Successfully!",
+                });
             });
-            await insertRecord.save();
-            return res.send({
-                status: 200,
-                message: "Enquiry Send Successfully!",
-            });
-        });
-
         } catch (error) {
             console.log(error);
-            return res
-                .status(500)
-                .send({ message: "Error creating Support: " + error.message });
+            return res.status(500).send({
+                message: "Error creating Support Enquiry: " + error.message,
+            });
         }
     };
 
@@ -92,14 +84,10 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = function (req, file, cb) {
-    const imageFields = [
-       
-        "gallery_images",
-        
-    ];
+    const imageFields = ["gallery_images"];
     if (imageFields.includes(file.fieldname)) {
         imageFilter(req, file, cb);
-    } 
+    }
 };
 
 // Init Upload
@@ -109,10 +97,6 @@ const upload = multer({
     //     fileSize: 5000000
     // },
     fileFilter: fileFilter,
-}).fields([
-   
-    { name: "gallery_images", maxCount: 10 },
-    
-]);
+}).fields([{ name: "gallery_images", maxCount: 10 }]);
 
 module.exports = SupportController;

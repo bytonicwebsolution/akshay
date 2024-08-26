@@ -219,7 +219,7 @@ class CategoryController {
                             : inactiveStatus._id,
                     commission_type: req.body.edit_commission_type,
                     commission: req.body.edit_commission,
-                    updated_at: Date.now(),
+                    updated_at: new Date(),
                 };
 
                 if (req.file) {

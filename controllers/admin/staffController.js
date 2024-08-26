@@ -151,7 +151,7 @@ class staffController {
                     last_name: req.body.edit_last_name,
                     email: req.body.edit_email,
                     phone: req.body.edit_phone,
-                    updated_at: Date.now(),
+                    updated_at: new Date(),
                 };
                 if (req.file) {
                     updatedData.image = req.file.filename;

@@ -250,17 +250,13 @@
                                                             "Pending" %>
                                                         </span>
                                                     </td>
-                                                    <% const date = new
-                                                    Date(reqcategories.created_at);
-                                                    const formattedDate =
-                                                    date.toLocaleString('en-GB',
-                                                    { day: '2-digit', month:
-                                                    'short', year: 'numeric' });
-                                                    %>
-                                                    <td class="date">
-                                                        <%= formattedDate ?
-                                                        formattedDate : ""%>
-                                                    </td>
+                                                    <% 
+                                                  const date = new Date(reqcategories.created_at);
+                                                  const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                                                %>
+                                                <td class="date">
+                                                    <%= formattedDate ? formattedDate : ""%>
+                                                </td>
 
                                                     <td>
                                                         <div
@@ -356,7 +352,7 @@
                                                 <span
                                                     class="fw-semibold"
                                                     id="total-items"
-                                                    ><%= totalItems %></span
+                                                    ><%= totalItems ? totalItems : 0%></span
                                                 >
                                                 Results
                                             </div>
@@ -424,7 +420,6 @@
             </div>
             <form class="tablelist-form" id="submitForm">
                 <div class="modal-body">
-                    <div class="text-center mb-3"></div>
                     <div class="mb-3">
                         <label for="brandname-field" class="form-label"
                             >Request Category</label

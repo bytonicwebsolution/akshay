@@ -10,14 +10,16 @@
                 <div class="row">
                     <div class="col-12">
                         <div
-                            class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            class="page-title-box d-sm-flex align-items-center justify-content-between"
+                        >
                             <h4 class="mb-sm-0">Product Stock</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item">
-                                        <a
-                                            href="/seller/dashboard">Dashboard</a>
+                                        <a href="/seller/dashboard"
+                                            >Dashboard</a
+                                        >
                                     </li>
                                     <li class="breadcrumb-item active">
                                         Product Stock
@@ -37,21 +39,27 @@
                                     <div class="row g-3">
                                         <div class="col-xxl-3">
                                             <div class="search-box">
-                                                <input type="text"
+                                                <input
+                                                    type="text"
                                                     class="form-control search"
-                                                    placeholder="Search products, price etc..." />
+                                                    placeholder="Search products, price etc..."
+                                                />
                                                 <i
-                                                    class="ri-search-line search-icon"></i>
+                                                    class="ri-search-line search-icon"
+                                                ></i>
                                             </div>
                                         </div>
 
                                         <!--end col-->
                                         <div class="col-xxl-3 col-sm-6">
                                             <div>
-                                                <select class="form-control"
-                                                    id="idCategory" data-choices
+                                                <select
+                                                    class="form-control"
+                                                    id="idCategory"
+                                                    data-choices
                                                     data-choices-search-false
-                                                    data-choices-removeItem>
+                                                    data-choices-removeItem
+                                                >
                                                     <option value="all">
                                                         Select Category
                                                     </option>
@@ -61,11 +69,14 @@
                                         <!--end col-->
 
                                         <div class="col-xxl-1 col-sm-6 ms-auto">
-                                            <button type="button"
+                                            <button
+                                                type="button"
                                                 class="btn btn-secondary w-100 pd-new"
-                                                onclick="filterData();">
+                                                onclick="filterData();"
+                                            >
                                                 <i
-                                                    class="bi bi-funnel align-baseline me-1"></i>
+                                                    class="bi bi-funnel align-baseline me-1"
+                                                ></i>
                                                 Filters
                                             </button>
                                         </div>
@@ -83,7 +94,8 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div
-                                    class="card-header d-flex align-items-center">
+                                    class="card-header d-flex align-items-center"
+                                >
                                     <div class="flex-grow-1">
                                         <h5 class="card-title mb-0">
                                             Products Stock
@@ -93,7 +105,8 @@
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table
-                                            class="table table-centered align-middle table-nowrap mb-0">
+                                            class="table table-centered align-middle table-nowrap mb-0"
+                                        >
                                             <thead class="table-active">
                                                 <tr>
                                                     <th>
@@ -102,40 +115,53 @@
                                                                 class="form-check-input"
                                                                 type="checkbox"
                                                                 value="option"
-                                                                id="checkAll" />
+                                                                id="checkAll"
+                                                            />
                                                             <label
                                                                 class="form-check-label"
-                                                                for="checkAll"></label>
+                                                                for="checkAll"
+                                                            ></label>
                                                         </div>
                                                     </th>
-                                                    <th class="sort cursor-pointer"
-                                                        data-sort="products">
+                                                    <th
+                                                        class="sort cursor-pointer"
+                                                        data-sort="products"
+                                                    >
                                                         Image
                                                     </th>
-                                                    <th class="sort cursor-pointer"
-                                                        data-sort="category">
+                                                    <th
+                                                        class="sort cursor-pointer"
+                                                        data-sort="products"
+                                                    >
                                                         Products
                                                     </th>
-                                                    <th class="sort cursor-pointer"
-                                                        data-sort="stock">
+                                                    <th
+                                                        class="sort cursor-pointer"
+                                                        data-sort="category"
+                                                    >
                                                         Category
                                                     </th>
-                                                    <th class="sort cursor-pointer"
-                                                        data-sort="price">
-                                                        Remaining Quantity
+                                                    <th
+                                                        class="sort cursor-pointer"
+                                                        data-sort="stock"
+                                                    >
+                                                        Remaining Stock
                                                     </th>
                                                 </tr>
                                             </thead>
                                             <tbody class="list form-check-all">
                                                 <% if (!products[0]) { %>
                                                 <tr>
-                                                    <td colspan="100%"
-                                                        class="text-center">
+                                                    <td
+                                                        colspan="100%"
+                                                        class="text-center"
+                                                    >
                                                         No Data
                                                     </td>
                                                 </tr>
-                                                <% } else { %>
-                                                <% products.forEach(function(products) { %>
+                                                <% } else { %> <%
+                                                products.forEach(function(products)
+                                                { %>
                                                 <tr>
                                                     <td>
                                                         <div class="form-check">
@@ -143,51 +169,57 @@
                                                                 class="form-check-input"
                                                                 type="checkbox"
                                                                 name="chk_child"
-                                                                value="<%= products._id %>" />
+                                                                value="<%= products._id %>"
+                                                            />
                                                             <label
-                                                                class="form-check-label"></label>
+                                                                class="form-check-label"
+                                                            ></label>
                                                         </div>
                                                     </td>
                                                     <td class="image">
                                                         <div
-                                                            class="d-flex align-items-center">
+                                                            class="d-flex align-items-center"
+                                                        >
                                                             <div
-                                                                class="avatar-xs bg-light rounded p-1 me-2">
-                                                                <img src="<%- products.thumbnail ? '../../dist/product/' + products.thumbnail : '../../assets/images/default/mart-demo-img.jpg' %>"
+                                                                class="avatar-xs bg-light rounded p-1 me-2"
+                                                            >
+                                                                <img
+                                                                    src="<%- products.thumbnail ? '../../dist/product/' + products.thumbnail : '../../assets/images/default/mart-demo-img.jpg' %>"
                                                                     onerror="this.src='../../assets/images/default/mart-demo-img.jpg';"
-                                                                    class="img-fluid d-block" />
+                                                                    class="img-fluid d-block"
+                                                                />
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="products">
                                                         <div>
                                                             <h6 class="mb-0">
-                                                                <!-- <a
-                                                                    href="apps-ecommerce-product-details.html"
-                                                                    class="text-reset products"
-                                                                > -->
-                                                                <%- products.product_name ?
-products.product_name :
-'' %><!-- </a> -->
+                                                                <%-
+                                                                products.product_name
+                                                                ?
+                                                                products.product_name
+                                                                : '' %>
                                                             </h6>
                                                         </div>
                                                     </td>
-                                                    <td class="category"
-                                                        data-category-id="<%= products.category_id ? products.category_id._id : '' %>">
-                                                        <%= products.category_id ?
-products.category_id.name :
-'' %>
-                                                    </td>
                                                     <td
-                                                        class="remaining_quantity">
-                                                        <%= products.totalStock ?
-products.totalStock :
-'' %>
+                                                        class="category"
+                                                        data-category-id="<%= products.category_id ? products.category_id._id : '' %>"
+                                                    >
+                                                        <%= products.category_id
+                                                        ?
+                                                        products.category_id.name
+                                                        : '' %>
+                                                    </td>
+                                                    <td class="stock">
+                                                        <%=
+                                                        products.remainingStock
+                                                        ?
+                                                        products.remainingStock
+                                                        : '' %>
                                                     </td>
                                                 </tr>
-                                                <% }); %>
-                                                
-                                                <% } %>
+                                                <% }); %> <% } %>
                                             </tbody>
                                         </table>
                                     </div>
@@ -195,12 +227,9 @@ products.totalStock :
 
                                     <div class="noresult" style="display: none">
                                         <div class="text-center py-4">
-                                            <div class="avatar-md mx-auto mb-4">
-                                                <div
-                                                    class="avatar-title bg-light text-primary rounded-circle fs-4xl">
-                                                    <i class="bi bi-search"></i>
-                                                </div>
-                                            </div>
+                                            <i
+                                                class="ph-magnifying-glass fs-1 text-primary"
+                                            ></i>
                                             <h5 class="mt-2">
                                                 Sorry! No Result Found
                                             </h5>
@@ -211,39 +240,48 @@ products.totalStock :
                                             </p>
                                         </div>
                                     </div>
-                                    <!-- end noresult -->
-
-                                    <div class="row mt-3 align-items-center"
-                                        id="pagination-element">
+                                    <div
+                                        class="align-items-center mt-4 justify-content-between row text-center text-sm-start"
+                                        id="pagination-element"
+                                    >
                                         <div class="col-sm">
-                                            <div
-                                                class="text-muted text-center text-sm-start">
+                                            <div class="text-muted">
                                                 Showing
                                                 <span
-                                                    class="fw-semibold">10</span>
+                                                    class="fw-semibold"
+                                                    id="current-items"
+                                                    ><%= Math.min(currentPage *
+                                                    pageSize, totalItems)
+                                                    %></span
+                                                >
                                                 of
                                                 <span
-                                                    class="fw-semibold">35</span>
+                                                    class="fw-semibold"
+                                                    id="total-items"
+                                                    ><%= totalItems ? totalItems
+                                                    : 0%></span
+                                                >
                                                 Results
                                             </div>
                                         </div>
 
                                         <div class="col-sm-auto mt-3 mt-sm-0">
                                             <div
-                                                class="pagination-wrap hstack gap-2 justify-content-center">
-                                                <a class="page-item pagination-prev disabled"
-                                                    href="#">
-                                                    <i
-                                                        class="mdi mdi-chevron-left align-middle"></i>
-                                                </a>
+                                                class="pagination-wrap hstack gap-2 justify-content-center"
+                                            >
+                                                <a
+                                                    class="page-item pagination-prev disabled"
+                                                    href="javascript:void(0)"
+                                                    >Previous</a
+                                                >
                                                 <ul
-                                                    class="pagination listjs-pagination mb-0">
-                                                </ul>
-                                                <a class="page-item pagination-next"
-                                                    href="#">
-                                                    <i
-                                                        class="mdi mdi-chevron-right align-middle"></i>
-                                                </a>
+                                                    class="pagination listjs-pagination mb-0"
+                                                ></ul>
+                                                <a
+                                                    class="page-item pagination-next"
+                                                    href="javascript:void(0)"
+                                                    >Next</a
+                                                >
                                             </div>
                                         </div>
                                     </div>
@@ -266,13 +304,22 @@ products.totalStock :
 <!-- END layout-wrapper -->
 
 <!-- deleteRecordModal -->
-<div id="deleteRecordModal" class="modal fade zoomIn" tabindex="-1"
-    aria-hidden="true">
+<div
+    id="deleteRecordModal"
+    class="modal fade zoomIn"
+    tabindex="-1"
+    aria-hidden="true"
+>
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="btn-close" id="deleteRecord-close"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    id="deleteRecord-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
             </div>
             <div class="modal-body p-md-5">
                 <div class="text-center">
@@ -287,12 +334,18 @@ products.totalStock :
                     </div>
                 </div>
                 <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                    <button type="button" class="btn w-sm btn-light btn-hover"
-                        data-bs-dismiss="modal">
+                    <button
+                        type="button"
+                        class="btn w-sm btn-light btn-hover"
+                        data-bs-dismiss="modal"
+                    >
                         Close
                     </button>
-                    <button type="button" class="btn w-sm btn-danger btn-hover"
-                        id="delete-record">
+                    <button
+                        type="button"
+                        class="btn w-sm btn-danger btn-hover"
+                        id="delete-record"
+                    >
                         Yes, Delete It!
                     </button>
                 </div>

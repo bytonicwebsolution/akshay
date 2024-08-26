@@ -923,7 +923,7 @@ class ProductController {
                         : files.meta_image
                         ? [files.meta_image[0].filename]
                         : product.meta_image,
-                    updated_at: Date.now(),
+                    updated_at: new Date(),
                 };
                 if (data.variant === "on") {
                     const attributeValueIds = Array.isArray(data.variant_ids)
@@ -993,6 +993,7 @@ class ProductController {
                                 current_stock: filteredCurrentStocks,
                                 price: filteredPrices,
                                 image: images,
+                                updated_at: new Date(),
                             }
                         );
                     }

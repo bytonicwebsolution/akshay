@@ -161,7 +161,10 @@
                                             </div>
                                         </div> -->
                                         <!--end col-->
-                                        <div class="col-xxl-1 col-sm-6 ms-auto">
+                                        <div
+                                            class="col-xxl-1 col-sm-6"
+                                            style="margin-top: 40px"
+                                        >
                                             <button
                                                 type="button"
                                                 class="btn btn-secondary w-100 pd-new"
@@ -359,16 +362,18 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="category" data-category-id="<%= products.category_id ? products.category_id._id : '' %>">
+                                                    <td
+                                                        class="category"
+                                                        data-category-id="<%= products.category_id ? products.category_id._id : '' %>"
+                                                    >
                                                         <%=
                                                         products.category_id?
                                                         products.category_id.name:
                                                         ''%>
                                                     </td>
                                                     <td class="stock">
-                                                        <%=
-                                                        products.totalStock ?
-                                                        products.totalStock :
+                                                        <%= products.totalStock
+                                                        ? products.totalStock :
                                                         ''%>
                                                     </td>
                                                     <td class="price">
@@ -386,12 +391,16 @@
                                                             4.9</span
                                                         >
                                                     </td> -->
-                                                    <% 
-                                                     const date = new Date(products.created_at);
-                                                     const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-                                                     %>
+                                                    <% const date = new
+                                                    Date(products.created_at);
+                                                    const formattedDate =
+                                                    date.toLocaleString('en-GB',
+                                                    { day: '2-digit', month:
+                                                    'short', year: 'numeric' });
+                                                    %>
                                                     <td class="date">
-                                                        <%= formattedDate ? formattedDate : ""%>
+                                                        <%= formattedDate ?
+                                                        formattedDate : ""%>
                                                     </td>
 
                                                     <td>
@@ -495,7 +504,8 @@
                                                 <span
                                                     class="fw-semibold"
                                                     id="total-items"
-                                                    ><%= totalItems %></span
+                                                    ><%= totalItems ? totalItems
+                                                    : 0%></span
                                                 >
                                                 Results
                                             </div>

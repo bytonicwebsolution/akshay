@@ -169,7 +169,7 @@
                                             href="/admin/product/list"
                                             class="nav-link products"
                                             data-key="t-products"
-                                            >Products</a
+                                            >All Products</a
                                         >
                                     </li>
                                     <li class="nav-item">
@@ -315,6 +315,22 @@
                                             >Slider</a
                                         >
                                     </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/banner/list"
+                                            class="nav-link banner banner"
+                                            data-key="t-products"
+                                            >Home Banners</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/settings_view"
+                                            class="nav-link web_setting"
+                                            data-key="t-products"
+                                            >Web Setting</a
+                                        >
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -379,34 +395,6 @@
                                     >Manage Staffs
                                 </span>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a
-                                href="#sidebarSettings"
-                                class="nav-link menu-link collapsed web-settings"
-                                data-bs-toggle="collapse"
-                                role="button"
-                                aria-expanded="false"
-                                aria-controls="sidebarSettings"
-                            >
-                            <i class="ph ph-gear-six"></i>
-                                <span data-key="t-ecommerce">Web Settings</span>
-                            </a>
-                            <div
-                                class="collapse menu-dropdown"
-                                id="sidebarSettings"
-                            >
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a
-                                            href="/admin/settings/banner/list"
-                                            class="nav-link banner banner"
-                                            data-key="t-products"
-                                            >Banner</a
-                                        >
-                                    </li>
-                                </ul>
-                            </div>
                         </li>
                         <!-- <li class="nav-item">
                             <a
@@ -1331,11 +1319,12 @@
                 "/admin/static-pages/list": "pages",
                 "/admin/faq/list": "faq",
                 "/admin/slider/list": "slider",
+                "/admin/banner/list": "banner",
+                "/admin/settings_view": "web_setting ",
                 "/admin/coupon/list": "coupons",
                 "/admin/order/list": "orders",
                 "/admin/contactus/list": "contactus",
                 "/admin/staff/list": "staffs",
-                "/admin/settings/banner/list": "banner",
             };
 
             const activeTabClass =
@@ -1404,17 +1393,6 @@
                             .getElementById("sidebarInvoices")
                             .classList.add("show");
                         const note = document.querySelector(".invoices");
-                        note.style.backgroundColor = "#E40F15";
-                        note.style.color = "white";
-                    }
-                    if (
-                        document.getElementById("sidebarSettings") &&
-                        activeTab.closest("#sidebarSettings")
-                    ) {
-                        document
-                            .getElementById("sidebarSettings")
-                            .classList.add("show");
-                        const note = document.querySelector(".web-settings");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
                     }

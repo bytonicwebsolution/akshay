@@ -107,11 +107,11 @@
                         <div class="col-xxl-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="table-responsive">
+                                    <div class="table-responsive table-card">
                                         <table
-                                            class="table table-centered align-middle table-nowrap mb-0"
+                                            class="table align-middle table-nowrap"
                                         >
-                                            <thead class="table-active">
+                                            <thead>
                                                 <tr>
                                                     <th>
                                                         <div class="form-check">
@@ -129,19 +129,17 @@
                                                     </th>
                                                     <th>#</th>
                                                     <th
-                                                    class="sort cursor-pointer"
-                                                    data-sort="category"
-                                                >
-                                                    Attribute
-                                                </th>
-                                                   
+                                                        class="sort cursor-pointer"
+                                                        data-sort="category"
+                                                    >
+                                                        Attribute
+                                                    </th>
                                                     <th
                                                         class="sort cursor-pointer"
                                                         data-sort="category"
                                                     >
-                                                        Values
+                                                        Value
                                                     </th>
-                                                   
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -277,7 +275,8 @@
                                                 <span
                                                     class="fw-semibold"
                                                     id="total-items"
-                                                    ><%= totalItems %></span
+                                                    ><%= totalItems ? totalItems : 0
+                                                    %></span
                                                 >
                                                 Results
                                             </div>

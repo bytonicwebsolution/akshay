@@ -441,13 +441,16 @@
                                                                         Showing
                                                                         <span
                                                                             class="fw-semibold"
-                                                                            >10</span
+                                                                            >
+                                                                            <%= Math.min(currentPage *
+                                                                                pageSize, total_category_coupon)
+                                                                             %>   
+                                                                            </span
                                                                         >
                                                                         of
                                                                         <span
                                                                             class="fw-semibold"
-                                                                            >13</span
-                                                                        >
+                                                                            ><%= total_category_coupon ? total_category_coupon : 0 %></span>
                                                                         Results
                                                                     </div>
                                                                 </div>
@@ -841,13 +844,18 @@
                                                                         Showing
                                                                         <span
                                                                             class="fw-semibold"
-                                                                            >10</span
+                                                                            >
+                                                                            <%= Math.min(currentPage *
+                                                                                pageSize, total_product_coupon)
+                                                                             %>                                                                            
+                                                                            </span
                                                                         >
                                                                         of
                                                                         <span
                                                                             class="fw-semibold"
-                                                                            >13</span
-                                                                        >
+                                                                            >
+                                                                            <%= total_product_coupon ? total_product_coupon : 0 %>
+                                                                        </span>
                                                                         Results
                                                                     </div>
                                                                 </div>
@@ -1201,13 +1209,17 @@
                                                                         Showing
                                                                         <span
                                                                             class="fw-semibold"
-                                                                            >10</span
-                                                                        >
+                                                                            >
+                                                                            <%= Math.min(currentPage *
+                                                                                pageSize, total_sub_total_coupon)
+                                                                             %>
+                                                                        </span>
                                                                         of
                                                                         <span
                                                                             class="fw-semibold"
-                                                                            >13</span
-                                                                        >
+                                                                            >
+                                                                            <%= total_sub_total_coupon ? total_sub_total_coupon : 0 %>
+                                                                        </span>
                                                                         Results
                                                                     </div>
                                                                 </div>
@@ -1280,7 +1292,8 @@
 
                     <div class="mb-3" id="category-field-container">
                         <label for="Category-field" class="form-label"
-                            >Category</label
+                            >Category<span class="text-danger">*</span>                            
+                            </label
                         >
                         <select
                             class="form-control select2 select2-hidden-accessible"
@@ -1300,7 +1313,7 @@
                     </div>
                     <div class="mb-3" id="product-field-container">
                         <label for="Product-field" class="form-label"
-                            >Product</label
+                            >Product<span class="text-danger">*</span></label
                         >
                         <select
                             class="form-control select2 select2-hidden-accessible"
@@ -1321,7 +1334,7 @@
                     <div class="row">
                         <div class="mb-3 col-6" id="type-field-container">
                             <label for="type-field" class="form-label"
-                                >Type</label
+                                >Type<span class="text-danger">*</span></label
                             >
                             <select class="form-control" id="type" name="type">
                                 <option value="" selected>
@@ -1333,7 +1346,7 @@
                         </div>
                         <div class="mb-3 col-6" id="discount-field-container">
                             <label for="discount-field" class="form-label"
-                                >Discount</label
+                                >Discount<span class="text-danger">*</span></label
                             >
                             <input
                                 type="number"
@@ -1346,7 +1359,7 @@
                     </div>
                     <div class="mb-3" id="date-range-container">
                         <label for="type-field" class="form-label">
-                            Date Range</label
+                            Date Range<span class="text-danger">*</span></label
                         >
                         <input
                             type="text"
@@ -1370,7 +1383,7 @@
                     </div>
                     <div class="mb-3" id="coupon-code-field-container">
                         <label for="code-field" class="form-label"
-                            >Coupon Code</label
+                            >Coupon Code<span class="text-danger">*</span></label
                         >
                         <div class="input-group">
                             <input
@@ -1665,6 +1678,33 @@
 <%- include ('partials/footer.ejs') %>
 
 <script>
+    $(document).ready(function () {
+        $("#category-field").select2({
+            placeholder: $(this).data("placeholder"),
+            width: "100%", // This makes sure the select box takes the full width
+        });
+    });
+    $(document).ready(function () {
+        $("#edit_category").select2({
+            placeholder: $(this).data("placeholder"),
+            width: "100%", // This makes sure the select box takes the full width
+        });
+    });
+    $(document).ready(function () {
+        $("#product_id").select2({
+            placeholder: $(this).data("placeholder"),
+            width: "100%", // This makes sure the select box takes the full width
+        });
+    });
+    $(document).ready(function () {
+        $("#edit_product").select2({
+            placeholder: $(this).data("placeholder"),
+            width: "100%", // This makes sure the select box takes the full width
+        });
+    });
+</script>
+
+<script>
     //  Date Range Picker For Discount period
     $(function () {
         $('input[name="date_range"]').daterangepicker({
@@ -1831,16 +1871,63 @@
     function submitFormHandler(e) {
         e.preventDefault();
 
-        // validation
-        if (!$("#date_range").val()) {
-            iziToast.error({
-                title: "Error",
-                message: "Please select date range",
+        // validation Required fields
+        if ($("#category-field-container").css("display") === "block") {
+            if ($("#category-field").val() === null || $("#category-field").val() == "") {
+                iziToast.warning({
+                    title: "Warning",
+                    message: "Category is required",
+                    position: "topRight",
+                });
+                return;
+            }
+        }
+        if ($("#product-field-container").css("display") === "block") {
+            if ($("#product_id").val() === null || $("#product_id").val() == "") {
+                iziToast.warning({
+                    title: "Warning",
+                    message: "Product is required",
+                    position: "topRight",
+                });
+                return;
+            }
+        }
+        if ($("#coupon-code-field-container").css("display") === "block") {
+            if ($("#coupon_code").val() == "") {
+                iziToast.warning({
+                    title: "Warning",
+                    message: "Coupon Code is required",
+                    position: "topRight",
+                });
+                return;
+            }
+        }
+
+        if ($("#type").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Type is required",
                 position: "topRight",
             });
             return;
         }
-
+        if ($("#discount").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Discount is required",
+                position: "topRight",
+            });
+            return;
+        }
+        if ($("#date_range").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Date Range is required",
+                position: "topRight",
+            });
+            return;
+        }
+        
         var categoryIds = $(this).find('select[name="category_id"]').val();
         var productIds = $(this).find('select[name="product_id"]').val();
 
@@ -1882,9 +1969,10 @@
                         message: res.message,
                         position: "topRight",
                     });
+                    $("#showModal").modal("hide");
                     setTimeout(function () {
                         window.location.href = "/admin/coupon/list";
-                    }, 1000);
+                    }, 500);
                 } else {
                     iziToast.error({
                         title: "Error",
@@ -1985,9 +2073,10 @@
                         message: res.message,
                         position: "topRight",
                     });
+                    $("#showEditModal").modal("hide");
                     setTimeout(function () {
                         window.location.href = "/admin/coupon/list";
-                    }, 1000);
+                    }, 500);
                 } else {
                     iziToast.error({
                         title: "Error",

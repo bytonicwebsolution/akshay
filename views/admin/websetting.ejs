@@ -14,7 +14,7 @@
                         <div
                             class="page-title-box d-sm-flex align-items-center justify-content-between"
                         >
-                            <h4 class="mb-sm-0">Profile</h4>
+                            <h4 class="mb-sm-0">Web Settingss</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
@@ -22,7 +22,7 @@
                                         <a href="/admin/dashboard">Dashboard</a>
                                     </li>
                                     <li class="breadcrumb-item active">
-                                        Profile
+                                        Web Settings
                                     </li>
                                 </ol>
                             </div>
@@ -36,7 +36,7 @@
                     <div class="col-xxl-12">
                         <div class="card">
                             <div class="card-header">
-                                <h6 class="card-title mb-0">Profile</h6>
+                                <h6 class="card-title mb-0">Web Settings</h6>
                             </div>
                             <div class="card-body">
                                 <form id="updateForm">
@@ -45,64 +45,115 @@
                                     >
                                         <div class="col-lg-6">
                                             <label
-                                                for="first_name"
+                                                for="email"
                                                 class="form-label"
-                                                >First Name</label
+                                                >Email</label
                                             >
                                             <div class="position-relative">
                                                 <input
                                                     type="text"
                                                     class="form-control"
-                                                    id="first_name"
-                                                    name="first_name"
-                                                    placeholder="Enter First name"
-                                                    value="<%= record.first_name ? record.first_name : '' %>"
+                                                    id="email"
+                                                    name="email"
+                                                    placeholder="Enter Email"
+                                                    value="<%= email ? email : '' %>"
                                                 />
                                             </div>
                                         </div>
 
                                         <div class="col-lg-6">
                                             <label
-                                                for="last_name"
+                                                for="phone"
                                                 class="form-label"
-                                                >Last Name</label
+                                                >Phone</label
                                             >
                                             <div class="position-relative">
                                                 <input
                                                     type="text"
                                                     class="form-control"
-                                                    id="last_name"
-                                                    name="last_name"
-                                                    placeholder="Enter Last name"
-                                                    value="<%= record.last_name ? record.last_name : '' %>"
+                                                    id="phone"
+                                                    name="phone"
+                                                    placeholder="Enter Phone"
+                                                    value="<%= phone ? phone : '' %>"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label
+                                                for="toll_number"
+                                                class="form-label"
+                                                >Toll Number</label
+                                            >
+                                            <div class="position-relative">
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    id="toll_number"
+                                                    name="toll_number"
+                                                    placeholder="Enter Toll Number"
+                                                    value="<%= toll_number ? toll_number : '' %>"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label
+                                                for="copyright"
+                                                class="form-label"
+                                                >Copyright</label
+                                            >
+                                            <div class="position-relative">
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    id="copyright"
+                                                    name="copyright"
+                                                    placeholder="Enter Copyright"
+                                                    value="<%= copyright ? copyright : '' %>"
                                                 />
                                             </div>
                                         </div>
 
+                                        <div class="col-lg-12">
+                                            <label
+                                                for="address"
+                                                class="form-label"
+                                                >Address</label
+                                            >
+                                            <div class="position-relative">
+                                                <textarea
+                                                    class="form-control"
+                                                    id="address"
+                                                    name="address"
+                                                    rows="3"
+                                                    placeholder="Enter Address"
+                                                ><%= address ? address : '' %></textarea
+                                                >
+                                            </div>
+                                        </div>
                                         <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label class="form-label"
-                                                    >Image
+                                                    >Logo
                                                 </label>
                                                 <input
                                                     type="file"
                                                     class="form-control"
-                                                    id="image"
-                                                    name="image"
+                                                    id="logo"
+                                                    name="logo"
                                                     placeholder="Upload image"
                                                 />
                                                 <input
                                                     type="hidden"
-                                                    id="image-hidden"
-                                                    name="image-hidden"
-                                                    value="<%= record.image %>"
+                                                    id="logo-hidden"
+                                                    name="logo-hidden"
+                                                    value="<%= logo %>"
                                                 />
                                                 <div
                                                     class="mb-2 mt-2"
                                                     id="preview-image"
                                                 >
                                                     <img
-                                                        src="<%- record.image ? '../../dist/profile/' + record.image : '../../assets/images/default/user-dummy-img.jpg' %>"
+                                                        src="<%- logo ? '../../dist/websetting/' + logo : '../../assets/images/default/user-dummy-img.jpg' %>"
                                                         onerror="this.src='../../assets/images/default/user-dummy-img.jpg';"
                                                         id="display_preview_image"
                                                         style="
@@ -148,7 +199,7 @@
 
 <!-- profile-update -->
 <script>
-    $("#image").change(function () {
+    $("#logo").change(function () {
         displayPP(this, $("#preview-image"));
     });
 
@@ -162,7 +213,7 @@
             enctype: "multipart/form-data",
             processData: false,
             contentType: false,
-            url: "profile-update",
+            url: "/admin/web-settings",
             data: formData,
         })
             .done((res) => {

@@ -42,8 +42,8 @@
                                     <!-- Home Banner Top -->
                                     <div class="col-lg-12 mb-5">
                                         <label class="form-label"
-                                            >Home Banner(Top)
-                                        </label>
+                                            >Home Banner (Top)</label
+                                        >
                                         <div class="mb-3">
                                             <input
                                                 type="file"
@@ -52,23 +52,29 @@
                                                 name="home_banner_top_image"
                                                 placeholder="Upload Image"
                                             />
+                                            <input
+                                                type="hidden"
+                                                id="home_banner_top_image_existing"
+                                                name="home_banner_top_image_existing"
+                                                value="<%= home_banner_top_image %>"
+                                            />
 
-                                            <div
-                                                class="mb-2 mt-2"
-                                                id="TopBanner_Preview"
-                                                style="display: none"
-                                            >
-                                                <img
-                                                    src="<%- home_banner_top_image ? '../../dist/banner/' + home_banner_top_image : '../../assets/images/default/mart-demo-img.jpg' %>"
-                                                                        onerror="this.src='../../assets/images/default/mart-demo-img.jpg';"
-                                                    id="DisplayTopBanner_Preview"
-                                                />
-                                            </div>
+                                            <div class="mb-2 mt-2" id="TopBanner_Preview" >
+                                              <% if (home_banner_top_image) { %>
+                                                  <img src="/dist/banner/<%= home_banner_top_image %>" 
+                                                       id="display_home_banner_top_Preview" 
+                                                       class="home_banner_2_image" 
+                                                       style="margin: 5px; width: 100px; height: 100px;" />
+                                              <% } else { %>
+                                                  <img src="" alt="" style="display: none;">
+                                              <% } %>
+                                          </div>
+                                          
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label"
-                                                >URL
-                                            </label>
+                                                >URL</label
+                                            >
                                             <input
                                                 type="text"
                                                 class="form-control"
@@ -80,10 +86,11 @@
                                         </div>
                                     </div>
 
+                                    <!-- Home Banner 2 -->
                                     <div class="col-lg-12 mb-5">
                                         <label class="form-label"
-                                            >Home Banner 2
-                                        </label>
+                                            >Home Banner 2</label
+                                        >
                                         <div class="mb-3">
                                             <input
                                                 type="file"
@@ -92,29 +99,39 @@
                                                 name="home_banner_2_image"
                                                 placeholder="Upload Image"
                                             />
+                                            <input
+                                                type="hidden"
+                                                id="home_banner_2_image_existing"
+                                                name="home_banner_2_image_existing"
+                                                value="<%= home_banner_2_image %>"
+                                            />
 
                                             <div
                                                 class="mb-2 mt-2"
                                                 id="HomeBanner2_Preview"
-                                                style="display: none"
                                             >
-                                                <img
-                                                    src=""
-                                                    id="DisplayHomeBanner2_Preview"
-                                                />
+                                                <img src="<%=
+                                                home_banner_2_image ?
+                                                '/dist/banner/' +
+                                                home_banner_2_image : "" %>"
+                                                id="display_home_banner_2_image"
+                                                class="home_banner_2_image"
+                                                style=" margin: 5px; width:
+                                                100px; height: 100px; "
+                                                id="HomeBanner2_Preview" />
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label"
-                                                >URL
-                                            </label>
+                                                >URL</label
+                                            >
                                             <input
                                                 type="text"
                                                 class="form-control"
                                                 id="home_banner_2_url"
                                                 name="home_banner_2_url"
                                                 placeholder="Enter URL"
-                                                value="<%=home_banner_2_url%>"
+                                                value="<%= home_banner_2_url %>"
                                             />
                                         </div>
                                     </div>
@@ -122,8 +139,8 @@
                                     <!-- Home Banner 3 -->
                                     <div class="col-lg-12 mb-5">
                                         <label class="form-label"
-                                            >Home Banner 3
-                                        </label>
+                                            >Home Banner 3</label
+                                        >
                                         <div class="mb-3">
                                             <input
                                                 type="file"
@@ -132,29 +149,37 @@
                                                 name="home_banner_3_image"
                                                 placeholder="Upload thumbnail"
                                             />
+                                            <input
+                                                type="hidden"
+                                                id="home_banner_3_image_existing"
+                                                name="home_banner_3_image_existing"
+                                                value="<%= home_banner_3_image %>"
+                                            />
 
                                             <div
                                                 class="mb-2 mt-2"
                                                 id="HomeBanner3_Preview"
-                                                style="display: none"
                                             >
-                                                <img
-                                                    src=""
-                                                    id="DisplayHomeBanner3_Preview"
-                                                />
+                                                <img src="<%=
+                                                home_banner_3_image ?
+                                                '/dist/banner/' +
+                                                home_banner_3_image : "" %>"
+                                                id="display_home_banner_3_image"
+                                                style=" margin: 5px; width:
+                                                100px; height: 100px; " />
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label"
-                                                >URL
-                                            </label>
+                                                >URL</label
+                                            >
                                             <input
                                                 type="text"
                                                 class="form-control"
                                                 id="home_banner_3_url"
                                                 name="home_banner_3_url"
                                                 placeholder="Enter URL"
-                                                value="<%= home_banner_3_url%>"
+                                                value="<%= home_banner_3_url %>"
                                             />
                                         </div>
                                     </div>
@@ -162,8 +187,8 @@
                                     <!-- Home Banner 4 -->
                                     <div class="col-lg-12 mb-5">
                                         <label class="form-label"
-                                            >Home Banner 4
-                                        </label>
+                                            >Home Banner 4</label
+                                        >
                                         <div class="mb-3">
                                             <input
                                                 type="file"
@@ -172,29 +197,37 @@
                                                 name="home_banner_4_image"
                                                 placeholder="Upload thumbnail"
                                             />
+                                            <input
+                                                type="hidden"
+                                                id="home_banner_4_image_existing"
+                                                name="home_banner_4_image_existing"
+                                                value="<%= home_banner_4_image %>"
+                                            />
 
                                             <div
                                                 class="mb-2 mt-2"
                                                 id="HomeBanner4_Preview"
-                                                style="display: none"
                                             >
-                                                <img
-                                                    src=""
-                                                    id="DisplayHomeBanner4_Preview"
-                                                />
+                                                <img src="<%=
+                                                home_banner_4_image ?
+                                                '/dist/banner/' +
+                                                home_banner_4_image : "" %>"
+                                                id="display_home_banner_4_image"
+                                                style=" margin: 5px; width:
+                                                100px; height: 100px; " />
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label"
-                                                >URL
-                                            </label>
+                                                >URL</label
+                                            >
                                             <input
                                                 type="text"
                                                 class="form-control"
                                                 id="home_banner_4_url"
                                                 name="home_banner_4_url"
                                                 placeholder="Enter URL"
-                                                value="<%=home_banner_4_url %>"
+                                                value="<%= home_banner_4_url %>"
                                             />
                                         </div>
                                     </div>
@@ -202,8 +235,8 @@
                                     <!-- Subscription Banner -->
                                     <div class="col-lg-12 mb-5">
                                         <label class="form-label"
-                                            >Subscription Banner
-                                        </label>
+                                            >Subscription Banner</label
+                                        >
                                         <div class="mb-3">
                                             <input
                                                 type="file"
@@ -213,28 +246,38 @@
                                                 placeholder="Upload thumbnail"
                                             />
 
+                                            <input
+                                                type="hidden"
+                                                id="subscription_banner_image_existing"
+                                                name="subscription_banner_image_existing"
+                                                value="<%= subscription_banner_image %>"
+                                            />
+
                                             <div
                                                 class="mb-2 mt-2"
-                                                id="SubscriptionBanner2_Preview"
-                                                style="display: none"
+                                                id="SubscriptionBanner_Preview"
                                             >
-                                                <img
-                                                    src=""
-                                                    id="DisplaySubscriptionBanner_Preview"
-                                                />
+                                                <img src="<%=
+                                                subscription_banner_image ?
+                                                '/dist/banner/' +
+                                                subscription_banner_image : ""
+                                                %>"
+                                                id="display_subscription_banner_image"
+                                                style=" margin: 5px; width:
+                                                100px; height: 100px; " />
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label"
-                                                >URL
-                                            </label>
+                                                >URL</label
+                                            >
                                             <input
                                                 type="text"
                                                 class="form-control"
                                                 id="subscription_banner_url"
                                                 name="subscription_banner_url"
                                                 placeholder="Enter URL"
-                                                 value="<%=subscription_banner_url %>"
+                                                value="<%= subscription_banner_url %>"
                                             />
                                         </div>
                                     </div>
@@ -273,23 +316,28 @@
 <script>
     // Initialize the form
     var addBannerform = $("#addBannerForm");
-
-    // Attach the submit event handler
     addBannerform.on("submit", submitFormHandler);
 
     // Function to handle form submission
     function submitFormHandler(e) {
         e.preventDefault();
 
-        if ($("#home_banner_top_image").val() == "") {
+        // Check if image is uploaded or exists in the database
+        if (
+            $("#home_banner_top_image").get(0).files.length === 0 &&
+            !$("#home_banner_top_image_existing").val()
+        ) {
             iziToast.warning({
                 title: "Warning",
-                message: "Home Banner(Top) is required",
+                message: "Home Banner (Top) is required",
                 position: "topRight",
             });
             return;
         }
-        if ($("#home_banner_2_image").val() == "") {
+        if (
+            $("#home_banner_2_image").get(0).files.length === 0 &&
+            !$("#home_banner_2_image_existing").val()
+        ) {
             iziToast.warning({
                 title: "Warning",
                 message: "Home Banner 2 is required",
@@ -297,7 +345,10 @@
             });
             return;
         }
-        if ($("#home_banner_3_image").val() == "") {
+        if (
+            $("#home_banner_3_image").get(0).files.length === 0 &&
+            !$("#home_banner_3_image_existing").val()
+        ) {
             iziToast.warning({
                 title: "Warning",
                 message: "Home Banner 3 is required",
@@ -305,7 +356,10 @@
             });
             return;
         }
-        if ($("#home_banner_4_image").val() == "") {
+        if (
+            $("#home_banner_4_image").get(0).files.length === 0 &&
+            !$("#home_banner_4_image_existing").val()
+        ) {
             iziToast.warning({
                 title: "Warning",
                 message: "Home Banner 4 is required",
@@ -313,7 +367,10 @@
             });
             return;
         }
-        if ($("#subscription_banner_image").val() == "") {
+        if (
+            $("#subscription_banner_image").get(0).files.length === 0 &&
+            !$("#subscription_banner_image_existing").val()
+        ) {
             iziToast.warning({
                 title: "Warning",
                 message: "Subscription Banner is required",
@@ -321,9 +378,6 @@
             });
             return;
         }
-
-
-
 
         if ($("#home_banner_top_url").val() == "") {
             iziToast.warning({
@@ -366,15 +420,7 @@
             return;
         }
 
-
-
-
-
-        
-
         var formData = new FormData(addBannerform[0]);
-
-        console.log(formData);
 
         // AJAX POST request
         $.ajax({
@@ -383,7 +429,7 @@
             enctype: "multipart/form-data",
             processData: false,
             contentType: false,
-            url: "/admin/settings/banner/add",
+            url: "/admin/banner/add",
             data: formData,
         })
             .done((res) => {
@@ -414,6 +460,7 @@
                 });
             });
     }
+
     $("#home_banner_top_image").change(function () {
         displayPP(this, $("#TopBanner_Preview"));
     });
@@ -424,9 +471,136 @@
         displayPP(this, $("#HomeBanner3_Preview"));
     });
     $("#home_banner_4_image").change(function () {
-        displayPDF(this, $("#HomeBanner4_Preview"));
+        displayPP(this, $("#HomeBanner4_Preview"));
     });
     $("#subscription_banner_image").change(function () {
-        displayPP(this, $("#SubscriptionBanner2_Preview"));
+        displayPP(this, $("#SubscriptionBanner_Preview"));
     });
 </script>
+
+<script>
+    // Script to fill data ain bannerForm
+    $(document).ready(function () {
+        var homeBannerTop = "/dist/banner/" + banners.home_banner_top.image;
+        var homeBanner2 = "/dist/banner/" + banners.home_banner_2.image;
+        var homeBanner3 = "/dist/banner/" + banners.home_banner_3.image;
+        var homeBanner4 = "/dist/banner/" + banners.home_banner_4.image;
+        var subscriptionBanner =
+            "/dist/banner/" + banners.subscription_banner.image;
+        var defaultImageUrl =
+            "../../../assets/images/default/mart-demo-img.jpg";
+
+        // Function to check if the image exists
+        function imageExists(url, callback) {
+            $.ajax({
+                url: url,
+                type: "HEAD",
+                success: function () {
+                    callback(true);
+                },
+                error: function () {
+                    callback(false);
+                },
+            });
+        }
+
+        // Check if Home banner top exists
+        if (banners.home_banner_top.image) {
+            imageExists(imageUrl, function (exists) {
+                if (exists) {
+                    $("#display_home_banner_top_image").attr("src", imageUrl);
+                } else {
+                    $("#display_home_banner_top_image").attr(
+                        "src",
+                        defaultImageUrl
+                    );
+                }
+            });
+        } else {
+            $("#display_home_banner_top_image").attr("src", defaultImageUrl);
+        }
+
+        // Check if Home banner 2 exists
+        if (banners.home_banner_2.image) {
+            imageExists(imageUrl, function (exists) {
+                if (exists) {
+                    $("#display_home_banner_2_image").attr("src", imageUrl);
+                } else {
+                    $("#display_home_banner_2_image").attr(
+                        "src",
+                        defaultImageUrl
+                    );
+                }
+            });
+        } else {
+            $("#display_home_banner_2_image").attr("src", defaultImageUrl);
+        }
+
+        // Check if Home banner 3 exists
+        if (banners.home_banner_3.image) {
+            imageExists(imageUrl, function (exists) {
+                if (exists) {
+                    $("#display_home_banner_3_image").attr("src", imageUrl);
+                } else {
+                    $("#display_home_banner_3_image").attr(
+                        "src",
+                        defaultImageUrl
+                    );
+                }
+            });
+        } else {
+            $("#display_home_banner_3_image").attr("src", defaultImageUrl);
+        }
+
+        // Check if Home banner 4 exists
+        if (banners.home_banner_4.image) {
+            imageExists(imageUrl, function (exists) {
+                if (exists) {
+                    $("#display_home_banner_4_image").attr("src", imageUrl);
+                } else {
+                    $("#display_home_banner_4_image").attr(
+                        "src",
+                        defaultImageUrl
+                    );
+                }
+            });
+        } else {
+            $("#display_home_banner_4_image").attr("src", defaultImageUrl);
+        }
+        // Check if Subscription Banner exists
+        if (banners.subscription_banner.image) {
+            imageExists(imageUrl, function (exists) {
+                if (exists) {
+                    $("#display_subscription_banner_image").attr(
+                        "src",
+                        imageUrl
+                    );
+                } else {
+                    $("#display_subscription_banner_image").attr(
+                        "src",
+                        defaultImageUrl
+                    );
+                }
+            });
+        } else {
+            $("#display_subscription_banner_image").attr(
+                "src",
+                defaultImageUrl
+            );
+        }
+    });
+
+    function loadImage(url, selector, defaultImageUrl) {
+        const img = new Image();
+        img.onload = function () {
+            $(selector).attr("src", url);
+        };
+        img.onerror = function () {
+            $(selector).attr("src", defaultImageUrl);
+        };
+        img.src = url;
+    }
+</script>
+
+<!-- Script for EditForm AJAX -->
+<script></script>

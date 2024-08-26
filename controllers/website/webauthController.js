@@ -570,7 +570,7 @@ class webauthController {
             var token = req.body.token;
             const product_id = req.body.product_id;
             var is_wishlist =
-                req.body.is_wishlist && req.body.is_wishlist == "true"
+                req.body.is_wishlist && req.body.is_wishlist == true
                     ? Boolean(req.body.is_wishlist)
                     : false;
 
@@ -663,6 +663,7 @@ class webauthController {
                 });
             }
 
+            let newProducts = [];
             // set default image if necessary
             let mediaUrl = baseURL + "/dist/product/";
             for (let item of wishlist) {
@@ -739,12 +740,21 @@ class webauthController {
 
                 productObj.average_rating = averageRating.toFixed(2);
                 item.product_id = productObj;
+                newProducts.push(productObj);
             }
+
+            let wishlistRes = wishlist.map((item) => {
+                const data = item.toObject();
+                return {
+                    ...data,
+                    product_id: newProducts,
+                };
+            });
 
             return res.status(200).send({
                 message: "Wishlist fetched successfully",
                 success: true,
-                data: wishlist,
+                data: wishlistRes,
             });
         } catch (error) {
             console.error("Error fetching wishlist:", error);
@@ -752,6 +762,32 @@ class webauthController {
                 message: "An error occurred while fetching wishlist",
                 success: false,
                 error: error.message,
+            });
+        }
+    };
+
+    static delete_wishlist = async (req, res) => {
+        try {
+            const { id } = req.query;
+            const deletedWishlist = await Wishlist.findByIdAndDelete(id);
+
+            if (!deletedWishlist) {
+                return res
+                    .status(404)
+                    .json({ message: "Id not found" });
+            }
+
+            return res.send({
+                success: true,
+                status: 200,
+                message: "Wishlist deleted successfully",
+            });
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            res.send({
+                success: false,
+                status: 500,
+                message: "Error fetching data" + error.message,
             });
         }
     };

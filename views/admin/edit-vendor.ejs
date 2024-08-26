@@ -28,25 +28,6 @@
                     </div>
                 </div>
                 <!-- end page title -->
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div
-                                    class="d-flex align-items-center flex-wrap gap-3"
-                                >
-                                    <div class="flex-grow-1">
-                                        <h3 class="card-title mb-2">
-                                            Vendor Information List
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--end col-->
-                </div>
                 <!--end row-->
                 <div class="d-flex align-items-center flex-wrap gap-2 mb-4">
                     <ul
@@ -114,51 +95,6 @@
                                                 placeholder="John"
                                             />
                                         </div>
-
-                                        <div class="mb-4">
-                                            <label
-                                                for="status_id"
-                                                class="form-label"
-                                                >Status</label
-                                            >
-                                            <select
-                                                class="form-control"
-                                                id="status_id"
-                                                name="status_id"
-                                            >
-                                                <option
-                                                    value=""
-                                                    disabled
-                                                    selected
-                                                >
-                                                    Select Status
-                                                </option>
-                                                <%
-                                                statuses.forEach(function(element)
-                                                { %>
-                                                <option
-                                                    value="<%= element._id %>"
-                                                >
-                                                    <%= element.name %>
-                                                </option>
-                                                <% }); %>
-                                            </select>
-                                        </div>
-                                        <div class="mb-4">
-                                            <label
-                                                for="additional_info"
-                                                class="form-label fw-semibold"
-                                                >Additional Info</label
-                                            >
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                id="additional_info"
-                                                name="additional_info"
-                                                placeholder=""
-                                            />
-                                        </div>
-
                                         <div class="mb-4">
                                             <label
                                                 for="phone"
@@ -173,7 +109,20 @@
                                                 placeholder=""
                                             />
                                         </div>
-
+                                        <div class="mb-4">
+                                            <label
+                                                for="dob"
+                                                class="form-label fw-semibold"
+                                                >DOB
+                                            </label>
+                                            <input
+                                                type="date"
+                                                class="form-control"
+                                                id="dob"
+                                                name="dob"
+                                                placeholder=""
+                                            />
+                                        </div>
                                         <div class="mb-4">
                                             <label
                                                 for="address"
@@ -185,6 +134,20 @@
                                                 class="form-control"
                                                 id="address"
                                                 name="address"
+                                                placeholder=""
+                                            />
+                                        </div>
+                                        <div class="mb-4">
+                                            <label
+                                                for="additional_info"
+                                                class="form-label fw-semibold"
+                                                >Additional Info</label
+                                            >
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="additional_info"
+                                                name="additional_info"
                                                 placeholder=""
                                             />
                                         </div>
@@ -234,20 +197,6 @@
                                                 placeholder="3118056"
                                             />
                                         </div>
-                                        <div class="mb-4">
-                                            <label
-                                                for="dob"
-                                                class="form-label fw-semibold"
-                                                >DOB
-                                            </label>
-                                            <input
-                                                type="date"
-                                                class="form-control"
-                                                id="dob"
-                                                name="dob"
-                                                placeholder=""
-                                            />
-                                        </div>
 
                                         <div class="mb-4">
                                             <label
@@ -287,7 +236,6 @@
                                                 class="p-4 bg-white rounded shadow-md"
                                             >
                                                 <label
-                                                    for="image"
                                                     class="form-label"
                                                 >
                                                     vendor Image
@@ -315,6 +263,7 @@
                                                 >
                                                     <div>
                                                         <img
+                                                            src=""
                                                             id="display_preview_image"
                                                             style="
                                                                 margin: 5px;
@@ -334,7 +283,6 @@
                                             <!-- Aadhaar Card Front -->
                                             <div class="p-4">
                                                 <label
-                                                    for="aadhar_front_photo"
                                                     class="form-label"
                                                 >
                                                     Aadhaar Card Front
@@ -375,7 +323,6 @@
                                             <!-- Aadhaar Card Back -->
                                             <div class="p-4">
                                                 <label
-                                                    for="aadhar_back_photo"
                                                     class="form-label"
                                                     >Aadhaar Card Back</label
                                                 >
@@ -607,37 +554,108 @@
         $("#dob").val(user.dob);
         $("#address2").val(user.address2);
         $("#additional_info").val(user.additional_info);
-        $("#status_id").val(
-            vendor.status_id ? vendor.status_id._id : "Select Status"
-        );
 
+        var imageUrl = "/dist/users/" + user.image;
+        var defaultImageUrl =
+            "../../../assets/images/default/user-dummy-img.jpg";
+
+        // Function to check if the image exists
+        function imageExists(url, callback) {
+            $.ajax({
+                url: url,
+                type: "HEAD",
+                success: function () {
+                    callback(true);
+                },
+                error: function () {
+                    callback(false);
+                },
+            });
+        }
         if (user.image) {
-            $("#display_preview_image").attr(
-                "src",
-                "/dist/users/" + user.image
-            );
+            imageExists(imageUrl, function (exists) {
+                if (exists) {
+                    $("#display_preview_image").attr("src", imageUrl);
+                } else {
+                    $("#display_preview_image").attr(
+                        "src",
+                        defaultImageUrl
+                    );
+                }
+            });
+        } else {
+            $("#display_preview_image").attr("src", defaultImageUrl);
         }
 
+        var aadharFrontImageUrl = "/dist/vendor/" + vendor.aadhar_front_photo;
+        var aadharBackImageUrl = "/dist/vendor/" + vendor.aadhar_back_photo;
+        var panFrontImageUrl = "/dist/vendor/" + vendor.pan_front_photo;
+
         if (vendor.aadhar_front_photo) {
+            imageExists(aadharFrontImageUrl, function (exists) {
+                if (exists) {
+                    $("#display_preview_aadhar_front_photo").attr(
+                        "src",
+                        aadharFrontImageUrl
+                    );
+                } else {
+                    $("#display_preview_aadhar_front_photo").attr(
+                        "src",
+                        defaultImageUrl
+                    );
+                }
+            });
+        } else {
             $("#display_preview_aadhar_front_photo").attr(
                 "src",
-                "/dist/vendor/" + vendor.aadhar_front_photo
+                defaultImageUrl
             );
         }
 
         if (vendor.aadhar_back_photo) {
+            imageExists(aadharBackImageUrl, function (exists) {
+                if (exists) {
+                    $("#display_preview_aadhar_back_photo").attr(
+                        "src",
+                        aadharBackImageUrl
+                    );
+                } else {
+                    $("#display_preview_aadhar_back_photo").attr(
+                        "src",
+                        defaultImageUrl
+                    );
+                }
+            });
+        } else {
             $("#display_preview_aadhar_back_photo").attr(
                 "src",
-                "/dist/vendor/" + vendor.aadhar_back_photo
+                defaultImageUrl
             );
         }
 
         if (vendor.pan_front_photo) {
+            imageExists(panFrontImageUrl, function (exists) {
+                if (exists) {
+                    $("#display_preview_pan_front_photo").attr(
+                        "src",
+                        panFrontImageUrl
+                    );
+                } else {
+                    $("#display_preview_pan_front_photo").attr(
+                        "src",
+                        defaultImageUrl
+                    );
+                }
+            });
+        } else {
             $("#display_preview_pan_front_photo").attr(
                 "src",
-                "/dist/vendor/" + vendor.pan_front_photo
+                defaultImageUrl
             );
         }
+
+
+
 
         $("#aadhar_no").val(vendor.aadhar_no);
         $("#pan_no").val(vendor.pan_no);

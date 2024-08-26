@@ -136,6 +136,7 @@ class UserController {
                     pincode: req.body.edit_pincode,
                     additional_info: req.body.edit_additional_info,
                     status_id: req.body.status_id,
+                    updated_at: new Date(),
                 };
 
                 if (req.file) {

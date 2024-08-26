@@ -53,7 +53,7 @@
                                             >
                                             <div class="position-relative">
                                                 <input
-                                                    type="test"
+                                                    type="text"
                                                     class="form-control"
                                                     id="title"
                                                     name="title"
@@ -132,7 +132,7 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-8 mb-3">
                                                 <div>
                                                     <label
                                                         for="productimporter"
@@ -251,6 +251,25 @@
     var addform = $("#addPagesForm");
     addform.submit(function (e) {
         e.preventDefault();
+
+        // validation 
+        if ($("#title").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Title is required",
+                position: "topRight",
+            });
+            return;
+        }
+
+        if ($("#editor").val() == "") {
+            iziToast.warning({
+                title: "Warning",
+                message: "Description is required",
+                position: "topRight",
+            });
+            return;
+        }
         var formData = new FormData(addform[0]);
 
         $.ajax({

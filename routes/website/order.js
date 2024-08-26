@@ -11,5 +11,15 @@ router.post(
     NotLoggedIn,
     OrderController.add_userBillingAddress
 );
+router.post(
+    "/update-userBillingAddress",
+    NotLoggedIn,
+    OrderController.update_userBillingAddress
+);
+router.post(
+    "/delete-userBillingAddress",
+    NotLoggedIn,
+    OrderController.delete_userBillingAddress
+);
 
 module.exports = router;

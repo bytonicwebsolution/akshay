@@ -90,6 +90,7 @@ class BrandController {
                         req.body.status_id === "on"
                             ? activeStatus._id
                             : inactiveStatus._id,
+                    updated_at: new Date(),
                 }
             );
             return res.send({

@@ -82,11 +82,6 @@ class StaticPagesController {
             upload(req, res, async function (err) {
                 if (req.fileValidationError) {
                     return res.send(req.fileValidationError);
-                } else if (!req.file) {
-                    return res.send({
-                        status: 400,
-                        message: "Please upload an image",
-                    });
                 } else if (err instanceof multer.MulterError) {
                     console.log(err);
                     return res.send(err);
@@ -112,7 +107,7 @@ class StaticPagesController {
                         /<\/?[^>]+(>|$)/g,
                         ""
                     ),
-                    image: req.file.filename,
+                    image: req.file ? req.file.filename : "",
                     meta_title: req.body.meta_title,
                     meta_description: req.body.meta_description,
                     meta_keywords: req.body.meta_keywords,
@@ -185,7 +180,7 @@ class StaticPagesController {
                         req.body.status_id === "on"
                             ? activeStatus._id
                             : inactiveStatus._id,
-                    updated_at: Date.now(),
+                    updated_at: new Date(),
                 };
 
                 if (req.file) {

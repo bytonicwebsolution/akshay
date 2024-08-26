@@ -8,6 +8,9 @@ const Brand = require("../../models/Brand");
 const Slider = require("../../models/Slider");
 const Rating = require("../../models/Rating");
 const Wishlist = require("../../models/Wishlist");
+const Faq = require("../../models/Faq");
+const Banner = require("../../models/Banner");
+const WebSetting = require("../../models/WebSetting");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const baseURL = process.env.BaseURL;
@@ -836,7 +839,7 @@ class WebsiteController {
                     acc[rating.rating] = rating.count;
                     return acc;
                 },
-                { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+                { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
             );
             // Convert ratingsMap to the desired format
             const ratingsFormatted = {};
@@ -1134,6 +1137,424 @@ class WebsiteController {
     };
     //#endregion
 
+    //#region get_related_products by category_id brand_id and tags(comma separated)
+    static get_related_products = async (req, res) => {
+        try {
+            const mediaUrl = baseURL + "/dist/product/";
+            const imageBaseUrl = baseURL + "/dist/users/";
+            const mediaImageUrl = baseURL + "/dist/ratings/";
+            const { category_id, brand_id, tags, product_id } = req.query;
+
+            // Creating an empty filter object
+            let condition = {};
+
+            // Add category_id to condition if provided
+            if (category_id) {
+                const categoryIds = await getAllCategoryIds(category_id);
+                condition.category_id = {
+                    $in: categoryIds,
+                };
+            }
+
+            // Add brand_id to condition if provided
+            if (brand_id) {
+                condition.brand_id = brand_id;
+            }
+
+            // Add tags to condition if provided
+            if (tags) {
+                const tagsArray = tags.split(",").map((tag) => tag.trim());
+                condition.tags = { $in: tagsArray };
+            }
+
+            // Exclude the product with product_id if provided
+            if (product_id) {
+                condition._id = { $ne: product_id };
+            }
+
+            // Fetch related products based on the constructed condition
+            const relatedProducts = await Product.find(condition)
+                .populate("category_id brand_id unit_id vendor_id")
+                .sort({ created_at: -1 });
+
+            // Process each related product similar to how get_product_details is handled
+            const relatedProductData = await Promise.all(
+                relatedProducts.map(async (product) => {
+                    let productData = product.toObject();
+
+                    // Calculate special_price for the product
+                    let special_price = 0;
+                    if (product.special_discount_type === "flat") {
+                        special_price =
+                            product.unit_price - product.special_discount;
+                    } else if (product.special_discount_type === "percentage") {
+                        const discountAmount =
+                            (product.unit_price * product.special_discount) /
+                            100;
+                        special_price = product.unit_price - discountAmount;
+                    }
+                    productData.special_price = special_price.toFixed(2) || 0;
+
+                    // Check if the product is in the user's wishlist
+                    const wishlistItem = await Wishlist.findOne({
+                        product_id: product._id,
+                        is_wishlist: true,
+                    });
+                    productData.wishlist = !!wishlistItem;
+
+                    // Set default image if necessary
+                    const thumbnailPath = path.join(
+                        __dirname,
+                        "../../public/dist/product/",
+                        productData.thumbnail.trim()
+                    );
+                    if (
+                        productData.thumbnail &&
+                        productData.thumbnail.trim() !== ""
+                    ) {
+                        try {
+                            await fsPromises.access(
+                                thumbnailPath,
+                                fs.constants.F_OK
+                            );
+                            productData.thumbnail =
+                                mediaUrl + productData.thumbnail;
+                        } catch (err) {
+                            productData.thumbnail = defaultImage;
+                        }
+                    } else {
+                        productData.thumbnail = defaultImage;
+                    }
+
+                    // Handle vendor image
+                    if (
+                        productData.vendor_id &&
+                        productData.vendor_id.image &&
+                        productData.vendor_id.image.trim() !== ""
+                    ) {
+                        const vendorImagePath = path.join(
+                            __dirname,
+                            "../../public/dist/users/",
+                            productData.vendor_id.image.trim()
+                        );
+                        try {
+                            await fsPromises.access(
+                                vendorImagePath,
+                                fs.constants.F_OK
+                            );
+                            productData.vendor_id.image =
+                                imageBaseUrl + productData.vendor_id.image;
+                        } catch (err) {
+                            productData.vendor_id.image = vendorDefaultImage;
+                        }
+                    } else {
+                        if (
+                            productData.vendor_id &&
+                            productData.vendor_id.image
+                        ) {
+                            productData.vendor_id.image = vendorDefaultImage;
+                        }
+                    }
+
+                    // Handle gallery_image
+                    productData.gallery_image = productData.gallery_image
+                        ?.map((image) => {
+                            const imagePath = path.join(
+                                __dirname,
+                                "../../public/dist/product/",
+                                image.trim()
+                            );
+                            try {
+                                if (
+                                    image &&
+                                    image.trim() !== "" &&
+                                    fs.existsSync(imagePath)
+                                ) {
+                                    return image;
+                                } else {
+                                    return null;
+                                }
+                            } catch (err) {
+                                return null;
+                            }
+                        })
+                        .filter(Boolean);
+
+                    // Handle description_image
+                    productData.description_image =
+                        productData.description_image
+                            ?.map((image) => {
+                                const imagePath = path.join(
+                                    __dirname,
+                                    "../../public/dist/product/",
+                                    image.trim()
+                                );
+                                try {
+                                    if (
+                                        image &&
+                                        image.trim() !== "" &&
+                                        fs.existsSync(imagePath)
+                                    ) {
+                                        return image;
+                                    } else {
+                                        return null;
+                                    }
+                                } catch (err) {
+                                    return null;
+                                }
+                            })
+                            .filter(Boolean);
+
+                    // Handle meta_image
+                    productData.meta_image = productData.meta_image
+                        ?.map((image) => {
+                            const imagePath = path.join(
+                                __dirname,
+                                "../../public/dist/product/",
+                                image.trim()
+                            );
+                            try {
+                                if (
+                                    image &&
+                                    image.trim() !== "" &&
+                                    fs.existsSync(imagePath)
+                                ) {
+                                    return image;
+                                } else {
+                                    return null;
+                                }
+                            } catch (err) {
+                                return null;
+                            }
+                        })
+                        .filter(Boolean);
+
+                    // Handle product pdf
+                    productData.product_pdf = productData.product_pdf
+                        ?.map((pdf) => {
+                            const pdfPath = path.join(
+                                __dirname,
+                                "../../public/dist/product/",
+                                pdf.trim()
+                            );
+                            try {
+                                if (
+                                    pdf &&
+                                    pdf.trim() !== "" &&
+                                    fs.existsSync(pdfPath)
+                                ) {
+                                    return pdf;
+                                } else {
+                                    return null;
+                                }
+                            } catch (err) {
+                                return null;
+                            }
+                        })
+                        .filter(Boolean);
+
+                    // Fetching attribute sets names
+                    const attributeSets = await AttributeSets.find({
+                        _id: { $in: product.attribute_sets },
+                    });
+                    const attributeSetsMap = attributeSets.reduce(
+                        (acc, set) => {
+                            acc[set._id] = set.title; // or set.name, based on your schema
+                            return acc;
+                        },
+                        {}
+                    );
+
+                    // Fetching attribute values names for selected variants
+                    const attributeValues = await AttributeValue.find({
+                        _id: { $in: product.selected_variants_ids },
+                    });
+                    const attributeValuesMap = attributeValues.reduce(
+                        (acc, val) => {
+                            acc[val._id] = val.value; // Assuming you have a 'value' field
+                            return acc;
+                        },
+                        {}
+                    );
+
+                    // Map the selected_variants to their names and values
+                    let selectedVariants = {};
+                    if (product.selected_variants.length > 0) {
+                        product.selected_variants[0].forEach(
+                            (valueIds, attributeId) => {
+                                selectedVariants[attributeId] = valueIds.map(
+                                    (id) => ({
+                                        id: id,
+                                        name: attributeValuesMap[id],
+                                    })
+                                );
+                            }
+                        );
+                    }
+
+                    // Format the attribute_sets and selected_variants for response
+                    productData.attribute_sets = product.attribute_sets.map(
+                        (setId) => ({
+                            id: setId,
+                            name: attributeSetsMap[setId],
+                        })
+                    );
+
+                    productData.selected_variants = Object.keys(
+                        selectedVariants
+                    ).reduce((acc, attributeId) => {
+                        acc[attributeId] = selectedVariants[attributeId].map(
+                            (value) => ({
+                                id: value.id,
+                                name: value.name,
+                            })
+                        );
+                        return acc;
+                    }, {});
+
+                    productData.selected_variants_ids =
+                        product.selected_variants_ids.map((id) => ({
+                            id: id,
+                            name: attributeValuesMap[id],
+                        }));
+
+                    // Fetching product stock and formatting
+                    let productStock = [];
+                    if (product.variant) {
+                        productStock = await ProductStock.find({
+                            product_id: product._id,
+                        });
+                    } else {
+                        const stock = await ProductStock.findOne({
+                            product_id: product._id,
+                        });
+                        productStock = stock ? [stock] : [];
+                    }
+
+                    // Add sku and current_stock to productData if variant is false
+                    if (!product.variant && productStock.length > 0) {
+                        const stock = productStock[0];
+                        if (stock) {
+                            productData.sku = stock.sku[0];
+                            productData.current_stock = stock.current_stock[0];
+                        } else {
+                            productData.sku = null;
+                            productData.current_stock = null;
+                        }
+                    }
+
+                    const formattedProductStock = productStock.map((stock) => {
+                        const formattedStock = stock.toObject();
+                        formattedStock.attribute_value_id =
+                            formattedStock.attribute_value_id.map(
+                                (id, index) => ({
+                                    id: id,
+                                    name: formattedStock.name[index],
+                                })
+                            );
+                        return formattedStock;
+                    });
+
+                    // Fetch ratings for the product
+                    const ratings = await Rating.aggregate([
+                        { $match: { product_id: product._id } },
+                        { $group: { _id: "$rating", count: { $sum: 1 } } },
+                        { $project: { rating: "$_id", count: 1, _id: 0 } },
+                    ]);
+
+                    const ratingsMap = ratings.reduce(
+                        (acc, rating) => {
+                            acc[rating.rating] = rating.count;
+                            return acc;
+                        },
+                        { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+                    );
+
+                    // Convert ratingsMap to the desired format
+                    const ratingsFormatted = {};
+                    for (const key in ratingsMap) {
+                        ratingsFormatted[parseInt(key)] = ratingsMap[key];
+                    }
+                    const reviews = await Rating.find({
+                        product_id: product._id,
+                    }).populate("user_id");
+
+                    const formattedReviews = await Promise.all(
+                        reviews.map(async (review) => {
+                            let reviewImage = defaultImage;
+
+                            if (review.image && review.image.trim() !== "") {
+                                const imagePath = path.join(
+                                    __dirname,
+                                    "../../public/dist/ratings/",
+                                    review.image ? review.image.trim() : ""
+                                );
+
+                                try {
+                                    await fsPromises.access(
+                                        imagePath,
+                                        fs.constants.F_OK
+                                    );
+                                    reviewImage = defaultImage;
+                                } catch (err) {
+                                    reviewImage =
+                                        mediaImageUrl + review.image.trim();
+                                }
+
+                                return {
+                                    rating: review.rating,
+                                    comment: review.comment,
+                                    image: reviewImage,
+                                    user: review.user_id.first_name
+                                        ? review.user_id.first_name +
+                                          " " +
+                                          review.user_id.last_name
+                                        : "",
+                                };
+                            }
+                        })
+                    );
+
+                    const totalRatings = Object.values(ratingsMap).reduce(
+                        (acc, count) => acc + count,
+                        0
+                    );
+                    const averageRating = totalRatings
+                        ? (
+                              Object.entries(ratingsMap).reduce(
+                                  (acc, [rating, count]) =>
+                                      acc + rating * count,
+                                  0
+                              ) / totalRatings
+                          ).toFixed(2)
+                        : 0;
+
+                    productData.average_rating = averageRating;
+                    productData.product_stock = formattedProductStock;
+                    productData.ratings = ratingsMap;
+                    productData.reviews = formattedReviews;
+
+                    // Return the final product data
+                    return productData;
+                })
+            );
+
+            return res.status(200).send({
+                status: true,
+                message: "Related products fetched successfully",
+                data: relatedProductData,
+            });
+        } catch (error) {
+            console.error("Error in get_related_products:", error);
+            res.status(500).json({
+                status: false,
+                message: "Error fetching related products",
+                error: error.message,
+            });
+        }
+    };
+    //#endregion
+
     //#region get_all_brands which contains products
     static get_all_brands = async (req, res) => {
         try {
@@ -1283,13 +1704,14 @@ class WebsiteController {
                     path: "category_id",
                     model: "Category",
                     populate: { path: "status_id", model: "Status" },
-                    select: "name status_id",
+                    select: "name status_id description", // Fetch description along with other fields
                 })
                 .sort({ unit_price: -1 });
 
             // Determine brands and categories to return
             let brandsArray = [];
             let categoriesArray = [];
+            let categoryDescription = "";
 
             if ((min_price || max_price) && category_id) {
                 // If only min_price or max_price is provided, return all brands and categories
@@ -1346,6 +1768,12 @@ class WebsiteController {
                         )
                     ) {
                         uniqueCategories.add(product.category_id);
+
+                        // Set category description if the category_id matches the query parameter
+                        if (product.category_id._id.equals(category_id)) {
+                            categoryDescription =
+                                product.category_id.description;
+                        }
                     }
                 });
                 brandsArray = [...uniqueBrands];
@@ -1473,7 +1901,7 @@ class WebsiteController {
                         acc[rating.rating] = rating.count;
                         return acc;
                     },
-                    { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+                    { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
                 );
                 // Convert ratingsMap to the desired format
                 const ratingsFormatted = {};
@@ -1524,6 +1952,7 @@ class WebsiteController {
             const response = {
                 brands: brandsArray,
                 categories: categoriesArray,
+                description: categoryDescription,
                 price: {
                     min_unit_price:
                         min_unit_price === Infinity ? null : min_unit_price,
@@ -1985,6 +2414,146 @@ class WebsiteController {
         }
     };
     //#endregion
+
+    //#region get_all_faqs
+    static get_all_faqs = async (req, res) => {
+        try {
+            const faqs = await Faq.find().sort({ created_at: -1 });
+            return res.send({
+                message: "Success",
+                success: true,
+                data: faqs,
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send({
+                message: "Error get all faqs " + error.message,
+            });
+        }
+    };
+    //#endregion
+
+    //#region get_all_banners
+    static get_all_banners = async (req, res) => {
+        try {
+            let mediaUrl = baseURL + "/dist/banner/";
+            const banners = await Banner.findOne().sort({ created_at: -1 });
+
+            // Helper function to construct image URL or fallback to default
+            const getImageUrl = async (image) => {
+                if (image && image.trim() !== "") {
+                    const imagePath = path.join(
+                        __dirname,
+                        "../../public/dist/banner/",
+                        image.trim()
+                    );
+
+                    try {
+                        // Check if the image file exists
+                        await fs.promises.access(imagePath, fs.constants.F_OK);
+                        return mediaUrl + image.trim();
+                    } catch (err) {
+                        return defaultImage;
+                    }
+                } else {
+                    return defaultImage;
+                }
+            };
+
+            // Set the image URLs for each banner, falling back to the default image if necessary
+            const response = {
+                home_banner_top: {
+                    image: await getImageUrl(banners?.home_banner_top?.image),
+                    url: banners?.home_banner_top?.url?.trim(),
+                },
+                home_banner_2: {
+                    image: await getImageUrl(banners?.home_banner_2?.image),
+                    url: banners?.home_banner_2?.url?.trim(),
+                },
+                home_banner_3: {
+                    image: await getImageUrl(banners?.home_banner_3?.image),
+                    url: banners?.home_banner_3?.url?.trim(),
+                },
+                home_banner_4: {
+                    image: await getImageUrl(banners?.home_banner_4?.image),
+                    url: banners?.home_banner_4?.url?.trim(),
+                },
+                subscription_banner: {
+                    image: await getImageUrl(
+                        banners?.subscription_banner?.image
+                    ),
+                    url: banners?.subscription_banner?.url?.trim(),
+                },
+                _id: banners?._id,
+                created_at: banners?.created_at,
+                updated_at: banners?.updated_at,
+            };
+
+            return res.send({
+                message: "Success",
+                success: true,
+                data: response,
+                mediaUrl,
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send({
+                message: "Error getting all banners: " + error.message,
+            });
+        }
+    };
+    //#endregion
+
+    //#region get web settings data
+    static get_webSettings_data = async (req, res) => {
+        try {
+            let mediaUrl = baseURL + "/dist/websetting/";
+            const data = await WebSetting.findOne().sort({ created_at: -1 });
+
+            // Helper function to construct image URL or fallback to default
+            const getLogoUrl = async (logo) => {
+                if (logo && logo.trim() !== "") {
+                    const logoPath = path.join(
+                        __dirname,
+                        "../../public/dist/websetting/",
+                        logo.trim()
+                    );
+
+                    try {
+                        // Check if the image file exists
+                        await fs.promises.access(logoPath, fs.constants.F_OK);
+                        return mediaUrl + logo.trim();
+                    } catch (err) {
+                        return defaultImage;
+                    }
+                } else {
+                    return defaultImage;
+                }
+            };
+
+            // Set the image URLs for each banner, falling back to the default image if necessary
+            const response = {
+                logo: await getLogoUrl(data?.logo),
+                address: data?.address,
+                phone: data?.phone,
+                email: data?.email,
+                toll_number: data?.toll_number,
+                copyright: data?.copyright,
+            };
+
+            return res.send({
+                message: "Success",
+                success: true,
+                data: response,
+                mediaUrl,
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send({
+                message: "Error getting all banners: " + error.message,
+            });
+        }
+    };
 }
 
 // Helper function to get all child categories recursively

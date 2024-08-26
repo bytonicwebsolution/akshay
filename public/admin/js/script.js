@@ -242,7 +242,7 @@ function sellerLogout() {
     });
 }
 
-
+//#region image preview remove button
 document.addEventListener("DOMContentLoaded", function () {
     const imageContainers = document.getElementsByClassName("image-container");
 
@@ -272,3 +272,35 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+//#endregion
+
+//#region bulk delete
+document.addEventListener("DOMContentLoaded", function () {
+    const checkboxes = document.getElementsByName("chk_child");
+    const deleteButton = document.getElementById("remove-actions");
+
+    function toggleDeleteButton() {
+        const checkedCount = Array.from(checkboxes).filter(
+            (checkbox) => checkbox.checked
+        ).length;
+
+        // Show the delete button if more than one checkbox is checked
+        if (checkedCount > 1) {
+            deleteButton.classList.remove("d-none");
+        } else {
+            deleteButton.classList.add("d-none");
+        }
+    }
+
+    // Event listener for each individual checkbox
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", toggleDeleteButton);
+    });
+
+    // Event listener for "Check All" checkbox
+    document.getElementById("checkAll").addEventListener("change", function () {
+        checkboxes.forEach((checkbox) => (checkbox.checked = this.checked));
+        toggleDeleteButton();
+    });
+});
+//#endregion

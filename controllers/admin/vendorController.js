@@ -46,7 +46,6 @@ class VendorController {
                 email,
                 password,
                 confirmpassword: confirm_password,
-                status_id,
             } = body;
 
             if (!image) {
@@ -198,6 +197,7 @@ class VendorController {
                         pincode: req.body.pincode,
                         additional_info: req.body.additional_info,
                         status_id: req.body.status_id,
+                        updated_at: new Date(),
                     },
                     { upsert: true, new: true }
                 );
@@ -236,6 +236,7 @@ class VendorController {
                     bank_name: req.body.bank_name,
                     account_no: req.body.account_no,
                     ...vendorFiles,
+                    updated_at: new Date(),
                 };
 
                 await Vendor.findOneAndUpdate(

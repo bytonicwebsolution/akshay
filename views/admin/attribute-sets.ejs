@@ -318,7 +318,7 @@
                                                 <span
                                                     class="fw-semibold"
                                                     id="total-items"
-                                                    ><%= totalItems %></span
+                                                    ><%= totalItems ? totalItems : 0%></span
                                                 >
                                                 Results
                                             </div>
@@ -574,6 +574,20 @@
 <!-- /deleteRecordModal -->
 
 <%- include('partials/footer.ejs') %>
+<script>
+    $(document).ready(function () {
+        $("#category-field").select2({
+            placeholder: $(this).data("placeholder"),
+            width: "100%", // This makes sure the select box takes the full width
+        });
+    });
+    $(document).ready(function () {
+        $("#edit_category").select2({
+            placeholder: $(this).data("placeholder"),
+            width: "100%", // This makes sure the select box takes the full width
+        });
+    });
+</script>
 
 <script>
     //#region Add Attributes set

@@ -19,7 +19,7 @@ class OrderController {
             const userId = payload.id;
 
             let orders = await Order.find({ user_id: userId });
-            res.send({
+            return res.send({
                 success: true,
                 status: 200,
                 message: "Order fetched successfully",
@@ -59,7 +59,7 @@ class OrderController {
                     orderHistories,
                 };
             }
-            res.send({
+            return res.send({
                 success: true,
                 status: 200,
                 message: "Order Details fetched successfully",
@@ -152,7 +152,7 @@ class OrderController {
                 })
             );
 
-            res.send({
+            return res.send({
                 success: true,
                 status: 200,
                 message: "Order Items fetched successfully",
@@ -237,6 +237,83 @@ class OrderController {
                 status: 200,
                 message: "Billing Address added successfully",
                 data: userBillingAddress,
+            });
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            res.send({
+                success: false,
+                status: 500,
+                message: "Error fetching data" + error.message,
+            });
+        }
+    };
+
+    static update_userBillingAddress = async (req, res) => {
+        try {
+            var token = req.body.token;
+            const billing_id = req.body.billing_id;
+            const payload = jwt.decode(token, process.env.TOKEN_SECRET);
+            const user = await UserBillingAddress.findOne({
+                _id: billing_id,
+            });
+
+            if (!user) {
+                return res.send({
+                    message: "User not found",
+                    status: 404,
+                    success: false,
+                });
+            }
+
+            let data = {
+                first_name: req.body.first_name,
+                last_name: req.body.last_name,
+                email: req.body.email,
+                phone: req.body.phone,
+                address: req.body.address,
+                address2: req.body.address2,
+                city: req.body.city,
+                state: req.body.state,
+                post_code: req.body.post_code,
+                company_name: req.body.company_name,
+                updated_at: new Date(),
+            };
+
+            const updatedData = await UserBillingAddress.findOneAndUpdate(
+                { _id: billing_id },
+                data
+            );
+
+            return res.send({
+                success: true,
+                status: 200,
+                message: "Billing Address updated successfully",
+            });
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            res.send({
+                success: false,
+                status: 500,
+                message: "Error fetching data" + error.message,
+            });
+        }
+    };
+
+    static delete_userBillingAddress = async (req, res) => {
+        try {
+            const { id } = req.query;
+            const deletedAddress = await UserBillingAddress.findByIdAndDelete(
+                id
+            );
+
+            if (!deletedAddress) {
+                return res.status(404).json({ message: "Id not found" });
+            }
+
+            return res.send({
+                success: true,
+                status: 200,
+                message: "Billing Address deleted successfully",
             });
         } catch (error) {
             console.error("Error fetching data:", error);

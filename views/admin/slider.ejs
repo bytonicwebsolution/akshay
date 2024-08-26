@@ -280,7 +280,7 @@
                                                 <span
                                                     class="fw-semibold"
                                                     id="total-items"
-                                                    ><%= totalItems %></span
+                                                    ><%= totalItems ? totalItems : 0%></span
                                                 >
                                                 Results
                                             </div>
@@ -376,7 +376,7 @@
                             <div class="avatar-lg">
                                 <div class="avatar-title bg-light rounded-3">
                                     <img
-                                        src=""
+                                        src="/assets/images/default/mart-demo-img.jpg"
                                         id="image-preview"
                                         class="avatar-md h-auto rounded-3 object-fit-cover"
                                     />
@@ -528,7 +528,7 @@
                                     id="editpreviewimage"
                                 >
                                     <img
-                                        src="/assets/images/users/user-dummy-img.jpg"
+                                        src="/assets/images/default/mart-demo-img.jpg"
                                         id="editimage-preview"
                                         class="avatar-md h-auto rounded-3 object-fit-cover"
                                     />

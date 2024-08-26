@@ -1,0 +1,44 @@
+<script>
+    // Script to fill data ain bannerForm
+    $(document).ready(function () {
+        const banners = JSON.parse(
+            `<%- JSON.stringify(banners).replace(/\\/g, '\\\\').replace(/"/g, '\\"') %>`
+        );
+        var imageUrl = "/dist/product/" + banners.home_banner_2.image;
+        var defaultImageUrl =
+            "../../../assets/images/default/mart-demo-img.jpg";
+
+        // Function to check if the image exists
+        function imageExists(url, callback) {
+            $.ajax({
+                url: url,
+                type: "HEAD",
+                success: function () {
+                    callback(true);
+                },
+                error: function () {
+                    callback(false);
+                },
+            });
+        }
+
+        // Check if the thumbnail exists
+        if (banners.home_banner_top.image) {
+          imageExists(imageUrl, function (exists) {
+              if (exists) {
+                  $("#display_home_banner_2_image").attr("src", imageUrl);
+              } else {
+                  $("#display_home_banner_2_image").attr(
+                      "src",
+                      defaultImageUrl
+                  );
+              }
+          });
+      } else {
+          $("#display_home_banner_2_image").attr("src", defaultImageUrl);
+      }
+
+
+
+    });
+</script>

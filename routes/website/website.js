@@ -10,6 +10,7 @@ router.get(
     "/get_todaysDeal_products",
     websiteController.get_todaysDeal_products
 );
+router.post("/get_related_products", websiteController.get_related_products);
 router.get("/get_all_brands", websiteController.get_all_brands);
 router.post("/filter", websiteController.filter);
 router.post("/search_products", websiteController.search_products);
@@ -21,5 +22,9 @@ router.get("/getAllBrands", websiteController.getAllBrands);
 router.get("/get_all_categories", websiteController.getAllCategories);
 router.get("/get_all_attributes", websiteController.getAllAttributes);
 //#endregion
+
+router.get("/get_all_faqs", websiteController.get_all_faqs);
+router.get("/get_all_banners", websiteController.get_all_banners);
+router.get("/get_webSettings_data", websiteController.get_webSettings_data);
 
 module.exports = router;

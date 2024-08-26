@@ -65,7 +65,41 @@
                                                     <option value="all">
                                                         Select Category
                                                     </option>
-                                                    
+                                                    <option value="Appliances">
+                                                        Appliances
+                                                    </option>
+                                                    <option
+                                                        value="Automotive Accessories"
+                                                    >
+                                                        Automotive Accessories
+                                                    </option>
+                                                    <option value="Electronics">
+                                                        Electronics
+                                                    </option>
+                                                    <option value="Fashion">
+                                                        Fashion
+                                                    </option>
+                                                    <option value="Furniture">
+                                                        Furniture
+                                                    </option>
+                                                    <option value="Grocery">
+                                                        Grocery
+                                                    </option>
+                                                    <option value="Headphones">
+                                                        Headphones
+                                                    </option>
+                                                    <option value="Kids">
+                                                        Kids
+                                                    </option>
+                                                    <option value="Luggage">
+                                                        Luggage
+                                                    </option>
+                                                    <option value="Sports">
+                                                        Sports
+                                                    </option>
+                                                    <option value="Watches">
+                                                        Watches
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -103,10 +137,6 @@
                                     <div class="flex-grow-1">
                                         <h5 class="card-title mb-0">
                                             Product Sale
-                                            <span
-                                                class="badge bg-dark-subtle text-dark ms-1"
-                                                >254</span
-                                            >
                                         </h5>
                                     </div>
                                 </div>
@@ -145,19 +175,13 @@
                                                     </th>
                                                     <th
                                                         class="sort cursor-pointer"
+                                                        data-sort="price"
+                                                    >
+                                                        Variant
+                                                    </th>
+                                                    <th
+                                                        class="sort cursor-pointer"
                                                         data-sort="stock"
-                                                    >
-                                                        Shop Name
-                                                    </th>
-                                                    <th
-                                                        class="sort cursor-pointer"
-                                                        data-sort="price"
-                                                    >
-                                                        Varient
-                                                    </th>
-                                                    <th
-                                                        class="sort cursor-pointer"
-                                                        data-sort="price"
                                                     >
                                                         Total Quantity
                                                     </th>
@@ -170,15 +194,17 @@
                                                 </tr>
                                             </thead>
                                             <tbody class="list form-check-all">
-                                                <!-- <tr>
+                                                <% if(!orderhistory[0]) { %>
+                                                <tr>
                                                     <td
                                                         colspan="100%"
                                                         class="text-center"
                                                     >
                                                         No Data
                                                     </td>
-                                                </tr> -->
-
+                                                </tr>
+                                                <% } else {%> <%
+                                                orderhistory.forEach(function(order){%>
                                                 <tr>
                                                     <td>
                                                         <div class="form-check">
@@ -192,28 +218,32 @@
                                                             ></label>
                                                         </div>
                                                     </td>
-                                                    <td class="request">
-                                                        Ultratech Cement
+                                                    <td class="products">
+                                                        <%= order.product_name ?
+                                                        order.product_name :
+                                                        ""%>
                                                     </td>
-
-                                                    <td class="root_category">
-                                                        Cement
+                                                    <td class="category">
+                                                        <%= order.product_id ?
+                                                        order.product_id?.category_id?.name
+                                                        : ""%>
                                                     </td>
-                                                    <td class="shop_name">
-                                                        Maheswari Construction
+                                                    <td class="category">
+                                                        <%= order.sku ?
+                                                        order.sku : ""%>
                                                     </td>
-                                                    <td class="varient">
-                                                        Yellow 50Kg
-                                                    </td>
-                                                    <td class="total_quantity">
-                                                        3
+                                                    <td class="stock">
+                                                        <%= order.quantity ?
+                                                        order.quantity : ""%>
                                                     </td>
                                                     <td
-                                                        class="total_order_amount"
+                                                        class="price"
                                                     >
-                                                        500
+                                                        <%= order.sub_total ?
+                                                        order.sub_total : ""%>
                                                     </td>
                                                 </tr>
+                                                <% }); %> <% } %>
                                             </tbody>
                                         </table>
                                     </div>
@@ -221,13 +251,9 @@
 
                                     <div class="noresult" style="display: none">
                                         <div class="text-center py-4">
-                                            <div class="avatar-md mx-auto mb-4">
-                                                <div
-                                                    class="avatar-title bg-light text-primary rounded-circle fs-4xl"
-                                                >
-                                                    <i class="bi bi-search"></i>
-                                                </div>
-                                            </div>
+                                            <i
+                                                class="ph-magnifying-glass fs-1 text-primary"
+                                            ></i>
                                             <h5 class="mt-2">
                                                 Sorry! No Result Found
                                             </h5>
@@ -238,23 +264,26 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <!-- end noresult -->
-
                                     <div
-                                        class="row mt-3 align-items-center"
+                                        class="align-items-center mt-4 justify-content-between row text-center text-sm-start"
                                         id="pagination-element"
                                     >
                                         <div class="col-sm">
-                                            <div
-                                                class="text-muted text-center text-sm-start"
-                                            >
+                                            <div class="text-muted">
                                                 Showing
-                                                <span class="fw-semibold"
-                                                    >10</span
+                                                <span
+                                                    class="fw-semibold"
+                                                    id="current-items"
+                                                    ><%= Math.min(currentPage *
+                                                    pageSize, totalItems)
+                                                    %></span
                                                 >
                                                 of
-                                                <span class="fw-semibold"
-                                                    >35</span
+                                                <span
+                                                    class="fw-semibold"
+                                                    id="total-items"
+                                                    ><%= totalItems ? totalItems
+                                                    : 0%></span
                                                 >
                                                 Results
                                             </div>
@@ -266,23 +295,17 @@
                                             >
                                                 <a
                                                     class="page-item pagination-prev disabled"
-                                                    href="#"
+                                                    href="javascript:void(0)"
+                                                    >Previous</a
                                                 >
-                                                    <i
-                                                        class="mdi mdi-chevron-left align-middle"
-                                                    ></i>
-                                                </a>
                                                 <ul
                                                     class="pagination listjs-pagination mb-0"
                                                 ></ul>
                                                 <a
                                                     class="page-item pagination-next"
-                                                    href="#"
+                                                    href="javascript:void(0)"
+                                                    >Next</a
                                                 >
-                                                    <i
-                                                        class="mdi mdi-chevron-right align-middle"
-                                                    ></i>
-                                                </a>
                                             </div>
                                         </div>
                                     </div>

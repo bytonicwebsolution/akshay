@@ -298,6 +298,10 @@ class PaymentController {
                 })
             );
 
+            // Check if _id exists in billingAddress and delete it
+            if (billingAddress._id) {
+                delete billingAddress._id;
+            }
             const billingAddr = new BillingAddress({
                 ...billingAddress,
                 order_id: order._id,

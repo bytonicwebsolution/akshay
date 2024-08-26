@@ -466,23 +466,14 @@
                 <div class="modal-body">
                     <input type="hidden" id="id-field" />
 
-                    <div class="text-center mb-3 image-container">
+                    <div class="text-center mb-3">
                         <div class="position-relative d-inline-block">
-                            <!-- Cross Button to Remove Image -->
-                            <button
-                                class="position-absolute my-3 mx-6 bg-black text-white rounded-circle d-none remove-image d-flex align-items-center justify-content-center"
-                                style="border: none; cursor: pointer; padding: 0; font-size: 0.75rem; width: 15px; height: 15px; margin-left: 73px; top: 6px;"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="right"
-                                title="Remove Image"
+                            <div
+                                class="position-absolute top-100 start-100 translate-middle"
                             >
-                                <i class="ri-close-fill"></i>
-                            </button>
-
-                            <!-- Image Input -->
-                            <div class="position-absolute top-100 start-100 translate-middle">
                                 <label
-                                    class="mb-0 image-label"
+                                    for="image-input"
+                                    class="mb-0"
                                     data-bs-toggle="tooltip"
                                     data-bs-placement="right"
                                     title="Select Category photo"
@@ -494,30 +485,27 @@
                                             <i class="ri-image-fill"></i>
                                         </span>
                                     </span>
-                                    <!-- Hidden file input -->
-                                    <input
-                                        class="form-control d-none image-input"
-                                        name="icon"
-                                        type="file"
-                                        accept="image/png, image/gif, image/jpeg"
-                                    />
                                 </label>
+                                <input
+                                    class="form-control d-none"
+                                    id="image-input"
+                                    name="icon"
+                                    type="file"
+                                    accept="image/png, image/gif, image/jpeg"
+                                />
                             </div>
-                    
-                            <!-- Image Preview -->
                             <div class="avatar-lg">
                                 <div class="avatar-title bg-light rounded-3">
                                     <img
                                         src="/assets/images/users/user-dummy-img.jpg"
                                         alt=""
-                                        class="avatar-md h-auto rounded-3 object-fit-cover image-preview"
+                                        id="image-preview"
+                                        class="avatar-md h-auto rounded-3 object-fit-cover"
                                     />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    
                     
                     <div class="mb-3">
                         <label for="name" class="form-label"
@@ -729,8 +717,6 @@
                     <input type="hidden" id="editid" name="editid" />
                     <div class="text-center mb-3">
                         <div class="position-relative d-inline-block">
-
-                           
                             <div
                                 class="position-absolute top-100 start-100 translate-middle"
                             >
@@ -820,7 +806,7 @@
                     <div class="row mb-3">
                         <!-- <div class="col">
                             <label class="form-label" for="edit_commission_type"
-                                >Commition Type</label
+                                >Commission Type</label
                             >
                             <select
                                 class="form-control"
@@ -1240,8 +1226,4 @@
         var slug = generateSlug($(this).val());
         $("#edit_slug").val(slug);
     });
-
-   
-    
-
 </script>

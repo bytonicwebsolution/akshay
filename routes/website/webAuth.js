@@ -19,5 +19,6 @@ router.post(
     webauthController.product_wishlist
 );
 router.post("/get_wishlist", webauthController.get_wishlist);
+router.post("/delete-wishlist", NotLoggedIn, webauthController.delete_wishlist);
 
 module.exports = router;

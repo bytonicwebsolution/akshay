@@ -134,7 +134,7 @@ class SliderController {
                             ? activeStatus._id
                             : inactiveStatus._id,
 
-                    updated_at: Date.now(),
+                    updated_at: new Date(),
                 };
 
                 if (req.file) {
