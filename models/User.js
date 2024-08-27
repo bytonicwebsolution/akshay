@@ -36,6 +36,10 @@ const schema = new mongoose.Schema({
         max: 255,
         required: true,
     },
+    web_access_token:{
+        type: String,
+        unique:true,
+    },
     dob: {
         type: String,
         max: 255,

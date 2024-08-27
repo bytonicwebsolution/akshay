@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Summary</title>
+    <style>
+        /* General styles for responsiveness */
+        body {
+            background-color: #f7fafc;
+            color: #2d3748;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2, h3, h4, h5, h6 {
+            margin: 0 0 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .footer {
+            background-color: #2d3748;
+            color: #edf2f7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .footer img {
+            margin-bottom: 10px;
+            width: 50px;
+            height: 50px;
+        }
+        .button {
+            background-color: #4299e1;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+        .card {
+            background-color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .card-header {
+            position: relative;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        .card-header .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            color: #ffffff;
+        }
+        .card-header img {
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+        }
+        .statistics {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+        }
+        .statistics div {
+            text-align: center;
+        }
+        .statistics h4 {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .products {
+            display: flex;
+            justify-content: space-between;
+        }
+        .product {
+            width: 48%;
+            background-color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+        .product-info {
+            padding: 15px;
+            text-align: center;
+        }
+        /* Media queries for responsive design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            .statistics, .products {
+                flex-direction: column;
+                align-items: center;
+            }
+            .statistics div, .products div {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .footer img {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Order Summary</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th class="text-right">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1 Malibu Surf Tshirt</td>
+                    <td>M</td>
+                    <td>Blue</td>
+                    <td class="text-right">$21.99</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-right">
+            <p>Shipping: $4.00</p>
+            <p style="font-weight: bold">Total: $25.99</p>
+        </div>
+        <p>Payment: Amex ending in 2132</p>
+        
+        <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+            <div style="width: 48%">
+                <h4>Billing Address</h4>
+                <p>Kyle Miller</p>
+                <p>1234 Stahl Lane</p>
+                <p>Hollywood Hills, CA 90265</p>
+            </div>
+            <div style="width: 48%">
+                <h4>Shipping Address</h4>
+                <p>Kyle Miller</p>
+                <p>1234 Stahl Lane</p>
+                <p>Hollywood Hills, CA 90265</p>
+            </div>
+        </div>
+
+        <!-- Product Section -->
+        <div class="card">
+            <div class="card-header" style="background-image:'/assets/images/small/img-7.jpg'">
+                <div class="overlay">
+                    <img src="https://yourdomain.com/assets/images/small/img-7.jpg" alt="Profile" />
+                    <div>
+                        <h3>Zuma Surf Shop</h3>
+                        <p>Limited edition apparel designed by Malibu local surfers!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="statistics">
+                <div>
+                    <h4>450k</h4>
+                    <p>Followers</p>
+                </div>
+                <div>
+                    <h4>5,937</h4>
+                    <p>Shirts Sold</p>
+                </div>
+                <div>
+                    <h4>25</h4>
+                    <p>Live Campaigns</p>
+                </div>
+                <div>
+                    <a href="#" class="button">Follow</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customers Also Bought Section -->
+        <h2>Customers also bought</h2>
+        <div class="products">
+            <!-- Product 1 -->
+            <div class="product">
+                <img src="https://yourdomain.com/public/assets/images/w-logo.png" alt="Hang Loose" />
+                <div class="product-info">
+                    <h5>Hang Loose</h5>
+                    <p>$22.99</p>
+                </div>
+            </div>
+            <!-- Product 2 -->
+            <div class="product">
+                <img src="https://yourdomain.com/public/assets/images/w-logo.png" alt="Surfing USA" />
+                <div class="product-info">
+                    <h5>Surfing USA</h5>
+                    <p>$22.99</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <div style="display: flex; justify-content: space-between;">
+                <div>
+                    <img src="/public/assets/images/small/img-7.jpg" alt="Questions Icon" />
+                    <h6>Questions about your order?</h6>
+                </div>
+                <div>
+                    <img src="https://via.placeholder.com/50" alt="Browse Categories Icon" />
+                    <h6>Browse related categories</h6>
+                </div>
+                <div>
+                    <img src="https://via.placeholder.com/50" alt="Start Selling Icon" />
+                    <h6>Start selling on Teespring</h6>
+                </div>
+            </div>
+            <hr style="border-color: #4a5568" />
+            <div style="text-align: center;">
+                <img src="https://via.placeholder.com/30" alt="Wardrobe Icon" />
+                <p>Thanks again for the purchase!<br />Wardrobe</p>
+                <small>&copy; 2024 Teespring, Inc. All rights reserved.</small>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

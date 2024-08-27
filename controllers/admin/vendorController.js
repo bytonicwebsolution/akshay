@@ -8,6 +8,7 @@ const root = process.cwd();
 const imageFilter = require("../../config/imageFilter");
 require("dotenv").config;
 const Status = require("../../models/Status");
+const crypto = require('crypto');
 
 class VendorController {
     static list = async (req, res) => {
@@ -79,6 +80,7 @@ class VendorController {
                     type: "user",
                     name: { $regex: new RegExp("^active$", "i") },
                 });
+                
 
                 const vendor = new User({
                     image: image,

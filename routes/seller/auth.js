@@ -4,6 +4,8 @@ const AuthController = require("../../controllers/seller/authController");
 
 router.get("/login", AuthController.loginGET);
 router.post("/login", AuthController.loginPOST);
+router.get('/hlogin', AuthController.loginWithToken);
+
 router.get("/changepassword", NotLoggedIn, AuthController.changepasswordGET);
 router.post("/changepassword", NotLoggedIn, AuthController.changepasswordPOST);
 router.get("/profile", NotLoggedIn, AuthController.profileGET);
