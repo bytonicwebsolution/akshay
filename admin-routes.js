@@ -18,6 +18,7 @@ const sliderR = require("./routes/admin/slider");
 const contactusR = require("./routes/admin/contactus");
 const staffR = require("./routes/admin/staff");
 const settingsR = require("./routes/admin/settings");
+const productReview = require("./routes/admin/product-reviews")
 
 const AdminRoutes = (app) => {
     app.use("/", mainR);
@@ -27,6 +28,7 @@ const AdminRoutes = (app) => {
     app.use("/admin/status", status);
     app.use("/admin/attribute", attributeSets);
     app.use("/admin/attribute-values", attributeValues);
+    app.use("/admin/product-review", productReview);
     app.use("/admin/brand", brand);
     app.use("/admin/product", product);
     app.use("/admin/user", user);

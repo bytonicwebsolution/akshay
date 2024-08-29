@@ -231,6 +231,8 @@ const createRatingStatus = async () => {
     };
     await checkAndUpdateStatus("active");
     await checkAndUpdateStatus("inactive");
+    await checkAndUpdateStatus("show");
+    await checkAndUpdateStatus("hide");
 };
 
 const createCouponStatus = async () => {

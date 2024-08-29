@@ -16,6 +16,7 @@ const fs = require("fs");
 const defaultImage = baseURL + "/assets/images/default/user-dummy-img.jpg";
 const imageFilter = require("../../config/imageFilter");
 const config = require("../../config/createStatus");
+const nodemailer = require("nodemailer");
 
 // Set The Storage Engine
 const storage = multer.diskStorage({
@@ -66,10 +67,11 @@ class webauthController {
             const password = req.body.password;
             const confirm_password = req.body.confirm_password;
 
-            if (password !== confirm_password)
+            if (password !== confirm_password) {
                 return res.status(401).send({
                     message: "Password and Confirm Password do not match",
                 });
+            }
 
             const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS));
             const hashedpassword = await bcrypt.hash(password, salt);
@@ -82,6 +84,7 @@ class webauthController {
                 email: email,
                 user_type: "u",
             });
+
             if (userExists) {
                 return res.status(401).send({
                     message: "User already exists",
@@ -94,7 +97,7 @@ class webauthController {
                 type: { $regex: new RegExp("^user$", "i") },
             });
 
-            const user = await User({
+            const user = new User({
                 user_type: "u",
                 first_name: first_name,
                 last_name: last_name,
@@ -104,6 +107,42 @@ class webauthController {
                 status: status._id,
             });
             await user.save();
+
+            // Configure the transporter
+            const transporter = nodemailer.createTransport({
+                service: "gmail",
+                host: "smtp.gmail.com",
+                port: 587,
+                secure: false, // true for 465, false for other ports
+                auth: {
+                    user: "akshayhiran04@gmail.com",
+                    pass: "cpjf biml xrkx stua",
+                },
+            });
+
+            // Read the HTML template
+            const HTML_TEMPLATE = fs.readFileSync(
+                path.join(__dirname, "../../welcome.html"),
+                "utf8"
+            );
+
+            // Define the email options
+            const mailOptions = {
+                from: "akshayhiran04@gmail.com",
+                to: email, // Use the email of the newly registered user
+                subject: `Hi ${first_name}, Your registration was successful!`,
+                html: HTML_TEMPLATE.replace("{{first_name}}", first_name), // Replace placeholder with the user's name if needed
+            };
+
+            // Send the email
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log("Error occurred: " + error.message);
+                } else {
+                    console.log("Message sent: " + info.response);
+                }
+            });
+
             return res.send({
                 message: "User registered successfully",
                 status: true,
@@ -501,7 +540,7 @@ class webauthController {
 
                 await config.createRatingStatus();
                 let status = await Status.findOne({
-                    name: { $regex: new RegExp("^active$", "i") },
+                    name: { $regex: new RegExp("^show$", "i") },
                     type: { $regex: new RegExp("^rating$", "i") },
                 });
 
@@ -772,9 +811,7 @@ class webauthController {
             const deletedWishlist = await Wishlist.findByIdAndDelete(id);
 
             if (!deletedWishlist) {
-                return res
-                    .status(404)
-                    .json({ message: "Id not found" });
+                return res.status(404).json({ message: "Id not found" });
             }
 
             return res.send({

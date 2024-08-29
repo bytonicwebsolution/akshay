@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Read the HTML template
-const HTML_TEMPLATE = fs.readFileSync(path.join(__dirname, 'mail_template.html'), 'utf8');
+const HTML_TEMPLATE = fs.readFileSync(path.join(__dirname, 'mail.html'), 'utf8');
 
 // Define the email options
 const mailOptions = {
