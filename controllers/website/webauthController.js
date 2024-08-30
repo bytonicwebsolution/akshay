@@ -17,6 +17,9 @@ const defaultImage = baseURL + "/assets/images/default/user-dummy-img.jpg";
 const imageFilter = require("../../config/imageFilter");
 const config = require("../../config/createStatus");
 const nodemailer = require("nodemailer");
+require("dotenv").config();
+
+const pass = process.env.APP_SETTINGS_PASSWORD_GMAIL;
 
 // Set The Storage Engine
 const storage = multer.diskStorage({
@@ -116,7 +119,7 @@ class webauthController {
                 secure: false, // true for 465, false for other ports
                 auth: {
                     user: "akshayhiran04@gmail.com",
-                    pass: "cpjf biml xrkx stua",
+                    pass: pass
                 },
             });
 
