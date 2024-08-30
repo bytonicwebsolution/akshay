@@ -130,7 +130,6 @@ class ReportsController {
         }
     };
 
-
     static commission_history = async (req, res) => {
         return res.render("seller/commission-history");
     };

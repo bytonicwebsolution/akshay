@@ -6,7 +6,7 @@ class PayoutController {
         const payoutReports = await PayoutReport.find({}).sort({
             createdAt: -1,
         });
-        const vendor = await Vendor.find({
+        const vendor = await Vendor.findOne({
             user_id: req.session.seller._id,
         });
 

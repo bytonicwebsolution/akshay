@@ -85,20 +85,41 @@ class ProductReviewController {
     static filterRatings = async (req, res) => {
         try {
             const { status, rating } = req.body;
+            console.log(status, rating);
+            let ratings;
 
             const statusDoc = await Status.find({
                 name: { $regex: new RegExp(`^${status}$`, "i") },
                 type: { $regex: new RegExp("^rating$", "i") },
             });
 
+            console.log(statusDoc);
+            if (!status) {
+                ratings = await Rating.find({
+                    rating: rating,
+                })
+                    .populate("product_id")
+                    .populate("user_id")
+                    .populate("status_id");
+            } else if (!rating) {
+                ratings = await Rating.find({
+                    status_id: statusDoc[0]._id,
+                })
+                    .populate("product_id")
+                    .populate("user_id")
+                    .populate("status_id");
+            }
+            else{
+                ratings = await Rating.find({
+                    rating: rating,
+                    status_id: statusDoc[0]._id,
+                })
+                    .populate("product_id")
+                    .populate("user_id")
+                    .populate("status_id");
+            }
 
-
-            const ratings = await Rating.find({ status_id:statusDoc[0]._id , rating:rating})
-                .populate("product_id")
-                .populate("user_id")
-                .populate("status_id");
-
-                return res.status(200).json({ ratings });
+            return res.status(200).json({ ratings });
         } catch (error) {
             console.error("Error filtering ratings:", error);
             res.status(500).json({ message: "Error filtering ratings." });

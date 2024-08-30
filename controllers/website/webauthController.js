@@ -3,6 +3,7 @@ const Coupon = require("../../models/Coupon");
 const Status = require("../../models/Status");
 const Rating = require("../../models/Rating");
 const Wishlist = require("../../models/Wishlist");
+const Subscription = require("../../models/Subscription");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
@@ -17,9 +18,7 @@ const defaultImage = baseURL + "/assets/images/default/user-dummy-img.jpg";
 const imageFilter = require("../../config/imageFilter");
 const config = require("../../config/createStatus");
 const nodemailer = require("nodemailer");
-require("dotenv").config();
-
-const pass = process.env.APP_SETTINGS_PASSWORD_GMAIL;
+const sendEmail = require("../../config/mailer");
 
 // Set The Storage Engine
 const storage = multer.diskStorage({
@@ -111,40 +110,8 @@ class webauthController {
             });
             await user.save();
 
-            // Configure the transporter
-            const transporter = nodemailer.createTransport({
-                service: "gmail",
-                host: "smtp.gmail.com",
-                port: 587,
-                secure: false, // true for 465, false for other ports
-                auth: {
-                    user: "akshayhiran04@gmail.com",
-                    pass: pass
-                },
-            });
-
-            // Read the HTML template
-            const HTML_TEMPLATE = fs.readFileSync(
-                path.join(__dirname, "../../welcome.html"),
-                "utf8"
-            );
-
-            // Define the email options
-            const mailOptions = {
-                from: "akshayhiran04@gmail.com",
-                to: email, // Use the email of the newly registered user
-                subject: `Hi ${first_name}, Your registration was successful!`,
-                html: HTML_TEMPLATE.replace("{{first_name}}", first_name), // Replace placeholder with the user's name if needed
-            };
-
             // Send the email
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.log("Error occurred: " + error.message);
-                } else {
-                    console.log("Message sent: " + info.response);
-                }
-            });
+            await sendEmail(email, first_name);
 
             return res.send({
                 message: "User registered successfully",
@@ -396,7 +363,9 @@ class webauthController {
     static logout = async (req, res) => {
         try {
             req.session.destroy();
-            return res.send("success");
+            return res.send({
+                message: "logged out successfully",
+            });
         } catch (error) {
             return res.status(500).send({
                 message: "Something went wrong please try again later",
@@ -582,16 +551,46 @@ class webauthController {
 
     static get_product_ratings = async (req, res) => {
         try {
-            const product_id = req.body.product_id;
+            const product_id = req.params.product_id;
+            let mediaUrl = baseURL + "/dist/ratings/";
 
             const ratings = await Rating.find({
                 product_id: product_id,
-            }).populate("user_id");
+                product_id: { $ne: null },
+            })
+                .populate({
+                    path: "user_id",
+                    model: "User",
+                    select: "user_type first_name last_name email phone address address2",
+                })
+                .populate({ path: "status_id", model: "Status" });
 
-            if (!ratings)
+            // set default image if necessary
+            if (ratings && ratings.length > 0) {
+                ratings.forEach((rating) => {
+                    if (rating.image && rating.image.trim() !== "") {
+                        const imagePath = path.join(
+                            __dirname,
+                            "../../public/dist/ratings/",
+                            rating.image
+                        );
+                        try {
+                            fs.accessSync(imagePath, fs.constants.F_OK);
+                            rating.image = mediaUrl + rating.image.trim();
+                        } catch (error) {
+                            rating.image = defaultImage;
+                        }
+                    } else {
+                        rating.image = defaultImage;
+                    }
+                });
+            }
+
+            if (!ratings || ratings.length === 0) {
                 return res.status(401).send({
                     message: "No ratings found",
                 });
+            }
 
             return res.send({
                 message: "Ratings fetched successfully",
@@ -601,7 +600,7 @@ class webauthController {
         } catch (error) {
             console.log(error);
             return res.status(500).send({
-                message: "Something went wrong please try again later",
+                message: "Something went wrong, please try again later",
                 error: error.message,
             });
         }
@@ -694,102 +693,131 @@ class webauthController {
                 wishlistQuery.product_id = product_id;
             }
 
-            const wishlist = await Wishlist.find(wishlistQuery).populate(
-                "product_id"
-            );
+            const wishlist = await Wishlist.find(wishlistQuery)
+                .populate({
+                    path: "product_id",
+                    populate: { path: "category_id", model: "Category" },
+                })
+                .populate({
+                    path: "product_id",
+                    populate: { path: "brand_id", model: "Brand" },
+                })
+                .populate({
+                    path: "product_id",
+                    populate: { path: "unit_id", model: "Unit" },
+                })
+                .populate({
+                    path: "product_id",
+                    populate: {
+                        path: "vendor_id",
+                        model: "User",
+                        select: "first_name last_name email phone",
+                    },
+                })
+                .populate({
+                    path: "product_id",
+                    populate: { path: "status_id", model: "Status" },
+                });
 
             if (!wishlist || wishlist.length === 0) {
-                return res.status(401).send({
-                    message: "No products found in wishlist",
-                    success: false,
+                return res.send({
+                    data: [],
                 });
             }
 
-            let newProducts = [];
-            // set default image if necessary
+            // Process each product in the wishlist
             let mediaUrl = baseURL + "/dist/product/";
-            for (let item of wishlist) {
-                if (
-                    item.product_id &&
-                    item.product_id.thumbnail &&
-                    item.product_id.thumbnail.trim() !== ""
-                ) {
-                    const imagePath = path.join(
-                        __dirname,
-                        "../../public/dist/product/",
-                        item.product_id.thumbnail
-                    );
-                    try {
-                        fs.accessSync(imagePath, fs.constants.F_OK);
-                        item.product_id.thumbnail =
-                            mediaUrl + item.product_id.thumbnail.trim();
-                    } catch (error) {
+            let newProducts = await Promise.all(
+                wishlist.map(async (item) => {
+                    if (
+                        item.product_id &&
+                        item.product_id.thumbnail &&
+                        item.product_id.thumbnail.trim() !== ""
+                    ) {
+                        const imagePath = path.join(
+                            __dirname,
+                            "../../public/dist/product/",
+                            item.product_id.thumbnail
+                        );
+                        try {
+                            fs.accessSync(imagePath, fs.constants.F_OK);
+                            item.product_id.thumbnail =
+                                mediaUrl + item.product_id.thumbnail.trim();
+                        } catch (error) {
+                            item.product_id.thumbnail = defaultImage;
+                        }
+                    } else {
                         item.product_id.thumbnail = defaultImage;
                     }
-                } else {
-                    item.product_id.thumbnail = defaultImage;
-                }
 
-                // Convert product_id to a plain JavaScript object
-                let productObj = item.product_id.toObject();
+                    // Convert product_id to a plain JavaScript object
+                    let productObj = item.product_id.toObject();
 
-                // Calculate special_price for the product
-                let special_price = 0;
-                if (productObj.special_discount_type === "flat") {
-                    special_price =
-                        productObj.unit_price - productObj.special_discount;
-                } else if (productObj.special_discount_type === "percentage") {
-                    const discountAmount =
-                        (productObj.unit_price * productObj.special_discount) /
-                        100;
-                    special_price = productObj.unit_price - discountAmount;
-                }
+                    // Calculate special_price for the product
+                    let special_price = 0;
+                    if (productObj.special_discount_type === "flat") {
+                        special_price =
+                            productObj.unit_price - productObj.special_discount;
+                    } else if (
+                        productObj.special_discount_type === "percentage"
+                    ) {
+                        const discountAmount =
+                            (productObj.unit_price *
+                                productObj.special_discount) /
+                            100;
+                        special_price = productObj.unit_price - discountAmount;
+                    }
 
-                // Add special_price to the plain object
-                productObj.special_price = special_price.toFixed(2);
+                    // Add special_price to the plain object
+                    productObj.special_price = special_price.toFixed(2);
 
-                // Calculate average rating
-                const ratings = await Rating.aggregate([
-                    {
-                        $match: {
-                            product_id: mongoose.Types.ObjectId(
-                                item.product_id._id
-                            ),
+                    // Calculate average rating
+                    const ratings = await Rating.aggregate([
+                        {
+                            $match: {
+                                product_id: mongoose.Types.ObjectId(
+                                    item.product_id._id
+                                ),
+                            },
                         },
-                    },
-                    { $group: { _id: "$rating", count: { $sum: 1 } } },
-                ]);
+                        { $group: { _id: "$rating", count: { $sum: 1 } } },
+                    ]);
 
-                const ratingsMap = ratings.reduce(
-                    (acc, rating) => {
-                        acc[rating._id] = rating.count;
-                        return acc;
-                    },
-                    { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
-                );
+                    const ratingsMap = ratings.reduce(
+                        (acc, rating) => {
+                            acc[rating._id] = rating.count;
+                            return acc;
+                        },
+                        { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+                    );
 
-                const totalRatings = Object.keys(ratingsMap).reduce(
-                    (acc, key) => acc + ratingsMap[key],
-                    0
-                );
-                const totalScore = Object.keys(ratingsMap).reduce(
-                    (acc, key) => acc + ratingsMap[key] * key,
-                    0
-                );
-                const averageRating = totalRatings
-                    ? totalScore / totalRatings
-                    : 0;
+                    const totalRatings = Object.keys(ratingsMap).reduce(
+                        (acc, key) => acc + ratingsMap[key],
+                        0
+                    );
+                    const totalScore = Object.keys(ratingsMap).reduce(
+                        (acc, key) => acc + ratingsMap[key] * key,
+                        0
+                    );
+                    const averageRating = totalRatings
+                        ? totalScore / totalRatings
+                        : 0;
 
-                productObj.average_rating = averageRating.toFixed(2);
-                item.product_id = productObj;
-                newProducts.push(productObj);
-            }
+                    productObj.average_rating = averageRating.toFixed(2);
+                    return productObj;
+                })
+            );
 
+            // Group the products by wishlist
             let wishlistRes = wishlist.map((item) => {
                 const data = item.toObject();
                 return {
                     ...data,
-                    product_id: newProducts,
+                    product_id: newProducts.filter(
+                        (product) =>
+                            product._id.toString() ===
+                            data.product_id._id.toString()
+                    ),
                 };
             });
 
@@ -828,6 +856,45 @@ class webauthController {
                 success: false,
                 status: 500,
                 message: "Error fetching data" + error.message,
+            });
+        }
+    };
+
+    static subscription = async (req, res) => {
+        try {
+            const { email } = req.body;
+            if (!email) {
+                return res.status(400).send({
+                    success: false,
+                    message: "Email is required!",
+                });
+            }
+
+            // Check if the email already exists in the database
+            const existingSubscription = await Subscription.findOne({
+                email: email,
+            });
+
+            if (existingSubscription) {
+                return res.status(409).send({
+                    success: false,
+                    message: "Email already Exists!",
+                });
+            }
+
+            // Create a new subscription
+            const newSubscription = new Subscription({ email: email });
+            await newSubscription.save();
+
+            return res.status(201).send({
+                success: true,
+                message: "Subscription successful!",
+            });
+        } catch (error) {
+            console.error("Error subscribing:", error);
+            return res.status(500).send({
+                success: false,
+                message: "Error subscribing: " + error.message,
             });
         }
     };

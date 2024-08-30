@@ -1147,13 +1147,26 @@ class WebsiteController {
 
             // Creating an empty filter object
             let condition = {};
+            // Convert category_id to an array if it's not already
+            const categoryIdsArray = Array.isArray(category_id)
+                ? category_id
+                : [category_id];
 
-            // Add category_id to condition if provided
-            if (category_id) {
-                const categoryIds = await getAllCategoryIds(category_id);
-                condition.category_id = {
-                    $in: categoryIds,
-                };
+            // Find all child categories recursively
+            const allCategoryIds = [...categoryIdsArray];
+            for (const categoryId of categoryIdsArray) {
+                const childCategories = await Category.find({
+                    parent_id: categoryId,
+                }).select("_id");
+                const childCategoryIds = childCategories.map((cat) =>
+                    cat._id.toString()
+                );
+                allCategoryIds.push(...childCategoryIds);
+            }
+
+            // Add category_ids to condition if provided
+            if (allCategoryIds.length > 0) {
+                condition.category_id = { $in: allCategoryIds };
             }
 
             // Add brand_id to condition if provided
@@ -2534,11 +2547,11 @@ class WebsiteController {
             // Set the image URLs for each banner, falling back to the default image if necessary
             const response = {
                 logo: await getLogoUrl(data?.logo),
-                address: data?.address,
-                phone: data?.phone,
-                email: data?.email,
-                toll_number: data?.toll_number,
-                copyright: data?.copyright,
+                address: data?.address ? data?.address : "",
+                phone: data?.phone ? data?.phone : "",
+                email: data?.email ? data?.email : "",
+                toll_number: data?.toll_number ? data?.toll_number : "",
+                copyright: data?.copyright ? data?.copyright : "",
             };
 
             return res.send({

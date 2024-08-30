@@ -20,5 +20,6 @@ router.post(
 );
 router.post("/get_wishlist", webauthController.get_wishlist);
 router.post("/delete-wishlist", NotLoggedIn, webauthController.delete_wishlist);
+router.post("/subscription", NotLoggedIn, webauthController.subscription);
 
 module.exports = router;

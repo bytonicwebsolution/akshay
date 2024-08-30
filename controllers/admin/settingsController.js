@@ -37,7 +37,38 @@ class SettingsController {
                 subscription_banner_image: banners
                     ? banners.subscription_banner.image
                     : " ",
-                banners
+
+                home_banner_top_title: banners
+                    ? banners.home_banner_top.title
+                    : " ",
+                home_banner_2_title: banners
+                    ? banners.home_banner_2.title
+                    : " ",
+                home_banner_3_title: banners
+                    ? banners.home_banner_3.title
+                    : " ",
+                home_banner_4_title: banners
+                    ? banners.home_banner_4.title
+                    : " ",
+                subscription_banner_title: banners
+                    ? banners.subscription_banner.title
+                    : " ",
+                home_banner_top_description: banners
+                    ? banners.home_banner_top.description
+                    : " ",
+                home_banner_2_description: banners
+                    ? banners.home_banner_2.description
+                    : " ",
+                home_banner_3_description: banners
+                    ? banners.home_banner_3.description
+                    : " ",
+                home_banner_4_description: banners
+                    ? banners.home_banner_4.description
+                    : " ",
+                subscription_banner_description: banners
+                    ? banners.subscription_banner.description
+                    : " ",
+                banners,
             });
         } catch (error) {
             console.log(error);
@@ -59,94 +90,165 @@ class SettingsController {
                     console.log(err);
                     return res.send(err);
                 }
-    
+
                 const data = req.body;
                 const files = req.files || {};
-    
+
                 let exist = await Banner.findOne();
-    
+
                 const bannerData = {
                     home_banner_top: {
                         image: files.home_banner_top_image
                             ? files.home_banner_top_image[0].filename
-                            : exist ? exist.home_banner_top.image : "", // Retain existing image if not replaced
+                            : exist
+                            ? exist.home_banner_top.image
+                            : "", // Retain existing image if not replaced
                         url: data.home_banner_top_url,
+                        title: data.home_banner_top_title,
+                        description: data.home_banner_top_description.trim(),
                     },
                     home_banner_2: {
                         image: files.home_banner_2_image
                             ? files.home_banner_2_image[0].filename
-                            : exist ? exist.home_banner_2.image : "", // Retain existing image if not replaced
+                            : exist
+                            ? exist.home_banner_2.image
+                            : "", // Retain existing image if not replaced
                         url: data.home_banner_2_url,
+                        title: data.home_banner_2_title,
+                        description: data.home_banner_2_description.trim(),
                     },
                     home_banner_3: {
                         image: files.home_banner_3_image
                             ? files.home_banner_3_image[0].filename
-                            : exist ? exist.home_banner_3.image : "", // Retain existing image if not replaced
+                            : exist
+                            ? exist.home_banner_3.image
+                            : "", // Retain existing image if not replaced
                         url: data.home_banner_3_url,
+                        title: data.home_banner_3_title,
+                        description: data.home_banner_3_description.trim(),
                     },
                     home_banner_4: {
                         image: files.home_banner_4_image
                             ? files.home_banner_4_image[0].filename
-                            : exist ? exist.home_banner_4.image : "", // Retain existing image if not replaced
+                            : exist
+                            ? exist.home_banner_4.image
+                            : "", // Retain existing image if not replaced
                         url: data.home_banner_4_url,
+                        title: data.home_banner_4_title,
+                        description: data.home_banner_4_description.trim(),
                     },
                     subscription_banner: {
                         image: files.subscription_banner_image
                             ? files.subscription_banner_image[0].filename
-                            : exist ? exist.subscription_banner.image : "", // Retain existing image if not replaced
+                            : exist
+                            ? exist.subscription_banner.image
+                            : "", // Retain existing image if not replaced
                         url: data.subscription_banner_url,
+                        title: data.subscription_banner_title,
+                        description:
+                            data.subscription_banner_description.trim(),
                     },
                 };
-    
+
                 if (exist) {
                     // Delete old images only if new images are uploaded
-                    if (files.home_banner_top_image && exist.home_banner_top.image) {
-                        fs.unlink(path.join(root, "/public/dist/banner/", exist.home_banner_top.image), (err) => {
-                            if (err) {
-                                console.error(err);
+                    if (
+                        files.home_banner_top_image &&
+                        exist.home_banner_top.image
+                    ) {
+                        fs.unlink(
+                            path.join(
+                                root,
+                                "/public/dist/banner/",
+                                exist.home_banner_top.image
+                            ),
+                            (err) => {
+                                if (err) {
+                                    console.error(err);
+                                }
                             }
-                        });
+                        );
                     }
-    
-                    if (files.home_banner_2_image && exist.home_banner_2.image) {
-                        fs.unlink(path.join(root, "/public/dist/banner/", exist.home_banner_2.image), (err) => {
-                            if (err) {
-                                console.error(err);
+
+                    if (
+                        files.home_banner_2_image &&
+                        exist.home_banner_2.image
+                    ) {
+                        fs.unlink(
+                            path.join(
+                                root,
+                                "/public/dist/banner/",
+                                exist.home_banner_2.image
+                            ),
+                            (err) => {
+                                if (err) {
+                                    console.error(err);
+                                }
                             }
-                        });
+                        );
                     }
-    
-                    if (files.home_banner_3_image && exist.home_banner_3.image) {
-                        fs.unlink(path.join(root, "/public/dist/banner/", exist.home_banner_3.image), (err) => {
-                            if (err) {
-                                console.error(err);
+
+                    if (
+                        files.home_banner_3_image &&
+                        exist.home_banner_3.image
+                    ) {
+                        fs.unlink(
+                            path.join(
+                                root,
+                                "/public/dist/banner/",
+                                exist.home_banner_3.image
+                            ),
+                            (err) => {
+                                if (err) {
+                                    console.error(err);
+                                }
                             }
-                        });
+                        );
                     }
-    
-                    if (files.home_banner_4_image && exist.home_banner_4.image) {
-                        fs.unlink(path.join(root, "/public/dist/banner/", exist.home_banner_4.image), (err) => {
-                            if (err) {
-                                console.error(err);
+
+                    if (
+                        files.home_banner_4_image &&
+                        exist.home_banner_4.image
+                    ) {
+                        fs.unlink(
+                            path.join(
+                                root,
+                                "/public/dist/banner/",
+                                exist.home_banner_4.image
+                            ),
+                            (err) => {
+                                if (err) {
+                                    console.error(err);
+                                }
                             }
-                        });
+                        );
                     }
-    
-                    if (files.subscription_banner_image && exist.subscription_banner.image) {
-                        fs.unlink(path.join(root, "/public/dist/banner/", exist.subscription_banner.image), (err) => {
-                            if (err) {
-                                console.error(err);
+
+                    if (
+                        files.subscription_banner_image &&
+                        exist.subscription_banner.image
+                    ) {
+                        fs.unlink(
+                            path.join(
+                                root,
+                                "/public/dist/banner/",
+                                exist.subscription_banner.image
+                            ),
+                            (err) => {
+                                if (err) {
+                                    console.error(err);
+                                }
                             }
-                        });
+                        );
                     }
-    
+
                     bannerData.updated_at = new Date();
                     await Banner.updateOne({}, bannerData);
                 } else {
                     const newBanner = new Banner(bannerData);
                     await newBanner.save();
                 }
-    
+
                 return res.send({
                     status: 200,
                     message: "Banner added successfully",
@@ -160,7 +262,6 @@ class SettingsController {
             });
         }
     };
-
 
     static settings_view = async (req, res) => {
         try {
@@ -196,17 +297,36 @@ class SettingsController {
                 }
 
                 const data = req.body;
+                let exist = await WebSetting.findOne();
+
                 const insertData = {
                     address: data.address.trim(),
                     phone: data.phone,
                     email: data.email,
                     toll_number: data.toll_number,
-                    logo: req.file ? req.file.filename : "",
+                    logo: req.file
+                        ? req.file.filename
+                        : exist
+                        ? exist.logo
+                        : "",
                     copyright: data.copyright,
                 };
 
-                let exist = await WebSetting.findOne();
                 if (exist) {
+                    if (req.file && exist.logo) {
+                        fs.unlink(
+                            path.join(
+                                root,
+                                "/public/dist/websetting/",
+                                exist.logo
+                            ),
+                            (err) => {
+                                if (err) {
+                                    console.error(err);
+                                }
+                            }
+                        );
+                    }
                     insertData.updated_at = new Date();
                     await WebSetting.updateOne({}, insertData);
                 } else {

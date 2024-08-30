@@ -51,6 +51,16 @@ sessionStore = new MongoStore({
     url: DB_CONNECT,
 });
 
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        store: sessionStore,
+        cookie: { secure: false }, // Set to `true` in production with HTTPS
+    })
+);
+
 // Admin panel session
 app.use(
     "/admin", // Apply session to /admin routes only

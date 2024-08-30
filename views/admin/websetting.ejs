@@ -126,7 +126,9 @@
                                                     name="address"
                                                     rows="3"
                                                     placeholder="Enter Address"
-                                                ><%= address ? address : '' %></textarea
+                                                >
+                                        <%= address ? address : '' %>
+                                        </textarea
                                                 >
                                             </div>
                                         </div>
@@ -152,6 +154,7 @@
                                                     class="mb-2 mt-2"
                                                     id="preview-image"
                                                 >
+                                                    <% if (logo) { %>
                                                     <img
                                                         src="<%- logo ? '../../dist/websetting/' + logo : '../../assets/images/default/user-dummy-img.jpg' %>"
                                                         onerror="this.src='../../assets/images/default/user-dummy-img.jpg';"
@@ -162,6 +165,12 @@
                                                             height: 100px;
                                                         "
                                                     />
+                                                    <% } else { %>
+                                                    <img
+                                                        src=""
+                                                        style="display: none"
+                                                    />
+                                                    <% } %>
                                                 </div>
                                             </div>
                                         </div>
@@ -206,7 +215,63 @@
     var editform = $("#updateForm");
     editform.submit(function (e) {
         e.preventDefault();
+
+        //validation
+        if ($("#email").val() == "") {
+            iziToast.error({
+                title: "Error",
+                message: "Email is required",
+                position: "topRight",
+            });
+            return false;
+        }
+        if ($("#phone").val() == "") {
+            iziToast.error({
+                title: "Error",
+                message: "Phone is required",
+                position: "topRight",
+            });
+            return false;
+        }
+        if ($("#toll_number").val() == "") {
+            iziToast.error({
+                title: "Error",
+                message: "Toll Number is required",
+                position: "topRight",
+            });
+            return false;
+        }
+        if ($("#copyright").val() == "") {
+            iziToast.error({
+                title: "Error",
+                message: "Copy Right is required",
+                position: "topRight",
+            });
+            return false;
+        }
+        if ($("#address").val() == "") {
+            iziToast.error({
+                title: "Error",
+                message: "Address is required",
+                position: "topRight",
+            });
+            return false;
+        }
+        // Check if image is uploaded or exists in the database
+        if ($("#logo").get(0).files.length === 0 && !$("#logo-hidden").val()) {
+            iziToast.error({
+                title: "Error",
+                message: "Logo is required",
+                position: "topRight",
+            });
+            return false;
+        }
+
         var formData = new FormData(editform[0]);
+        if ($("#logo").get(0).files.length === 0) {
+            formData.append("logo", $("#logo-hidden").val());
+        }
+
         $.ajax({
             type: "POST",
             cache: false,

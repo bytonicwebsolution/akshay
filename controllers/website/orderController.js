@@ -77,19 +77,18 @@ class OrderController {
 
     static orderItems = async (req, res) => {
         try {
-            var token = req.body.token;
+            const { token } = req.body;
             const payload = jwt.decode(token, process.env.TOKEN_SECRET);
             const userId = payload.id;
 
             if (!userId) {
-                return res.send({
+                return res.status(401).send({
                     success: false,
-                    status: 401,
                     message: "Unauthorized access",
                 });
             }
 
-            let mediaUrl = baseURL + "/dist/product/";
+            const mediaUrl = baseURL + "/dist/product/";
 
             const orders = await Order.find({ user_id: userId });
             const orderIds = orders.map((order) => order._id);
@@ -127,13 +126,15 @@ class OrderController {
                         }
                     }
 
-                    // Check if the product has any ratings
-                    const ratingsCount = await Rating.countDocuments({
+                    // Check if the user has given a rating for this product
+                    const ratingExists = await Rating.findOne({
                         product_id: order.product_id
                             ? order.product_id._id
                             : null,
+                        user_id: userId,
                     });
-                    const rating_apply = ratingsCount > 0;
+
+                    const rating_apply = !!ratingExists; // true if rating exists, false otherwise
 
                     return {
                         product_id: order.product_id
@@ -152,18 +153,16 @@ class OrderController {
                 })
             );
 
-            return res.send({
+            return res.status(200).send({
                 success: true,
-                status: 200,
                 message: "Order Items fetched successfully",
                 data: ordersItems,
                 mediaUrl,
             });
         } catch (error) {
             console.error("Error fetching data:", error);
-            res.send({
+            return res.status(500).send({
                 success: false,
-                status: 500,
                 message: "Error fetching data: " + error.message,
             });
         }

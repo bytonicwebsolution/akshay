@@ -128,6 +128,57 @@ class CartController {
             });
         }
     };
+
+    static removeFromCart = async (req, res) => {
+        try {
+            const { token, sku } = req.body;
+            if (!token) {
+                return res.status(400).send({
+                    success: false,
+                    message: "Token is required!",
+                });
+            }
+            const payload = jwt.decode(token, process.env.TOKEN_SECRET);
+            const userId = payload.id;
+
+            let result;
+
+            if (sku) {
+                result = await Cart.deleteOne({ user_id: userId, sku: sku });
+
+                if (result.deletedCount === 0) {
+                    return res.status(404).send({
+                        success: false,
+                        message: `No item found in the cart with SKU: ${sku} to remove.`,
+                    });
+                }
+
+                return res.status(200).send({
+                    success: true,
+                    message: `Item with SKU: ${sku} removed from cart successfully!`,
+                });
+            } else {
+                result = await Cart.deleteMany({ user_id: userId });
+
+                if (result.deletedCount === 0) {
+                    return res.status(404).send({
+                        success: false,
+                        message: "No items found in the cart to remove.",
+                    });
+                }
+
+                return res.status(200).send({
+                    success: true,
+                    message: "All items removed from cart successfully!",
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send({
+                message: "Error removing items from cart: " + error.message,
+            });
+        }
+    };
 }
 
 module.exports = CartController;

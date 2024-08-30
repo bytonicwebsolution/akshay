@@ -10,7 +10,6 @@ const baseURL = process.env.BaseURL;
 const fs = require("fs");
 const defaultImage = baseURL + "/assets/images/default/user-dummy-img.jpg";
 const imageFilter = require("../../config/imageFilter");
-const crypto = require('crypto');
 
 // Set The Storage Engine
 const storage = multer.diskStorage({
@@ -38,110 +37,107 @@ const upload = multer({
 ]);
 
 class VendorController {
-   
+    static register = async (req, res) => {
+        try {
+            upload(req, res, async function (err) {
+                if (req.fileValidationError) {
+                    return res.send(req.fileValidationError);
+                } else if (!req.files.aadhar_front_photo) {
+                    return res.send({
+                        error: true,
+                        message: "Please upload aadhar front photo",
+                    });
+                } else if (!req.files.aadhar_back_photo) {
+                    return res.send({
+                        error: true,
+                        message: "Please upload aadhar back photo",
+                    });
+                } else if (!req.files.pan_front_photo) {
+                    return res.send({
+                        error: true,
+                        message: "Please upload pan front photo",
+                    });
+                } else if (!req.files.signature) {
+                    return res.send({
+                        error: true,
+                        message: "Please upload signature",
+                    });
+                } else if (err instanceof multer.MulterError) {
+                    console.log(err);
+                    return res.send(err);
+                } else if (err) {
+                    console.log(err);
+                    return res.send(err);
+                }
 
-static register = async (req, res) => {
-    try {
-        upload(req, res, async function (err) {
-            if (req.fileValidationError) {
-                return res.send(req.fileValidationError);
-            } else if (!req.files.aadhar_front_photo) {
-                return res.send({
-                    error: true,
-                    message: "Please upload aadhar front photo",
+                const {
+                    first_name,
+                    last_name,
+                    email,
+                    phone,
+                    password,
+                    dob,
+                    address,
+                    address2,
+                    pincode,
+                    city,
+                    additional_info,
+                } = req.body;
+
+                var mobileRegex = new RegExp("^[0-9]{10}$");
+                var emailRegex = new RegExp(
+                    "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+                );
+
+                if (!emailRegex.test(email))
+                    return res.send("Invalid email address");
+                if (!mobileRegex.test(phone))
+                    return res.send("Invalid phone number");
+
+                const salt = await bcrypt.genSalt(
+                    Number(process.env.SALT_ROUNDS)
+                );
+                const hashedpassword = await bcrypt.hash(password, salt);
+                const userExists = await User.findOne({
+                    email: email,
+                    user_type: "v",
                 });
-            } else if (!req.files.aadhar_back_photo) {
-                return res.send({
-                    error: true,
-                    message: "Please upload aadhar back photo",
+                if (userExists) {
+                    return res.status(401).send({
+                        message: "User already exists",
+                        status: false,
+                        success: false,
+                    });
+                }
+
+                // Create and save the new user
+                const newUser = new User({
+                    user_type: "v",
+                    first_name: first_name,
+                    last_name: last_name,
+                    email: email,
+                    dob: dob,
+                    phone: phone,
+                    address: address,
+                    address2: address2,
+                    pincode: pincode,
+                    city: city,
+                    additional_info: additional_info,
+                    password: hashedpassword,
                 });
-            } else if (!req.files.pan_front_photo) {
+                await newUser.save();
                 return res.send({
-                    error: true,
-                    message: "Please upload pan front photo",
+                    message: "Vendor registered successfully",
                 });
-            } else if (!req.files.signature) {
-                return res.send({
-                    error: true,
-                    message: "Please upload signature",
-                });
-            } else if (err instanceof multer.MulterError) {
-                console.log(err);
-                return res.send(err);
-            } else if (err) {
-                console.log(err);
-                return res.send(err);
-            }
-
-            const {
-                first_name,
-                last_name,
-                email,
-                phone,
-                password,
-                dob,
-                address,
-                address2,
-                pincode,
-                city,
-                additional_info,
-            } = req.body;
-
-            var mobileRegex = new RegExp("^[0-9]{10}$");
-            var emailRegex = new RegExp(
-                "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
-            );
-
-            if (!emailRegex.test(email))
-                return res.send("Invalid email address");
-            if (!mobileRegex.test(phone))
-                return res.send("Invalid phone number");
-
-            const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS));
-            const hashedpassword = await bcrypt.hash(password, salt);
-            const userExists = await User.findOne({
-                email: email,
-                user_type: "v",
             });
-            if (userExists) {
-                return res.status(401).send({
-                    message: "User already exists",
-                    status: false,
-                    success: false,
-                });
-            }
-
-            
-
-            // Create and save the new user
-            const newUser = new User({
-                user_type: "v",
-                first_name: first_name,
-                last_name: last_name,
-                email: email,
-                dob: dob,
-                phone: phone,
-                address: address,
-                address2: address2,
-                pincode: pincode,
-                city: city,
-                additional_info: additional_info,
-                password: hashedpassword, // store the token
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                message: "Something went wrong please try again later",
+                error: error.message,
             });
-            await newUser.save();
-            return res.send({
-                message: "Vendor registered successfully",
-            });
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).send({
-            message: "Something went wrong please try again later",
-            error: error.message,
-        });
-    }
-};
-
+        }
+    };
 
     static update_profile = async (req, res) => {
         try {

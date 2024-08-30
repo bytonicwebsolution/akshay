@@ -1,132 +1,257 @@
 <!DOCTYPE html>
-<html lang="en" data-layout="vertical" data-sidebar="dark" data-sidebar-size="lg" data-preloader="disable" data-theme="default" data-topbar="light" data-bs-theme="light">
+<html
+    lang="en"
+    data-layout="vertical"
+    data-sidebar="dark"
+    data-sidebar-size="lg"
+    data-preloader="disable"
+    data-theme="default"
+    data-topbar="light"
+    data-bs-theme="light"
+>
+    <head>
+        <meta charset="utf-8" />
+        <title>Anuda Mart</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta content="" name="description" />
+        <meta content="Themesbrand" name="author" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="/assets/images/favicon.png" />
+        <link rel="stylesheet" href="/admin/css/style.css" />
+        <!-- Fonts css load -->
+        <link rel="preconnect" href="https://fonts.googleapis.com/" />
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+        <link
+            id="fontsLink"
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+        />
 
-<head>
-  <meta charset="utf-8" />
-  <title>Anuda Mart</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta content="" name="description" />
-  <meta content="Themesbrand" name="author" />
-  <!-- App favicon -->
-  <link rel="shortcut icon" href="/assets/images/favicon.png" />
-  <link rel="stylesheet" href="/admin/css/style.css" />
-  <!-- Fonts css load -->
-  <link rel="preconnect" href="https://fonts.googleapis.com/" />
-  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-  <link id="fontsLink" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+        <!-- Bootstrap Css -->
+        <link
+            href="/assets/css/bootstrap.min.css"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <!-- Icons Css -->
+        <link
+            href="/assets/css/icons.min.css"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <!-- App Css-->
+        <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <!-- custom Css-->
+        <link
+            href="/assets/css/custom.min.css"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <!-- Sweet Alert css-->
+        <link
+            href="/assets/libs/sweetalert2/sweetalert2.min.css"
+            rel="stylesheet"
+            type="text/css"
+        />
 
-  <!-- Bootstrap Css -->
-  <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-  <!-- Icons Css -->
-  <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-  <!-- App Css-->
-  <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
-  <!-- custom Css-->
-  <link href="/assets/css/custom.min.css" rel="stylesheet" type="text/css" />
-  <!-- Sweet Alert css-->
-  <link href="/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+        <!-- jsvectormap css -->
+        <link
+            href="/assets/libs/jsvectormap/css/jsvectormap.min.css"
+            rel="stylesheet"
+            type="text/css"
+        />
 
-  <!-- jsvectormap css -->
-  <link href="/assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+        <!--Swiper slider css-->
+        <link
+            href="/assets/libs/swiper/swiper-bundle.min.css"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <!-- Toast css -->
+        <link
+            rel="stylesheet"
+            href="/assets/libs/izitoast/css/iziToast.min.css"
+        />
+        <!-- leaflet Css -->
+        <link
+            href="/assets/libs/leaflet/leaflet.css"
+            rel="stylesheet"
+            type="text/css"
+        />
 
-  <!--Swiper slider css-->
-  <link href="/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
-  <!-- Toast css -->
-  <link rel="stylesheet" href="/assets/libs/izitoast/css/iziToast.min.css" />
-  <!-- leaflet Css -->
-  <link href="/assets/libs/leaflet/leaflet.css" rel="stylesheet" type="text/css" />
+        <!-- leaflet-routing-machine Css -->
+        <link
+            href="/assets/libs/leaflet-routing-machine/leaflet-routing-machine.css"
+            rel="stylesheet"
+            type="text/css"
+        />
 
-  <!-- leaflet-routing-machine Css -->
-  <link href="/assets/libs/leaflet-routing-machine/leaflet-routing-machine.css" rel="stylesheet" type="text/css" />
+        <style>
+            .select2.select2-container.select2-container--default {
+                width: 100% !important;
+            }
+        </style>
+    </head>
 
-  <style>
-    .select2.select2-container.select2-container--default {
-      width: 100% !important;
-    }
-  </style>
-</head>
-
-<body>
-  <!-- ========== App Menu ========== -->
-  <div class="app-menu navbar-menu">
-    <!-- navbar-brand-box LOGO -->
-    <div class="navbar-brand-box">
-      <a href="/admin/dashboard" class="logo logo-light">
-        <span class="logo-sm">
-          <img src="/assets/images/white-logo.png" alt="white-logo" height="33" />
-        </span>
-        <span class="logo-lg">
-          <img src="/assets/images/logo.png" alt="logo" height="40" />
-        </span>
-      </a>
-      <button type="button" class="btn btn-sm p-0 fs-3xl header-item float-end btn-vertical-sm-hover" id="vertical-hover">
-        <i class="ri-record-circle-line"></i>
-      </button>
-    </div>
-    <!-- end navbar-brand-box -->
-
-    <!-- Left Sidebar Start -->
-    <div id="scrollbar">
-      <div class="container-fluid">
-        <div id="two-column-menu"></div>
-        <ul class="navbar-nav" id="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link dashboard" href="/admin/dashboard">
-              <i class="ph-gauge"></i>
-              <span data-key="t-dashboards">Dashboards</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#sidebarProducts" class="nav-link menu-link collapsed product" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarProducts">
-              <i class="ph-storefront"></i>
-              <span data-key="t-ecommerce">Products</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarProducts">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <a href="/admin/product/list" class="nav-link products" data-key="t-products">All Products</a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/product/add" class="nav-link add_product" data-key="t-create-product">Add Product</a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/category/list" class="nav-link categories" data-key="t-products">Categories</a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/brand/list" class="nav-link brands" data-key="t-products">Brands</a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/attribute/list" class="nav-link attribute_sets" data-key="t-products">Attribute Sets</a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/attribute-values/list" class="nav-link attribute_values" data-key="t-products">Attribute Values</a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/unit/list" class="nav-link units" data-key="t-products">Units</a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/product-review/list" class="nav-link child-tab product_review" data-key="t-create-product">Product Review</a>
-                </li>
-              </ul>
+    <body>
+        <!-- ========== App Menu ========== -->
+        <div class="app-menu navbar-menu">
+            <!-- navbar-brand-box LOGO -->
+            <div class="navbar-brand-box">
+                <a href="/admin/dashboard" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img
+                            src="/assets/images/white-logo.png"
+                            alt="white-logo"
+                            height="33"
+                        />
+                    </span>
+                    <span class="logo-lg">
+                        <img
+                            src="/assets/images/logo.png"
+                            alt="logo"
+                            height="40"
+                        />
+                    </span>
+                </a>
+                <button
+                    type="button"
+                    class="btn btn-sm p-0 fs-3xl header-item float-end btn-vertical-sm-hover"
+                    id="vertical-hover"
+                >
+                    <i class="ri-record-circle-line"></i>
+                </button>
             </div>
-          </li>
+            <!-- end navbar-brand-box -->
 
-          <li class="nav-item">
-            <a href="/admin/user/list" class="nav-link menu-link customers">
-              <i class="ph-user-circle"></i>
-              <span data-key="t-calendar">Customers</span>
-            </a>
-          </li>
+            <!-- Left Sidebar Start -->
+            <div id="scrollbar">
+                <div class="container-fluid">
+                    <div id="two-column-menu"></div>
+                    <ul class="navbar-nav" id="navbar-nav">
+                        <li class="nav-item">
+                            <a
+                                class="nav-link dashboard"
+                                href="/admin/dashboard"
+                            >
+                                <i class="ph-gauge"></i>
+                                <span data-key="t-dashboards">Dashboards</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                href="#sidebarProducts"
+                                class="nav-link menu-link collapsed product"
+                                data-bs-toggle="collapse"
+                                role="button"
+                                aria-expanded="false"
+                                aria-controls="sidebarProducts"
+                            >
+                                <i class="ph-storefront"></i>
+                                <span data-key="t-ecommerce">Products</span>
+                            </a>
+                            <div
+                                class="collapse menu-dropdown"
+                                id="sidebarProducts"
+                            >
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/product/list"
+                                            class="nav-link products"
+                                            data-key="t-products"
+                                            >All Products</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/product/add"
+                                            class="nav-link add_product"
+                                            data-key="t-create-product"
+                                            >Add Product</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/category/list"
+                                            class="nav-link categories"
+                                            data-key="t-products"
+                                            >Categories</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/brand/list"
+                                            class="nav-link brands"
+                                            data-key="t-products"
+                                            >Brands</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/attribute/list"
+                                            class="nav-link attribute_sets"
+                                            data-key="t-products"
+                                            >Attribute Sets</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/attribute-values/list"
+                                            class="nav-link attribute_values"
+                                            data-key="t-products"
+                                            >Attribute Values</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/unit/list"
+                                            class="nav-link units"
+                                            data-key="t-products"
+                                            >Units</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/product-review/list"
+                                            class="nav-link child-tab product_review"
+                                            data-key="t-create-product"
+                                            >Product Review</a
+                                        >
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
 
-          <li class="nav-item">
-            <a href="/admin/vendor/list" class="nav-link menu-link venders">
-              <i class="ph-users"></i>
-              <span data-key="t-calendar">Venders</span>
-            </a>
-          </li>
-          <!-- <li class="nav-item">
+                        <li class="nav-item">
+                            <a
+                                href="/admin/user/list"
+                                class="nav-link menu-link customers"
+                            >
+                                <i class="ph-user-circle"></i>
+                                <span data-key="t-calendar">Customers</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a
+                                href="/admin/vendor/list"
+                                class="nav-link menu-link venders"
+                            >
+                                <i class="ph-users"></i>
+                                <span data-key="t-calendar">Venders</span>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item">
                             <a
                                 href="/admin/status/list"
                                 class="nav-link menu-link status"
@@ -136,79 +261,150 @@
                             </a>
                         </li> -->
 
-          <li class="nav-item">
-            <a href="#sidebarPages" class="nav-link menu-link collapsed staticpages" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages">
-              <i class="ph-file-text"></i>
-              <span data-key="t-ecommerce">Static Pages</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarPages">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <a href="/admin/static-pages/list" class="nav-link pages" data-key="pages">Static Pages List</a>
-                </li>
-              </ul>
-            </div>
-          </li>
+                        <li class="nav-item">
+                            <a
+                                href="#sidebarPages"
+                                class="nav-link menu-link collapsed staticpages"
+                                data-bs-toggle="collapse"
+                                role="button"
+                                aria-expanded="false"
+                                aria-controls="sidebarPages"
+                            >
+                                <i class="ph-file-text"></i>
+                                <span data-key="t-ecommerce">Static Pages</span>
+                            </a>
+                            <div
+                                class="collapse menu-dropdown"
+                                id="sidebarPages"
+                            >
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/static-pages/list"
+                                            class="nav-link pages"
+                                            data-key="pages"
+                                            >Static Pages List</a
+                                        >
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
 
-          <li class="nav-item">
-            <a href="#sidebarStoreFront" class="nav-link menu-link collapsed storefront" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarStoreFront">
-              <i class="ph-gear"></i>
-              <span data-key="t-ecommerce">Store Front</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarStoreFront">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <a href="/admin/faq/list" class="nav-link faq" data-key="t-products">FAQ</a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/slider/list" class="nav-link slider" data-key="t-products">Slider</a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/banner/list" class="nav-link banner banner" data-key="t-products">Home Banners</a>
-                </li>
-                <li class="nav-item">
-                  <a href="/admin/settings_view" class="nav-link web_setting" data-key="t-products">Web Setting</a>
-                </li>
-              </ul>
-            </div>
-          </li>
+                        <li class="nav-item">
+                            <a
+                                href="#sidebarStoreFront"
+                                class="nav-link menu-link collapsed storefront"
+                                data-bs-toggle="collapse"
+                                role="button"
+                                aria-expanded="false"
+                                aria-controls="sidebarStoreFront"
+                            >
+                                <i class="ph-gear"></i>
+                                <span data-key="t-ecommerce">Store Front</span>
+                            </a>
+                            <div
+                                class="collapse menu-dropdown"
+                                id="sidebarStoreFront"
+                            >
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/faq/list"
+                                            class="nav-link faq"
+                                            data-key="t-products"
+                                            >FAQ</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/slider/list"
+                                            class="nav-link slider"
+                                            data-key="t-products"
+                                            >Slider</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/banner/list"
+                                            class="nav-link banner banner"
+                                            data-key="t-products"
+                                            >Home Banners</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/settings_view"
+                                            class="nav-link web_setting"
+                                            data-key="t-products"
+                                            >Web Setting</a
+                                        >
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
 
-          <li class="nav-item">
-            <a href="#sidebarMarketing" class="nav-link menu-link collapsed marketing" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMarketing">
-              <i class="ph-paper-plane"></i>
-              <span data-key="t-ecommerce">Marketing</span>
-            </a>
-            <div class="collapse menu-dropdown" id="sidebarMarketing">
-              <ul class="nav nav-sm flex-column">
-                <li class="nav-item">
-                  <a href="/admin/coupon/list" class="nav-link coupons" data-key="t-products">Coupons</a>
-                </li>
-              </ul>
-            </div>
-          </li>
+                        <li class="nav-item">
+                            <a
+                                href="#sidebarMarketing"
+                                class="nav-link menu-link collapsed marketing"
+                                data-bs-toggle="collapse"
+                                role="button"
+                                aria-expanded="false"
+                                aria-controls="sidebarMarketing"
+                            >
+                                <i class="ph-paper-plane"></i>
+                                <span data-key="t-ecommerce">Marketing</span>
+                            </a>
+                            <div
+                                class="collapse menu-dropdown"
+                                id="sidebarMarketing"
+                            >
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/coupon/list"
+                                            class="nav-link coupons"
+                                            data-key="t-products"
+                                            >Coupons</a
+                                        >
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
 
-          <li class="nav-item">
-            <a href="/admin/order/list" class="nav-link menu-link orders" data-key="t-orders">
-              <i class="ph-shopping-bag"></i>
-              <span data-key="t-calendar">Orders</span>
-            </a>
-          </li>
+                        <li class="nav-item">
+                            <a
+                                href="/admin/order/list"
+                                class="nav-link menu-link orders"
+                                data-key="t-orders"
+                            >
+                                <i class="ph-shopping-bag"></i>
+                                <span data-key="t-calendar">Orders</span>
+                            </a>
+                        </li>
 
-          <li class="nav-item">
-            <a href="/admin/contactus/list" class="nav-link menu-link contactus">
-              <i class="ph-chat-text"></i>
-              <span data-key="t-calendar">Contact Us</span>
-            </a>
-          </li>
+                        <li class="nav-item">
+                            <a
+                                href="/admin/contactus/list"
+                                class="nav-link menu-link contactus"
+                            >
+                                <i class="ph-chat-text"></i>
+                                <span data-key="t-calendar">Contact Us</span>
+                            </a>
+                        </li>
 
-          <li class="nav-item">
-            <a href="/admin/staff/list" class="nav-link menu-link staffs">
-              <i class="ph-users-three"></i>
-              <span data-key="t-calendar">Manage Staffs
-              </span>
-            </a>
-          </li>
-          <!-- <li class="nav-item">
+                        <li class="nav-item">
+                            <a
+                                href="/admin/staff/list"
+                                class="nav-link menu-link staffs"
+                            >
+                                <i class="ph-users-three"></i>
+                                <span data-key="t-calendar"
+                                    >Manage Staffs
+                                </span>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item">
                             <a
                                 href="#sidebarInvoices"
                                 class="nav-link menu-link"
@@ -252,7 +448,7 @@
                                 </ul>
                             </div>
                         </li> -->
-          <!-- <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a
                                 href="transactions.html"
                                 class="nav-link menu-link"
@@ -261,567 +457,956 @@
                                 <span data-key="t-calendar">Transactions</span>
                             </a>
                         </li> -->
-          <li class="nav-item">
-            <a href="javascript:void(0)" class="nav-link menu-link logout">
-              <i class="ph ph-sign-out"></i>
-              <span data-key="t-calendar" onclick="logout()">Logout</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <!-- Sidebar -->
-    </div>
-
-    <div class="sidebar-background"></div>
-  </div>
-  <!-- Left Sidebar End -->
-
-  <!-- Vertical Overlay-->
-  <div class="vertical-overlay"></div>
-  <header id="page-topbar">
-    <div class="layout-width">
-      <div class="navbar-header">
-        <div class="d-flex">
-          <!-- LOGO -->
-          <div class="navbar-brand-box horizontal-logo">
-            <a href="/admin/dashboard" class="logo logo-light">
-              <span class="logo-sm">
-                <img src="/assets/images/white-logo.png" alt="" height="30" />
-              </span>
-              <span class="logo-lg">
-                <img src="/assets/images/logo.png" alt="" height="30" />
-              </span>
-            </a>
-          </div>
-
-          <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger shadow-none" id="topnav-hamburger-icon">
-            <span class="hamburger-icon">
-              <span></span>
-              <span></span>
-              <span></span>
-            </span>
-            <img src="/assets/images/favicon.png" alt="logo" height="30" style="margin-left: 20px" class="m-logo" />
-          </button>
-
-          <form class="app-search d-none d-md-inline-flex">
-            <div class="position-relative">
-              <input type="text" class="form-control" placeholder="Search..." autocomplete="off" id="search-options" value="" />
-              <span class="mdi mdi-magnify search-widget-icon"></span>
-              <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none" id="search-close-options"></span>
+                        <li class="nav-item">
+                            <a
+                                href="javascript:void(0)"
+                                class="nav-link menu-link logout"
+                            >
+                                <i class="ph ph-sign-out"></i>
+                                <span data-key="t-calendar" onclick="logout()"
+                                    >Logout</span
+                                >
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Sidebar -->
             </div>
-            <div class="dropdown-menu dropdown-menu-lg" id="search-dropdown">
-              <div data-simplebar style="max-height: 320px">
-                <!-- item-->
-                <div class="dropdown-header">
-                  <h6 class="text-overflow text-muted mb-0 text-uppercase">
-                    Recent Searches
-                  </h6>
-                </div>
 
-                <div class="dropdown-item bg-transparent text-wrap">
-                  <a href="/admin/dashboard" class="btn btn-subtle-secondary btn-sm btn-rounded">how to setup
-                    <i class="mdi mdi-magnify ms-1"></i></a>
-                  <a href="/admin/dashboard" class="btn btn-subtle-secondary btn-sm btn-rounded">buttons
-                    <i class="mdi mdi-magnify ms-1"></i></a>
-                </div>
-                <!-- item-->
-                <div class="dropdown-header mt-2">
-                  <h6 class="text-overflow text-muted mb-1 text-uppercase">
-                    Pages
-                  </h6>
-                </div>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                  <i class="ri-bubble-chart-line align-middle fs-18 text-muted me-2"></i>
-                  <span>Analytics Dashboard</span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                  <i class="ri-lifebuoy-line align-middle fs-18 text-muted me-2"></i>
-                  <span>Help Center</span>
-                </a>
-
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                  <i class="ri-user-settings-line align-middle fs-18 text-muted me-2"></i>
-                  <span>My account settings</span>
-                </a>
-
-                <!-- item-->
-                <div class="dropdown-header mt-2">
-                  <h6 class="text-overflow text-muted mb-2 text-uppercase">
-                    Members
-                  </h6>
-                </div>
-
-                <div class="notification-list">
-                  <!-- item -->
-                  <a href="javascript:void(0);" class="dropdown-item notify-item py-2">
-                    <div class="d-flex">
-                      <img src="/assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic" />
-                      <div class="flex-1">
-                        <h6 class="m-0">
-                          Angela Bernier
-                        </h6>
-                        <span class="fs-11 mb-0 text-muted">Manager</span>
-                      </div>
-                    </div>
-                  </a>
-                  <!-- item -->
-                  <a href="javascript:void(0);" class="dropdown-item notify-item py-2">
-                    <div class="d-flex">
-                      <img src="/assets/images/users/avatar-3.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic" />
-                      <div class="flex-1">
-                        <h6 class="m-0">
-                          David Grasso
-                        </h6>
-                        <span class="fs-11 mb-0 text-muted">Web Designer</span>
-                      </div>
-                    </div>
-                  </a>
-                  <!-- item -->
-                  <a href="javascript:void(0);" class="dropdown-item notify-item py-2">
-                    <div class="d-flex">
-                      <img src="/assets/images/users/avatar-5.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic" />
-                      <div class="flex-1">
-                        <h6 class="m-0">
-                          Mike Bunch
-                        </h6>
-                        <span class="fs-11 mb-0 text-muted">React Developer</span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div class="text-center pt-3 pb-1">
-                <a href="#" class="btn btn-primary btn-sm">View All Results
-                  <i class="ri-arrow-right-line ms-1"></i></a>
-              </div>
-            </div>
-          </form>
+            <div class="sidebar-background"></div>
         </div>
+        <!-- Left Sidebar End -->
 
-        <div class="d-flex align-items-center">
-          <div class="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
-            <button type="button" class="btn btn-icon btn-topbar btn-ghost-dark rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-              <i class="bi bi-bell fs-2xl"></i>
-              <span class="position-absolute topbar-badge fs-3xs translate-middle badge rounded-pill bg-danger"><span class="notification-badge">4</span><span class="visually-hidden">unread messages</span></span>
-            </button>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
-              <div class="dropdown-head rounded-top">
-                <div class="p-3 border-bottom border-bottom-dashed">
-                  <div class="row align-items-center">
-                    <div class="col">
-                      <h6 class="mb-0 fs-lg fw-semibold">
-                        Notifications
-                        <span class="badge bg-danger-subtle text-danger fs-sm notification-badge">
-                          4</span>
-                      </h6>
-                      <p class="fs-md text-muted mt-1 mb-0">
-                        You have
-                        <span class="fw-semibold notification-unread">3</span>
-                        unread messages
-                      </p>
-                    </div>
-                    <div class="col-auto dropdown">
-                      <a href="javascript:void(0);" data-bs-toggle="dropdown" class="link-secondary fs-md"><i class="bi bi-three-dots-vertical"></i></a>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#">All Clear</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#">Mark all as read</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#">Archive All</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="py-2 ps-2" id="notificationItemsTabContent">
-                <div data-simplebar style="max-height: 300px" class="pe-2">
-                  <h6 class="text-overflow text-muted fs-sm my-2 text-uppercase notification-title">
-                    New
-                  </h6>
-                  <div class="text-reset notification-item d-block dropdown-item position-relative unread-message">
+        <!-- Vertical Overlay-->
+        <div class="vertical-overlay"></div>
+        <header id="page-topbar">
+            <div class="layout-width">
+                <div class="navbar-header">
                     <div class="d-flex">
-                      <div class="avatar-xs me-3 flex-shrink-0">
-                        <span class="avatar-title bg-info-subtle text-info rounded-circle fs-lg">
-                          <i class="bx bx-badge-check"></i>
-                        </span>
-                      </div>
-                      <div class="flex-grow-1">
-                        <a href="#!" class="stretched-link">
-                          <h6 class="mt-0 fs-md mb-2 lh-base">
-                            Your
-                            <b>Elite</b>
-                            author Graphic
-                            Optimization
-                            <span class="text-secondary">reward</span>
-                            is ready!
-                          </h6>
-                        </a>
-                        <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                          <span><i class="mdi mdi-clock-outline"></i>
-                            Just 30 sec
-                            ago</span>
-                        </p>
-                      </div>
-                      <div class="px-2 fs-base">
-                        <div class="form-check notification-check">
-                          <input class="form-check-input" type="checkbox" value="" id="all-notification-check01" />
-                          <label class="form-check-label" for="all-notification-check01"></label>
+                        <!-- LOGO -->
+                        <div class="navbar-brand-box horizontal-logo">
+                            <a href="/admin/dashboard" class="logo logo-light">
+                                <span class="logo-sm">
+                                    <img
+                                        src="/assets/images/white-logo.png"
+                                        alt=""
+                                        height="30"
+                                    />
+                                </span>
+                                <span class="logo-lg">
+                                    <img
+                                        src="/assets/images/logo.png"
+                                        alt=""
+                                        height="30"
+                                    />
+                                </span>
+                            </a>
                         </div>
-                      </div>
+
+                        <button
+                            type="button"
+                            class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger shadow-none"
+                            id="topnav-hamburger-icon"
+                        >
+                            <span class="hamburger-icon">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </span>
+                            <img
+                                src="/assets/images/favicon.png"
+                                alt="logo"
+                                height="30"
+                                style="margin-left: 20px"
+                                class="m-logo"
+                            />
+                        </button>
+
+                        <form class="app-search d-none d-md-inline-flex">
+                            <div class="position-relative">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Search..."
+                                    autocomplete="off"
+                                    id="search-options"
+                                    value=""
+                                />
+                                <span
+                                    class="mdi mdi-magnify search-widget-icon"
+                                ></span>
+                                <span
+                                    class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none"
+                                    id="search-close-options"
+                                ></span>
+                            </div>
+                            <div
+                                class="dropdown-menu dropdown-menu-lg"
+                                id="search-dropdown"
+                            >
+                                <div data-simplebar style="max-height: 320px">
+                                    <!-- item-->
+                                    <div class="dropdown-header">
+                                        <h6
+                                            class="text-overflow text-muted mb-0 text-uppercase"
+                                        >
+                                            Recent Searches
+                                        </h6>
+                                    </div>
+
+                                    <div
+                                        class="dropdown-item bg-transparent text-wrap"
+                                    >
+                                        <a
+                                            href="/admin/dashboard"
+                                            class="btn btn-subtle-secondary btn-sm btn-rounded"
+                                            >how to setup
+                                            <i class="mdi mdi-magnify ms-1"></i
+                                        ></a>
+                                        <a
+                                            href="/admin/dashboard"
+                                            class="btn btn-subtle-secondary btn-sm btn-rounded"
+                                            >buttons
+                                            <i class="mdi mdi-magnify ms-1"></i
+                                        ></a>
+                                    </div>
+                                    <!-- item-->
+                                    <div class="dropdown-header mt-2">
+                                        <h6
+                                            class="text-overflow text-muted mb-1 text-uppercase"
+                                        >
+                                            Pages
+                                        </h6>
+                                    </div>
+
+                                    <!-- item-->
+                                    <a
+                                        href="javascript:void(0);"
+                                        class="dropdown-item notify-item"
+                                    >
+                                        <i
+                                            class="ri-bubble-chart-line align-middle fs-18 text-muted me-2"
+                                        ></i>
+                                        <span>Analytics Dashboard</span>
+                                    </a>
+
+                                    <!-- item-->
+                                    <a
+                                        href="javascript:void(0);"
+                                        class="dropdown-item notify-item"
+                                    >
+                                        <i
+                                            class="ri-lifebuoy-line align-middle fs-18 text-muted me-2"
+                                        ></i>
+                                        <span>Help Center</span>
+                                    </a>
+
+                                    <!-- item-->
+                                    <a
+                                        href="javascript:void(0);"
+                                        class="dropdown-item notify-item"
+                                    >
+                                        <i
+                                            class="ri-user-settings-line align-middle fs-18 text-muted me-2"
+                                        ></i>
+                                        <span>My account settings</span>
+                                    </a>
+
+                                    <!-- item-->
+                                    <div class="dropdown-header mt-2">
+                                        <h6
+                                            class="text-overflow text-muted mb-2 text-uppercase"
+                                        >
+                                            Members
+                                        </h6>
+                                    </div>
+
+                                    <div class="notification-list">
+                                        <!-- item -->
+                                        <a
+                                            href="javascript:void(0);"
+                                            class="dropdown-item notify-item py-2"
+                                        >
+                                            <div class="d-flex">
+                                                <img
+                                                    src="/assets/images/users/avatar-2.jpg"
+                                                    class="me-3 rounded-circle avatar-xs"
+                                                    alt="user-pic"
+                                                />
+                                                <div class="flex-1">
+                                                    <h6 class="m-0">
+                                                        Angela Bernier
+                                                    </h6>
+                                                    <span
+                                                        class="fs-11 mb-0 text-muted"
+                                                        >Manager</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <!-- item -->
+                                        <a
+                                            href="javascript:void(0);"
+                                            class="dropdown-item notify-item py-2"
+                                        >
+                                            <div class="d-flex">
+                                                <img
+                                                    src="/assets/images/users/avatar-3.jpg"
+                                                    class="me-3 rounded-circle avatar-xs"
+                                                    alt="user-pic"
+                                                />
+                                                <div class="flex-1">
+                                                    <h6 class="m-0">
+                                                        David Grasso
+                                                    </h6>
+                                                    <span
+                                                        class="fs-11 mb-0 text-muted"
+                                                        >Web Designer</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <!-- item -->
+                                        <a
+                                            href="javascript:void(0);"
+                                            class="dropdown-item notify-item py-2"
+                                        >
+                                            <div class="d-flex">
+                                                <img
+                                                    src="/assets/images/users/avatar-5.jpg"
+                                                    class="me-3 rounded-circle avatar-xs"
+                                                    alt="user-pic"
+                                                />
+                                                <div class="flex-1">
+                                                    <h6 class="m-0">
+                                                        Mike Bunch
+                                                    </h6>
+                                                    <span
+                                                        class="fs-11 mb-0 text-muted"
+                                                        >React Developer</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="text-center pt-3 pb-1">
+                                    <a href="#" class="btn btn-primary btn-sm"
+                                        >View All Results
+                                        <i class="ri-arrow-right-line ms-1"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                  </div>
 
-                  <div class="text-reset notification-item d-block dropdown-item position-relative unread-message">
-                    <div class="d-flex">
-                      <div class="position-relative me-3 flex-shrink-0">
-                        <img src="/assets/images/users/32/avatar-2.jpg" class="rounded-circle avatar-xs" alt="user-pic" />
-                        <span class="active-badge position-absolute start-100 translate-middle p-1 bg-success rounded-circle">
-                          <span class="visually-hidden">New alerts</span>
-                        </span>
-                      </div>
-                      <div class="flex-grow-1">
-                        <a href="#!" class="stretched-link">
-                          <h6 class="mt-0 mb-1 fs-md fw-semibold">
-                            Angela Bernier
-                          </h6>
-                        </a>
-                        <div class="fs-sm text-muted">
-                          <p class="mb-1">
-                            Answered to your
-                            comment on the cash
-                            flow forecast's
-                            graph 🔔.
-                          </p>
+                    <div class="d-flex align-items-center">
+                        <div
+                            class="dropdown topbar-head-dropdown ms-1 header-item"
+                            id="notificationDropdown"
+                        >
+                            <button
+                                type="button"
+                                class="btn btn-icon btn-topbar btn-ghost-dark rounded-circle"
+                                id="page-header-notifications-dropdown"
+                                data-bs-toggle="dropdown"
+                                data-bs-auto-close="outside"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <i class="bi bi-bell fs-2xl"></i>
+                                <span
+                                    class="position-absolute topbar-badge fs-3xs translate-middle badge rounded-pill bg-danger"
+                                    ><span class="notification-badge">4</span
+                                    ><span class="visually-hidden"
+                                        >unread messages</span
+                                    ></span
+                                >
+                            </button>
+                            <div
+                                class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                                aria-labelledby="page-header-notifications-dropdown"
+                            >
+                                <div class="dropdown-head rounded-top">
+                                    <div
+                                        class="p-3 border-bottom border-bottom-dashed"
+                                    >
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <h6
+                                                    class="mb-0 fs-lg fw-semibold"
+                                                >
+                                                    Notifications
+                                                    <span
+                                                        class="badge bg-danger-subtle text-danger fs-sm notification-badge"
+                                                    >
+                                                        4</span
+                                                    >
+                                                </h6>
+                                                <p
+                                                    class="fs-md text-muted mt-1 mb-0"
+                                                >
+                                                    You have
+                                                    <span
+                                                        class="fw-semibold notification-unread"
+                                                        >3</span
+                                                    >
+                                                    unread messages
+                                                </p>
+                                            </div>
+                                            <div class="col-auto dropdown">
+                                                <a
+                                                    href="javascript:void(0);"
+                                                    data-bs-toggle="dropdown"
+                                                    class="link-secondary fs-md"
+                                                    ><i
+                                                        class="bi bi-three-dots-vertical"
+                                                    ></i
+                                                ></a>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a
+                                                            class="dropdown-item"
+                                                            href="#"
+                                                            >All Clear</a
+                                                        >
+                                                    </li>
+                                                    <li>
+                                                        <a
+                                                            class="dropdown-item"
+                                                            href="#"
+                                                            >Mark all as read</a
+                                                        >
+                                                    </li>
+                                                    <li>
+                                                        <a
+                                                            class="dropdown-item"
+                                                            href="#"
+                                                            >Archive All</a
+                                                        >
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="py-2 ps-2"
+                                    id="notificationItemsTabContent"
+                                >
+                                    <div
+                                        data-simplebar
+                                        style="max-height: 300px"
+                                        class="pe-2"
+                                    >
+                                        <h6
+                                            class="text-overflow text-muted fs-sm my-2 text-uppercase notification-title"
+                                        >
+                                            New
+                                        </h6>
+                                        <div
+                                            class="text-reset notification-item d-block dropdown-item position-relative unread-message"
+                                        >
+                                            <div class="d-flex">
+                                                <div
+                                                    class="avatar-xs me-3 flex-shrink-0"
+                                                >
+                                                    <span
+                                                        class="avatar-title bg-info-subtle text-info rounded-circle fs-lg"
+                                                    >
+                                                        <i
+                                                            class="bx bx-badge-check"
+                                                        ></i>
+                                                    </span>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <a
+                                                        href="#!"
+                                                        class="stretched-link"
+                                                    >
+                                                        <h6
+                                                            class="mt-0 fs-md mb-2 lh-base"
+                                                        >
+                                                            Your
+                                                            <b>Elite</b>
+                                                            author Graphic
+                                                            Optimization
+                                                            <span
+                                                                class="text-secondary"
+                                                                >reward</span
+                                                            >
+                                                            is ready!
+                                                        </h6>
+                                                    </a>
+                                                    <p
+                                                        class="mb-0 fs-11 fw-medium text-uppercase text-muted"
+                                                    >
+                                                        <span
+                                                            ><i
+                                                                class="mdi mdi-clock-outline"
+                                                            ></i>
+                                                            Just 30 sec
+                                                            ago</span
+                                                        >
+                                                    </p>
+                                                </div>
+                                                <div class="px-2 fs-base">
+                                                    <div
+                                                        class="form-check notification-check"
+                                                    >
+                                                        <input
+                                                            class="form-check-input"
+                                                            type="checkbox"
+                                                            value=""
+                                                            id="all-notification-check01"
+                                                        />
+                                                        <label
+                                                            class="form-check-label"
+                                                            for="all-notification-check01"
+                                                        ></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="text-reset notification-item d-block dropdown-item position-relative unread-message"
+                                        >
+                                            <div class="d-flex">
+                                                <div
+                                                    class="position-relative me-3 flex-shrink-0"
+                                                >
+                                                    <img
+                                                        src="/assets/images/users/32/avatar-2.jpg"
+                                                        class="rounded-circle avatar-xs"
+                                                        alt="user-pic"
+                                                    />
+                                                    <span
+                                                        class="active-badge position-absolute start-100 translate-middle p-1 bg-success rounded-circle"
+                                                    >
+                                                        <span
+                                                            class="visually-hidden"
+                                                            >New alerts</span
+                                                        >
+                                                    </span>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <a
+                                                        href="#!"
+                                                        class="stretched-link"
+                                                    >
+                                                        <h6
+                                                            class="mt-0 mb-1 fs-md fw-semibold"
+                                                        >
+                                                            Angela Bernier
+                                                        </h6>
+                                                    </a>
+                                                    <div
+                                                        class="fs-sm text-muted"
+                                                    >
+                                                        <p class="mb-1">
+                                                            Answered to your
+                                                            comment on the cash
+                                                            flow forecast's
+                                                            graph 🔔.
+                                                        </p>
+                                                    </div>
+                                                    <p
+                                                        class="mb-0 fs-11 fw-medium text-uppercase text-muted"
+                                                    >
+                                                        <span
+                                                            ><i
+                                                                class="mdi mdi-clock-outline"
+                                                            ></i>
+                                                            48 min ago</span
+                                                        >
+                                                    </p>
+                                                </div>
+                                                <div class="px-2 fs-base">
+                                                    <div
+                                                        class="form-check notification-check"
+                                                    >
+                                                        <input
+                                                            class="form-check-input"
+                                                            type="checkbox"
+                                                            value=""
+                                                            id="all-notification-check02"
+                                                        />
+                                                        <label
+                                                            class="form-check-label"
+                                                            for="all-notification-check02"
+                                                        ></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="text-reset notification-item d-block dropdown-item position-relative unread-message"
+                                        >
+                                            <div class="d-flex">
+                                                <div
+                                                    class="avatar-xs me-3 flex-shrink-0"
+                                                >
+                                                    <span
+                                                        class="avatar-title bg-danger-subtle text-danger rounded-circle fs-lg"
+                                                    >
+                                                        <i
+                                                            class="bx bx-message-square-dots"
+                                                        ></i>
+                                                    </span>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <a
+                                                        href="#!"
+                                                        class="stretched-link"
+                                                    >
+                                                        <h6
+                                                            class="mt-0 mb-2 fs-md lh-base"
+                                                        >
+                                                            You have received
+                                                            <b
+                                                                class="text-success"
+                                                                >20</b
+                                                            >
+                                                            new messages in the
+                                                            conversation
+                                                        </h6>
+                                                    </a>
+                                                    <p
+                                                        class="mb-0 fs-11 fw-medium text-uppercase text-muted"
+                                                    >
+                                                        <span
+                                                            ><i
+                                                                class="mdi mdi-clock-outline"
+                                                            ></i>
+                                                            2 hrs ago</span
+                                                        >
+                                                    </p>
+                                                </div>
+                                                <div class="px-2 fs-base">
+                                                    <div
+                                                        class="form-check notification-check"
+                                                    >
+                                                        <input
+                                                            class="form-check-input"
+                                                            type="checkbox"
+                                                            value=""
+                                                            id="all-notification-check03"
+                                                        />
+                                                        <label
+                                                            class="form-check-label"
+                                                            for="all-notification-check03"
+                                                        ></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <h6
+                                            class="text-overflow text-muted fs-sm my-2 text-uppercase notification-title"
+                                        >
+                                            Read Before
+                                        </h6>
+
+                                        <div
+                                            class="text-reset notification-item d-block dropdown-item position-relative"
+                                        >
+                                            <div class="d-flex">
+                                                <div
+                                                    class="position-relative me-3 flex-shrink-0"
+                                                >
+                                                    <img
+                                                        src="/assets/images/users/32/avatar-8.jpg"
+                                                        class="rounded-circle avatar-xs"
+                                                        alt="user-pic"
+                                                    />
+                                                    <span
+                                                        class="active-badge position-absolute start-100 translate-middle p-1 bg-warning rounded-circle"
+                                                    >
+                                                        <span
+                                                            class="visually-hidden"
+                                                            >New alerts</span
+                                                        >
+                                                    </span>
+                                                </div>
+
+                                                <div class="flex-grow-1">
+                                                    <a
+                                                        href="#!"
+                                                        class="stretched-link"
+                                                    >
+                                                        <h6
+                                                            class="mt-0 mb-1 fs-md fw-semibold"
+                                                        >
+                                                            Maureen Gibson
+                                                        </h6>
+                                                    </a>
+                                                    <div
+                                                        class="fs-sm text-muted"
+                                                    >
+                                                        <p class="mb-1">
+                                                            We talked about a
+                                                            project on linkedin.
+                                                        </p>
+                                                    </div>
+                                                    <p
+                                                        class="mb-0 fs-11 fw-medium text-uppercase text-muted"
+                                                    >
+                                                        <span
+                                                            ><i
+                                                                class="mdi mdi-clock-outline"
+                                                            ></i>
+                                                            4 hrs ago</span
+                                                        >
+                                                    </p>
+                                                </div>
+                                                <div class="px-2 fs-base">
+                                                    <div
+                                                        class="form-check notification-check"
+                                                    >
+                                                        <input
+                                                            class="form-check-input"
+                                                            type="checkbox"
+                                                            value=""
+                                                            id="all-notification-check04"
+                                                        />
+                                                        <label
+                                                            class="form-check-label"
+                                                            for="all-notification-check04"
+                                                        ></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="notification-actions"
+                                        id="notification-actions"
+                                    >
+                                        <div
+                                            class="d-flex text-muted justify-content-center align-items-center"
+                                        >
+                                            Select
+                                            <div
+                                                id="select-content"
+                                                class="text-body fw-semibold px-1"
+                                            >
+                                                0
+                                            </div>
+                                            Result
+                                            <button
+                                                type="button"
+                                                class="btn btn-link link-danger p-0 ms-2"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#removeNotificationModal"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                          <span><i class="mdi mdi-clock-outline"></i>
-                            48 min ago</span>
-                        </p>
-                      </div>
-                      <div class="px-2 fs-base">
-                        <div class="form-check notification-check">
-                          <input class="form-check-input" type="checkbox" value="" id="all-notification-check02" />
-                          <label class="form-check-label" for="all-notification-check02"></label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div class="text-reset notification-item d-block dropdown-item position-relative unread-message">
-                    <div class="d-flex">
-                      <div class="avatar-xs me-3 flex-shrink-0">
-                        <span class="avatar-title bg-danger-subtle text-danger rounded-circle fs-lg">
-                          <i class="bx bx-message-square-dots"></i>
-                        </span>
-                      </div>
-                      <div class="flex-grow-1">
-                        <a href="#!" class="stretched-link">
-                          <h6 class="mt-0 mb-2 fs-md lh-base">
-                            You have received
-                            <b class="text-success">20</b>
-                            new messages in the
-                            conversation
-                          </h6>
-                        </a>
-                        <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                          <span><i class="mdi mdi-clock-outline"></i>
-                            2 hrs ago</span>
-                        </p>
-                      </div>
-                      <div class="px-2 fs-base">
-                        <div class="form-check notification-check">
-                          <input class="form-check-input" type="checkbox" value="" id="all-notification-check03" />
-                          <label class="form-check-label" for="all-notification-check03"></label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <h6 class="text-overflow text-muted fs-sm my-2 text-uppercase notification-title">
-                    Read Before
-                  </h6>
-
-                  <div class="text-reset notification-item d-block dropdown-item position-relative">
-                    <div class="d-flex">
-                      <div class="position-relative me-3 flex-shrink-0">
-                        <img src="/assets/images/users/32/avatar-8.jpg" class="rounded-circle avatar-xs" alt="user-pic" />
-                        <span class="active-badge position-absolute start-100 translate-middle p-1 bg-warning rounded-circle">
-                          <span class="visually-hidden">New alerts</span>
-                        </span>
-                      </div>
-
-                      <div class="flex-grow-1">
-                        <a href="#!" class="stretched-link">
-                          <h6 class="mt-0 mb-1 fs-md fw-semibold">
-                            Maureen Gibson
-                          </h6>
-                        </a>
-                        <div class="fs-sm text-muted">
-                          <p class="mb-1">
-                            We talked about a
-                            project on linkedin.
-                          </p>
-                        </div>
-                        <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                          <span><i class="mdi mdi-clock-outline"></i>
-                            4 hrs ago</span>
-                        </p>
-                      </div>
-                      <div class="px-2 fs-base">
-                        <div class="form-check notification-check">
-                          <input class="form-check-input" type="checkbox" value="" id="all-notification-check04" />
-                          <label class="form-check-label" for="all-notification-check04"></label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="notification-actions" id="notification-actions">
-                  <div class="d-flex text-muted justify-content-center align-items-center">
-                    Select
-                    <div id="select-content" class="text-body fw-semibold px-1">
-                      0
-                    </div>
-                    Result
-                    <button type="button" class="btn btn-link link-danger p-0 ms-2" data-bs-toggle="modal" data-bs-target="#removeNotificationModal">
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="dropdown ms-sm-3 header-item topbar-user">
-            <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="d-flex align-items-center">
-                <img class="rounded-circle header-profile-user" src="<%- (user && user.image) ? '../../../dist/profile/' + user.image : '../../../assets/images/default/user-dummy-img.jpg' %>" alt="Header Avatar" onerror="this.src='../../../assets/images/default/user-dummy-img.jpg'" />
-                <span class="text-start ms-xl-2">
-                  <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><%= (user && user.first_name) ?
+                        <div class="dropdown ms-sm-3 header-item topbar-user">
+                            <button
+                                type="button"
+                                class="btn shadow-none"
+                                id="page-header-user-dropdown"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <span class="d-flex align-items-center">
+                                    <img
+                                        class="rounded-circle header-profile-user"
+                                        src="<%- (user && user.image) ? '../../../dist/profile/' + user.image : '../../../assets/images/default/user-dummy-img.jpg' %>"
+                                        alt="Header Avatar"
+                                        onerror="this.src='../../../assets/images/default/user-dummy-img.jpg'"
+                                    />
+                                    <span class="text-start ms-xl-2">
+                                        <span
+                                            class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"
+                                            ><%= (user && user.first_name) ?
                                             user.first_name + ' ' +
                                             user.last_name : 'Admin' %>
-                  </span>
-                </span>
-              </span>
-            </button>
-            <div class="dropdown-menu dropdown-menu-end">
-              <!-- item-->
-              <h6 class="dropdown-header">
-                Welcome <%= (user && user.first_name) ?
+                                        </span>
+                                    </span>
+                                </span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <!-- item-->
+                                <h6 class="dropdown-header">
+                                    Welcome <%= (user && user.first_name) ?
                                     user.first_name : 'Guest' %>!
-              </h6>
-              <a class="dropdown-item" href="/admin/profile"><i class="mdi mdi-account-circle text-muted fs-lg align-middle me-1"></i>
-                <span class="align-middle">Profile</span></a>
-              <a class="dropdown-item" href="/admin/changepassword"><i class="mdi mdi-lock-outline text-muted fs-lg align-middle me-1"></i>
-                <span class="align-middle">Change Password</span></a>
-              <div class="dropdown-divider"></div>
-              <div class="dropdown-item">
-                <i class="mdi mdi-logout text-muted fs-lg align-middle me-1"></i>
-                <span class="align-middle" data-key="t-logout" onclick="logout()">Logout</span>
-              </div>
+                                </h6>
+                                <a class="dropdown-item" href="/admin/profile"
+                                    ><i
+                                        class="mdi mdi-account-circle text-muted fs-lg align-middle me-1"
+                                    ></i>
+                                    <span class="align-middle">Profile</span></a
+                                >
+                                <a
+                                    class="dropdown-item"
+                                    href="/admin/changepassword"
+                                    ><i
+                                        class="mdi mdi-lock-outline text-muted fs-lg align-middle me-1"
+                                    ></i>
+                                    <span class="align-middle"
+                                        >Change Password</span
+                                    ></a
+                                >
+                                <div class="dropdown-divider"></div>
+                                <div class="dropdown-item">
+                                    <i
+                                        class="mdi mdi-logout text-muted fs-lg align-middle me-1"
+                                    ></i>
+                                    <span
+                                        class="align-middle"
+                                        data-key="t-logout"
+                                        onclick="logout()"
+                                        >Logout</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+        </header>
 
-  <!-- removeNotificationModal -->
-  <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="NotificationModalbtn-close"></button>
-        </div>
-        <div class="modal-body p-md-5">
-          <div class="text-center">
-            <div class="text-danger">
-              <i class="bi bi-trash display-4"></i>
+        <!-- removeNotificationModal -->
+        <div
+            id="removeNotificationModal"
+            class="modal fade zoomIn"
+            tabindex="-1"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                            id="NotificationModalbtn-close"
+                        ></button>
+                    </div>
+                    <div class="modal-body p-md-5">
+                        <div class="text-center">
+                            <div class="text-danger">
+                                <i class="bi bi-trash display-4"></i>
+                            </div>
+                            <div class="mt-4 fs-base">
+                                <h4 class="mb-1">Are you sure ?</h4>
+                                <p class="text-muted mx-4 mb-0">
+                                    Are you sure you want to remove this
+                                    Notification ?
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="d-flex gap-2 justify-content-center mt-4 mb-2"
+                        >
+                            <button
+                                type="button"
+                                class="btn w-sm btn-light"
+                                data-bs-dismiss="modal"
+                            >
+                                Close
+                            </button>
+                            <button
+                                type="button"
+                                class="btn w-sm btn-danger"
+                                id="delete-notification"
+                            >
+                                Yes, Delete It!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
             </div>
-            <div class="mt-4 fs-base">
-              <h4 class="mb-1">Are you sure ?</h4>
-              <p class="text-muted mx-4 mb-0">
-                Are you sure you want to remove this
-                Notification ?
-              </p>
-            </div>
-          </div>
-          <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-            <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">
-              Close
-            </button>
-            <button type="button" class="btn w-sm btn-danger" id="delete-notification">
-              Yes, Delete It!
-            </button>
-          </div>
+            <!-- /.modal-dialog -->
         </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
+        <!-- /.modal -->
 
-  <!-- removeCartModal -->
-  <div id="removeCartModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-cartmodal"></button>
-        </div>
-        <div class="modal-body p-md-5">
-          <div class="text-center">
-            <div class="text-danger">
-              <i class="bi bi-trash display-5"></i>
+        <!-- removeCartModal -->
+        <div
+            id="removeCartModal"
+            class="modal fade zoomIn"
+            tabindex="-1"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                            id="close-cartmodal"
+                        ></button>
+                    </div>
+                    <div class="modal-body p-md-5">
+                        <div class="text-center">
+                            <div class="text-danger">
+                                <i class="bi bi-trash display-5"></i>
+                            </div>
+                            <div class="mt-4">
+                                <h4>Are you sure ?</h4>
+                                <p class="text-muted mx-4 mb-0">
+                                    Are you sure you want to remove this product
+                                    ?
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="d-flex gap-2 justify-content-center mt-4 mb-2"
+                        >
+                            <button
+                                type="button"
+                                class="btn w-sm btn-light"
+                                data-bs-dismiss="modal"
+                            >
+                                Close
+                            </button>
+                            <button
+                                type="button"
+                                class="btn w-sm btn-danger"
+                                id="remove-cartproduct"
+                            >
+                                Yes, Delete It!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
             </div>
-            <div class="mt-4">
-              <h4>Are you sure ?</h4>
-              <p class="text-muted mx-4 mb-0">
-                Are you sure you want to remove this product
-                ?
-              </p>
-            </div>
-          </div>
-          <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-            <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">
-              Close
-            </button>
-            <button type="button" class="btn w-sm btn-danger" id="remove-cartproduct">
-              Yes, Delete It!
-            </button>
-          </div>
+            <!-- /.modal-dialog -->
         </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
+        <!-- /.modal -->
 
-  <!--start back-to-top-->
-  <button class="btn btn-dark btn-icon" id="back-to-top">
-    <i class="bi bi-caret-up fs-3xl"></i>
-  </button>
-  <!--end back-to-top-->
+        <!--start back-to-top-->
+        <button class="btn btn-dark btn-icon" id="back-to-top">
+            <i class="bi bi-caret-up fs-3xl"></i>
+        </button>
+        <!--end back-to-top-->
 
-  <!--preloader-->
-  <div id="preloader">
-    <div id="status">
-      <div class="spinner-border text-primary avatar-sm" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  </div>
-</body>
+        <!--preloader-->
+        <div id="preloader">
+            <div id="status">
+                <div
+                    class="spinner-border text-primary avatar-sm"
+                    role="status"
+                >
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </body>
 
-<script>
-  window.addEventListener("DOMContentLoaded", (event) => {
-    const pathnameToTabClassMap = {
-      "/admin/dashboard": "dashboard",
-      "/admin/product/list": "products",
-      "/admin/product/add": "add_product",
-      "/admin/category/list": "categories",
-      "/admin/brand/list": "brands",
-      "/admin/attribute/list": "attribute_sets",
-      "/admin/attribute-values/list": "attribute_values",
-      "/admin/product-review/list": "product_review",
-      "/admin/unit/list": "units",
-      "/admin/user/list": "customers",
-      "/admin/vendor/list": "venders",
-      "/admin/static-pages/list": "pages",
-      "/admin/faq/list": "faq",
-      "/admin/slider/list": "slider",
-      "/admin/banner/list": "banner",
-      "/admin/settings_view": "web_setting ",
-      "/admin/coupon/list": "coupons",
-      "/admin/order/list": "orders",
-      "/admin/contactus/list": "contactus",
-      "/admin/staff/list": "staffs",
-    };
+    <script>
+        window.addEventListener("DOMContentLoaded", (event) => {
+            const pathnameToTabClassMap = {
+                "/admin/dashboard": "dashboard",
+                "/admin/product/list": "products",
+                "/admin/product/add": "add_product",
+                "/admin/category/list": "categories",
+                "/admin/brand/list": "brands",
+                "/admin/attribute/list": "attribute_sets",
+                "/admin/attribute-values/list": "attribute_values",
+                "/admin/product-review/list": "product_review",
+                "/admin/unit/list": "units",
+                "/admin/user/list": "customers",
+                "/admin/vendor/list": "venders",
+                "/admin/static-pages/list": "pages",
+                "/admin/faq/list": "faq",
+                "/admin/slider/list": "slider",
+                "/admin/banner/list": "banner",
+                "/admin/settings_view": "web_setting ",
+                "/admin/coupon/list": "coupons",
+                "/admin/order/list": "orders",
+                "/admin/contactus/list": "contactus",
+                "/admin/staff/list": "staffs",
+            };
 
-    const activeTabClass =
-      pathnameToTabClassMap[window.location.pathname];
+            const activeTabClass =
+                pathnameToTabClassMap[window.location.pathname];
 
-    if (activeTabClass) {
-      // Highlight the specific active tab
-      const activeTab = document.querySelector(`.${activeTabClass}`);
-      if (activeTab) {
-        activeTab.classList.add("active");
+            if (activeTabClass) {
+                // Highlight the specific active tab
+                const activeTab = document.querySelector(`.${activeTabClass}`);
+                if (activeTab) {
+                    activeTab.classList.add("active");
 
-        // Check which sidebar the active tab belongs to and open that sidebar
-        if (
-          document.getElementById("sidebarProducts") &&
-          activeTab.closest("#sidebarProducts")
-        ) {
-          document
-            .getElementById("sidebarProducts")
-            .classList.add("show");
-          const note = document.querySelector(".product");
-          note.style.backgroundColor = "#E40F15";
-          note.style.color = "white";
-        }
+                    // Check which sidebar the active tab belongs to and open that sidebar
+                    if (
+                        document.getElementById("sidebarProducts") &&
+                        activeTab.closest("#sidebarProducts")
+                    ) {
+                        document
+                            .getElementById("sidebarProducts")
+                            .classList.add("show");
+                        const note = document.querySelector(".product");
+                        note.style.backgroundColor = "#E40F15";
+                        note.style.color = "white";
+                    }
 
-        if (
-          document.getElementById("sidebarPages") &&
-          activeTab.closest("#sidebarPages")
-        ) {
-          document
-            .getElementById("sidebarPages")
-            .classList.add("show");
-          const note = document.querySelector(".staticpages");
-          note.style.backgroundColor = "#E40F15";
-          note.style.color = "white";
-        }
+                    if (
+                        document.getElementById("sidebarPages") &&
+                        activeTab.closest("#sidebarPages")
+                    ) {
+                        document
+                            .getElementById("sidebarPages")
+                            .classList.add("show");
+                        const note = document.querySelector(".staticpages");
+                        note.style.backgroundColor = "#E40F15";
+                        note.style.color = "white";
+                    }
 
-        if (
-          document.getElementById("sidebarStoreFront") &&
-          activeTab.closest("#sidebarStoreFront")
-        ) {
-          document
-            .getElementById("sidebarStoreFront")
-            .classList.add("show");
-          const note = document.querySelector(".storefront");
-          note.style.backgroundColor = "#E40F15";
-          note.style.color = "white";
-        }
+                    if (
+                        document.getElementById("sidebarStoreFront") &&
+                        activeTab.closest("#sidebarStoreFront")
+                    ) {
+                        document
+                            .getElementById("sidebarStoreFront")
+                            .classList.add("show");
+                        const note = document.querySelector(".storefront");
+                        note.style.backgroundColor = "#E40F15";
+                        note.style.color = "white";
+                    }
 
-        if (
-          document.getElementById("sidebarMarketing") &&
-          activeTab.closest("#sidebarMarketing")
-        ) {
-          document
-            .getElementById("sidebarMarketing")
-            .classList.add("show");
-          const note = document.querySelector(".marketing");
-          note.style.backgroundColor = "#E40F15";
-          note.style.color = "white";
-        }
+                    if (
+                        document.getElementById("sidebarMarketing") &&
+                        activeTab.closest("#sidebarMarketing")
+                    ) {
+                        document
+                            .getElementById("sidebarMarketing")
+                            .classList.add("show");
+                        const note = document.querySelector(".marketing");
+                        note.style.backgroundColor = "#E40F15";
+                        note.style.color = "white";
+                    }
 
-        if (
-          document.getElementById("sidebarInvoices") &&
-          activeTab.closest("#sidebarInvoices")
-        ) {
-          document
-            .getElementById("sidebarInvoices")
-            .classList.add("show");
-          const note = document.querySelector(".invoices");
-          note.style.backgroundColor = "#E40F15";
-          note.style.color = "white";
-        }
-      }
-    }
-  });
-</script>
-
+                    if (
+                        document.getElementById("sidebarInvoices") &&
+                        activeTab.closest("#sidebarInvoices")
+                    ) {
+                        document
+                            .getElementById("sidebarInvoices")
+                            .classList.add("show");
+                        const note = document.querySelector(".invoices");
+                        note.style.backgroundColor = "#E40F15";
+                        note.style.color = "white";
+                    }
+                }
+            }
+        });
+    </script>
 </html>
