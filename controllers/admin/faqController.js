@@ -46,16 +46,19 @@ class FaqController {
             const { id } = req.params;
             await Faq.findByIdAndDelete(id);
             return res.send({
+                success: true, // Add success property
                 status: 200,
                 message: "FAQ deleted successfully",
             });
         } catch (error) {
             console.log(error);
-            return res
-                .status(500)
-                .send("Something went wrong please try again later");
+            return res.status(500).send({
+                success: false, // Add success property for error case
+                message: "Something went wrong, please try again later",
+            });
         }
     };
+    
 }
 
 module.exports = FaqController;

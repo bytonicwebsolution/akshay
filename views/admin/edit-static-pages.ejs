@@ -222,6 +222,16 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-xxl-3 col-sm-6">
+                                                <label class="form-label">Show In</label>
+                                                <div>
+                                                  <select class="form-control" id="idShowIn" name="show_in">
+                                                    <option value="none" class="none" selected>None</option>
+                                                    <option value="information" class="information">Information</option>
+                                                    <option value="letus" class="letus">Let Us</option>
+                                                  </select>
+                                                </div>
+                                              </div>
                                         </div>
                                     </div>
                                     <div
@@ -270,6 +280,7 @@
         $("#meta_description").val(page.meta_description);
         $("#meta_keywords").val(page.meta_keywords);
         $("#slug").val(page.slug);
+        $('#idShowIn').val(page.show_in);
         $("#status_id").prop(
             "checked",
             page.status_id.toString() === activeStatusId

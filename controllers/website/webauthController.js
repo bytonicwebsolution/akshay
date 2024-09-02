@@ -17,7 +17,6 @@ const fs = require("fs");
 const defaultImage = baseURL + "/assets/images/default/user-dummy-img.jpg";
 const imageFilter = require("../../config/imageFilter");
 const config = require("../../config/createStatus");
-const nodemailer = require("nodemailer");
 const sendEmail = require("../../config/mailer");
 
 // Set The Storage Engine

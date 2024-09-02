@@ -26,5 +26,8 @@ router.get("/get_all_attributes", websiteController.getAllAttributes);
 router.get("/get_all_faqs", websiteController.get_all_faqs);
 router.get("/get_all_banners", websiteController.get_all_banners);
 router.get("/get_webSettings_data", websiteController.get_webSettings_data);
+router.get("/get_static_pages", websiteController.get_static_pages);
+router.get("/get_static_slug_details", websiteController.get_static_slug_details);
+
 
 module.exports = router;

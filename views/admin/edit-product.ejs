@@ -134,7 +134,7 @@
                                     type="hidden"
                                     id="editid"
                                     name="editid"
-                                    value="<%= product._id %>"
+                                    value="<%= product?._id %>"
                                 />
                                 <div class="tab-content">
                                     <!-- Product Information Tab -->
@@ -474,7 +474,7 @@
                                                                 type="hidden"
                                                                 id="thumbnail_image"
                                                                 name="thumbnail_image"
-                                                                value="<%= product.thumbnail %>"
+                                                                value="<%= product?.thumbnail %>"
                                                             />
 
                                                             <div
@@ -514,14 +514,14 @@
                                                                 type="hidden"
                                                                 id="gallery_images"
                                                                 name="gallery_images"
-                                                                value="<%= product.gallery_image %>"
+                                                                value="<%= product?.gallery_image %>"
                                                             />
                                                             <div
                                                                 class="mb-2 mt-2"
                                                                 id="previewgalleryicon"
                                                             >
                                                                 <%
-                                                                product.gallery_image.forEach(function(image){
+                                                                product?.gallery_image.forEach(function(image){
                                                                 %>
                                                                 <img
                                                                     src=""
@@ -1081,7 +1081,7 @@
                                                             name="long_description"
                                                             placeholder="Enter Long Description"
                                                         >
-                                                        <%= product.long_description ? product.long_description : "" %>
+                                                        <%= product?.long_description ? product?.long_description : "" %>
                                                     </textarea
                                                         >
                                                     </div>
@@ -1106,14 +1106,14 @@
                                                             type="hidden"
                                                             id="description_image"
                                                             name="description_image"
-                                                            value="<%= product.description_image %>"
+                                                            value="<%= product?.description_image %>"
                                                         />
                                                         <div
                                                             class="mb-2 mt-2"
                                                             id="previewdescriptionicon"
                                                         >
                                                             <%
-                                                            product.description_image.forEach(function(image){
+                                                            product?.description_image.forEach(function(image){
                                                             %>
                                                             <img
                                                                 src=" "
@@ -1156,7 +1156,7 @@
                                                             type="hidden"
                                                             id="pdf"
                                                             name="pdf"
-                                                            value="<%= product.pdf %>"
+                                                            value="<%= product?.pdf %>"
                                                         />
                                                         <div
                                                             class="mb-2 mt-2"
@@ -1365,7 +1365,7 @@
                                                                         id="previewmetaicon"
                                                                     >
                                                                         <%
-                                                                        product.meta_image.forEach(function(image){
+                                                                        product?.meta_image.forEach(function(image){
                                                                         %>
                                                                         <img
                                                                             src=""
@@ -1570,67 +1570,67 @@
             `<%- JSON.stringify(productStock).replace(/\\/g, '\\\\').replace(/"/g, '\\"') %>`
         );
         const activeStatusId = "<%= activeStatus._id.toString() %>";
-        const selectedAttributeSetids = product.attribute_sets
-            ? product.attribute_sets
+        const selectedAttributeSetids = product?.attribute_sets
+            ? product?.attribute_sets
             : "";
-        const selectedVariants = product.selected_variants
-            ? product.selected_variants[0]
+        const selectedVariants = product?.selected_variants
+            ? product?.selected_variants[0]
             : "";
 
         $('#attribute_sets_id').val(selectedAttributeSetids);
         getVariantsByAttributes(
             selectedAttributeSetids,
             selectedVariants,
-            product._id
+            product?._id
         );
 
         // Fill form fields with existing data
         $("#vendor-field").val(
-            product.vendor_id ? product.vendor_id._id.toString() : ""
+            product?.vendor_id ? product?.vendor_id._id.toString() : ""
         );
         $("#category-field").val(
-            product.category_id ? product.category_id._id.toString() : ""
+            product?.category_id ? product?.category_id._id.toString() : ""
         );
         $("#brand_id").val(
-            product.brand_id ? product.brand_id._id.toString() : ""
+            product?.brand_id ? product?.brand_id._id.toString() : ""
         );
         $("#unit_id").val(
-            product.unit_id ? product.unit_id._id.toString() : ""
+            product?.unit_id ? product?.unit_id._id.toString() : ""
         );
-        $("#tags").val(product.tags);
-        $("#video_url").val(product.video_url);
-        $("#special_discount_type").val(product.special_discount_type);
-        $("#special_discount").val(product.special_discount);
-        $("#special_discount_period").val(product.special_discount_period);
-        $("#min_stock_quantity").val(product.min_stock_quantity);
-        $("#stock_visibility").val(product.stock_visibility);
-        $("#short_description").val(product.short_description);
-        $("#is_featured").prop("checked", product.is_featured);
-        $("#todays_deal").prop("checked", product.todays_deal);
-        $("#meta_title").val(product.meta_title);
-        $("#meta_description").val(product.meta_description);
-        $("#meta_keywords").val(product.meta_keywords);
-        $("#product_name").val(product.product_name);
-        $("#min_order_quantity").val(product.min_order_quantity);
-        $("#slug").val(product.slug);
+        $("#tags").val(product?.tags);
+        $("#video_url").val(product?.video_url);
+        $("#special_discount_type").val(product?.special_discount_type);
+        $("#special_discount").val(product?.special_discount);
+        $("#special_discount_period").val(product?.special_discount_period);
+        $("#min_stock_quantity").val(product?.min_stock_quantity);
+        $("#stock_visibility").val(product?.stock_visibility);
+        $("#short_description").val(product?.short_description);
+        $("#is_featured").prop("checked", product?.is_featured);
+        $("#todays_deal").prop("checked", product?.todays_deal);
+        $("#meta_title").val(product?.meta_title);
+        $("#meta_description").val(product?.meta_description);
+        $("#meta_keywords").val(product?.meta_keywords);
+        $("#product_name").val(product?.product_name);
+        $("#min_order_quantity").val(product?.min_order_quantity);
+        $("#slug").val(product?.slug);
         $("#status_id").prop(
             "checked",
-            product.status_id._id.toString() === activeStatusId
+            product?.status_id._id.toString() === activeStatusId
         );
-        $("#unit_price").val(product.unit_price);
-        if (product.variant) {
-            $("#variant").prop("checked", product.variant);
+        $("#unit_price").val(product?.unit_price);
+        if (product?.variant) {
+            $("#variant").prop("checked", product?.variant);
             toggleVariant();
         }
 
-        if (!product.variant) {
+        if (!product?.variant) {
             $("#sku").val(productStock.sku);
         }
-        if (!product.variant) {
+        if (!product?.variant) {
             $("#current_stock").val(productStock.current_stock);
         }
 
-        var imageUrl = "/dist/product/" + product.thumbnail;
+        var imageUrl = "/dist/product/" + product?.thumbnail;
         var defaultImageUrl =
             "../../../assets/images/default/mart-demo-img.jpg";
 
@@ -1649,7 +1649,7 @@
         }
 
         // Check if the thumbnail exists
-        if (product.thumbnail) {
+        if (product?.thumbnail) {
             imageExists(imageUrl, function (exists) {
                 if (exists) {
                     $("#display_preview_thumbnail_icon").attr("src", imageUrl);
@@ -1665,31 +1665,31 @@
         }
 
         // Handle Gallery Images
-        product.gallery_image.forEach(function (image, index) {
+        product?.gallery_image.forEach(function (image, index) {
             const imageUrl = "/dist/product/" + image;
             loadImage(imageUrl, `.gallery-image:eq(${index})`, defaultImageUrl);
         });
 
         // Handle Description Images
-        product.description_image.forEach(function (image, index) {
+        product?.description_image.forEach(function (image, index) {
             const imageUrl = "/dist/product/" + image;
             loadImage(imageUrl, `.description-image:eq(${index})`, defaultImageUrl);
         });
 
         // Handle Meta Images
-        product.meta_image.forEach(function (image, index) {
+        product?.meta_image.forEach(function (image, index) {
             const imageUrl = "/dist/product/" + image;
             loadImage(imageUrl, `.meta-image:eq(${index})`, defaultImageUrl);
         });
 
-        if (product.pdf) {
+        if (product?.pdf) {
             $("#display_preview_pdf_icon").attr(
                 "src",
-                "/dist/product/" + product.pdf
+                "/dist/product/" + product?.pdf
             );
         }
 
-        var existingPdf = "<%= product.pdf %>";
+        var existingPdf = "<%= product?.pdf %>";
         if (existingPdf) {
             $("#display_preview_pdf_icon").attr(
                 "src",

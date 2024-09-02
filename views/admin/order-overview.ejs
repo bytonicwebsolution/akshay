@@ -417,12 +417,10 @@
                                                     <tr>
                                                         <td>Discount :</td>
                                                         <td class="text-end">
-                                                            <!-- -<%=
-                                                            record.special_discount
-                                                            ?
-                                                            record.special_discount
-                                                            : '0' %> -->
-                                                            -0
+                                                            -<%=
+                                                            record?.order_id ?
+                                                            record.order_id.order_discount_amount :
+                                                            '0' %>                                                           
                                                         </td>
                                                     </tr>
                                                     <!-- <tr>

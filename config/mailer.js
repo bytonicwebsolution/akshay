@@ -1,15 +1,12 @@
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
-const fs = require('fs');
-const path = require('path')
+const fs = require("fs");
+const path = require("path");
 require("dotenv").config();
-
-
 
 const sendEmail = async (subject, body) => {
     const pass = process.env.MAIL_PASS;
-    console.log(pass)
-    console.log(subject,body)
+
     return new Promise((resolve, reject) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
@@ -18,7 +15,7 @@ const sendEmail = async (subject, body) => {
             secure: false, // true for 465, false for other ports
             auth: {
                 user: "akshayhiran04@gmail.com",
-                pass: pass
+                pass: pass,
             },
         });
         const email = subject;

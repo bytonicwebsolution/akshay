@@ -50,63 +50,6 @@ class PaymentController {
             let orderItems = [];
             let couponDiscount = 0;
 
-            // Validate and apply coupon if provided
-            if (coupon_code) {
-                const coupon = await Coupon.findOne({
-                    coupon_code,
-                    date_range: { $exists: true, $ne: null },
-                });
-                if (!coupon) {
-                    return res.status(400).send({
-                        status: 400,
-                        message: "Invalid coupon code",
-                    });
-                }
-
-                const currentDate = new Date();
-                const [startDateString, endDateString] =
-                    coupon.date_range.split(" - ");
-
-                const parseDate = (dateString) => {
-                    const [datePart, timePart, period] = dateString.split(" ");
-                    const [day, month, year] = datePart.split("/");
-                    const [hour, minute] = timePart.split(":");
-                    let hours = parseInt(hour, 10);
-                    if (period === "PM" && hours !== 12) {
-                        hours += 12;
-                    }
-                    if (period === "AM" && hours === 12) {
-                        hours = 0;
-                    }
-                    return new Date(
-                        `${year}-${month}-${day}T${hours
-                            .toString()
-                            .padStart(2, "0")}:${minute}:00Z`
-                    );
-                };
-
-                const startDate = parseDate(startDateString);
-                const endDate = parseDate(endDateString);
-
-                if (currentDate < startDate || currentDate > endDate) {
-                    return res.status(400).send({
-                        status: 400,
-                        message: "Coupon code expired",
-                    });
-                }
-
-                if (coupon.type === "percentage") {
-                    couponDiscount = (coupon.discount / 100) * totalAmount;
-                } else if (coupon.type === "flat") {
-                    couponDiscount = coupon.discount;
-                } else {
-                    return res.status(400).send({
-                        status: 400,
-                        message: "Invalid coupon type",
-                    });
-                }
-            }
-
             for (let item of items) {
                 // Validate required fields
                 if (!item.product_id || !item.sku || !item.quantity) {
@@ -246,14 +189,70 @@ class PaymentController {
                 );
             }
 
-            // Apply coupon discount to the total amount
-            if (couponDiscount > 0) {
-                totalAmount -= couponDiscount;
-                totalAmount = Math.max(totalAmount, 0); // Ensure total amount doesn't go below 0
-                await Coupon.updateOne(
-                    { coupon_code },
-                    { $set: { is_applied: true } }
-                );
+            // Apply coupon discount after calculating totalAmount if coupon_code is provided
+            if (coupon_code) {
+                const coupon = await Coupon.findOne({
+                    coupon_code,
+                    date_range: { $exists: true, $ne: null },
+                });
+                if (!coupon) {
+                    return res.status(400).send({
+                        status: 400,
+                        message: "Invalid coupon code",
+                    });
+                }
+
+                const currentDate = new Date();
+                const [startDateString, endDateString] =
+                    coupon.date_range.split(" - ");
+
+                const parseDate = (dateString) => {
+                    const [datePart, timePart, period] = dateString.split(" ");
+                    const [day, month, year] = datePart.split("/");
+                    const [hour, minute] = timePart.split(":");
+                    let hours = parseInt(hour, 10);
+                    if (period === "PM" && hours !== 12) {
+                        hours += 12;
+                    }
+                    if (period === "AM" && hours === 12) {
+                        hours = 0;
+                    }
+                    return new Date(
+                        `${year}-${month}-${day}T${hours
+                            .toString()
+                            .padStart(2, "0")}:${minute}:00Z`
+                    );
+                };
+
+                const startDate = parseDate(startDateString);
+                const endDate = parseDate(endDateString);
+
+                if (currentDate < startDate || currentDate > endDate) {
+                    return res.status(400).send({
+                        status: 400,
+                        message: "Coupon code expired",
+                    });
+                }
+
+                if (coupon.type === "percentage") {
+                    couponDiscount = (coupon.discount / 100) * totalAmount;
+                } else if (coupon.type === "flat") {
+                    couponDiscount = coupon.discount;
+                } else {
+                    return res.status(400).send({
+                        status: 400,
+                        message: "Invalid coupon type",
+                    });
+                }
+
+                if (couponDiscount > 0) {
+                    totalAmount -= couponDiscount;
+                    totalAmount = Math.max(totalAmount, 0); // Ensure total amount doesn't go below 0
+                    await Coupon.updateOne(
+                        { coupon_code },
+                        { $set: { is_applied: true } }
+                    );
+                }
             }
 
             const lastInvoiceNumber = await Order.findOne(

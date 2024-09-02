@@ -1,5 +1,6 @@
 const Rating = require("../../models/Rating");
 const Status = require("../../models/Status");
+
 class ProductReviewController {
     static list = async (req, res) => {
         try {
@@ -9,11 +10,18 @@ class ProductReviewController {
                 .populate("user_id")
                 .populate("status_id");
 
+            const page = parseInt(req.query.page) || 1; // Current page number, default to 1
+            const pageSize = parseInt(req.query.pageSize) || 10; // Items per page, default to 10
+            const totalItems = await Rating.countDocuments();
+
             return res.render("admin/product-review", {
                 ratings,
+                currentPage: page,
+                pageSize,
+                totalItems,
             });
         } catch (error) {
-            console.error(error);
+            console.log(error.message);
             res.status(500).send("An error occurred while fetching ratings");
         }
     };
@@ -42,7 +50,7 @@ class ProductReviewController {
                 message: "Ratings status updated to 'show' successfully.",
             });
         } catch (error) {
-            console.error(error);
+            console.log(error.message);
             res.status(500).json({
                 status: 500,
                 message: "An error occurred while updating ratings status.",
@@ -74,7 +82,7 @@ class ProductReviewController {
                 message: "Ratings status updated to 'hide' successfully.",
             });
         } catch (error) {
-            console.error(error);
+            console.log(error.message);
             res.status(500).json({
                 status: 500,
                 message: "An error occurred while updating ratings status.",
@@ -85,7 +93,6 @@ class ProductReviewController {
     static filterRatings = async (req, res) => {
         try {
             const { status, rating } = req.body;
-            console.log(status, rating);
             let ratings;
 
             const statusDoc = await Status.find({
@@ -93,25 +100,16 @@ class ProductReviewController {
                 type: { $regex: new RegExp("^rating$", "i") },
             });
 
-            console.log(statusDoc);
-            if (!status) {
+            if (rating) {
                 ratings = await Rating.find({
                     rating: rating,
+                    status_id: statusDoc[0]?._id,
                 })
                     .populate("product_id")
                     .populate("user_id")
                     .populate("status_id");
-            } else if (!rating) {
+            } else if (status) {
                 ratings = await Rating.find({
-                    status_id: statusDoc[0]._id,
-                })
-                    .populate("product_id")
-                    .populate("user_id")
-                    .populate("status_id");
-            }
-            else{
-                ratings = await Rating.find({
-                    rating: rating,
                     status_id: statusDoc[0]._id,
                 })
                     .populate("product_id")
@@ -121,7 +119,7 @@ class ProductReviewController {
 
             return res.status(200).json({ ratings });
         } catch (error) {
-            console.error("Error filtering ratings:", error);
+            console.log("Error filtering ratings:", error.message);
             res.status(500).json({ message: "Error filtering ratings." });
         }
     };

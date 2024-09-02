@@ -118,13 +118,13 @@
                                                     <td class="phone">
                                                         <%= contactus.phone ? contactus.phone : "" %>
                                                     </td>
-                                                    <td class="category">
+                                                    <td class="country">
                                                         <%= contactus.country ? contactus.country : "" %>
                                                     </td>
-                                                    <td class="category">
+                                                    <td class="subject">
                                                         <%= contactus.subject ? contactus.subject : "" %>
                                                     </td>
-                                                    <td class="category">
+                                                    <td class="message">
                                                         <%= contactus.message ? contactus.message : "" %>
                                                     </td>
                                                     <!-- <td>
@@ -240,3 +240,22 @@
 </div>
 <!-- END layout-wrapper -->
 <%- include('partials/footer.ejs') %>
+
+<script>
+    function truncateText(selector, maxLength) {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+            let text = element.innerText;
+            if (text.length > maxLength) {
+                element.innerText = text.substring(0, maxLength) + '...';
+            }
+        });
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        truncateText('.message', 20);
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+        truncateText('.subject', 20);
+    });
+</script>

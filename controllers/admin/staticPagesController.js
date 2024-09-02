@@ -112,6 +112,7 @@ class StaticPagesController {
                     meta_description: req.body.meta_description,
                     meta_keywords: req.body.meta_keywords,
                     slug: req.body.slug,
+                    show_in: req.body.show_in,
                     status_id:
                         req.body.status_id === "on"
                             ? activeStatus._id
@@ -176,6 +177,7 @@ class StaticPagesController {
                     meta_description: req.body.meta_description,
                     meta_keywords: req.body.meta_keywords,
                     slug: req.body.slug,
+                    show_in:req.body.show_in,
                     status_id:
                         req.body.status_id === "on"
                             ? activeStatus._id
