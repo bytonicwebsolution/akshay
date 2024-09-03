@@ -1324,7 +1324,7 @@
                 "/admin/product-review/list": "product_review",
                 "/admin/unit/list": "units",
                 "/admin/user/list": "customers",
-                
+                "/admin/static-pages/add": "pages",
                 "/admin/vendor/list": "venders",
                 "/admin/static-pages/list": "pages",
                 "/admin/faq/list": "faq",
@@ -1336,73 +1336,77 @@
                 "/admin/contactus/list": "contactus",
                 "/admin/staff/list": "staffs",
                 "/admin/staff/add": "staffs",
+                "/admin/user/order-view": "orders", // Keep this for exact matches
+                "/admin/product/edit":"products",
+                "/admin/vendor/edit":"venders"
             };
-
-            const activeTabClass =
-                pathnameToTabClassMap[window.location.pathname];
-
+    
+            const pathname = window.location.pathname;
+            let activeTabClass = pathnameToTabClassMap[pathname];
+    
+            
+            if (pathname.startsWith("/admin/user/order-view")) {
+                activeTabClass = "orders";
+            }
+            if (pathname.startsWith("/admin/product/edit")) {
+                activeTabClass = "products";
+            }
+            if (pathname.startsWith("/admin/vendor/edit")) {
+                activeTabClass = "venders";
+            }
+    
             if (activeTabClass) {
                 // Highlight the specific active tab
                 const activeTab = document.querySelector(`.${activeTabClass}`);
                 if (activeTab) {
                     activeTab.classList.add("active");
-
+    
                     // Check which sidebar the active tab belongs to and open that sidebar
                     if (
                         document.getElementById("sidebarProducts") &&
                         activeTab.closest("#sidebarProducts")
                     ) {
-                        document
-                            .getElementById("sidebarProducts")
-                            .classList.add("show");
+                        document.getElementById("sidebarProducts").classList.add("show");
                         const note = document.querySelector(".product");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
                     }
-
+    
                     if (
                         document.getElementById("sidebarPages") &&
                         activeTab.closest("#sidebarPages")
                     ) {
-                        document
-                            .getElementById("sidebarPages")
-                            .classList.add("show");
+                        document.getElementById("sidebarPages").classList.add("show");
                         const note = document.querySelector(".staticpages");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
                     }
-
+    
                     if (
                         document.getElementById("sidebarStoreFront") &&
                         activeTab.closest("#sidebarStoreFront")
                     ) {
-                        document
-                            .getElementById("sidebarStoreFront")
-                            .classList.add("show");
+                        document.getElementById("sidebarStoreFront").classList.add("show");
                         const note = document.querySelector(".storefront");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
                     }
-
+    
                     if (
                         document.getElementById("sidebarMarketing") &&
                         activeTab.closest("#sidebarMarketing")
                     ) {
-                        document
-                            .getElementById("sidebarMarketing")
-                            .classList.add("show");
+                        document.getElementById("sidebarMarketing").classList.add("show");
                         const note = document.querySelector(".marketing");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
                     }
-
+    
                     if (
                         document.getElementById("sidebarInvoices") &&
                         activeTab.closest("#sidebarInvoices")
                     ) {
-                        document
-                            .getElementById("sidebarInvoices")
-                            .classList.add("show");
+                        document.getElementById("sidebarInvoices").classList.add("show");
                         const note = document.querySelector(".invoices");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
@@ -1411,4 +1415,5 @@
             }
         });
     </script>
+    
 </html>
