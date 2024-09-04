@@ -325,7 +325,9 @@
                                 class="nav-link menu-link"
                             >
                                 <i class="ph ph-sign-out"></i>
-                                <span data-key="t-calendar" onclick="sellerLogout()"
+                                <span
+                                    data-key="t-calendar"
+                                    onclick="sellerLogout()"
                                     >Logout</span
                                 >
                             </a>
@@ -1199,27 +1201,29 @@
                 "/seller/order/list": "orders",
                 "/seller/product/edit": "all_products",
             };
-    
+
             const pathname = window.location.pathname;
             let activeTabClass = pathnameToTabClassMap[pathname];
-    
+
             // Check if the pathname starts with "/seller/product/edit"
             if (pathname.startsWith("/seller/product/edit")) {
                 activeTabClass = "all_products";
             }
-    
+
             if (activeTabClass) {
                 // Highlight the specific active tab
                 const activeTab = document.querySelector(`.${activeTabClass}`);
                 if (activeTab) {
                     activeTab.classList.add("active");
-    
+
                     // Check which sidebar the active tab belongs to and open that sidebar
                     if (
                         document.getElementById("sidebarProducts") &&
                         activeTab.closest("#sidebarProducts")
                     ) {
-                        document.getElementById("sidebarProducts").classList.add("show");
+                        document
+                            .getElementById("sidebarProducts")
+                            .classList.add("show");
                         const note = document.querySelector(".product");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
@@ -1228,7 +1232,9 @@
                         document.getElementById("sidebarMarketing") &&
                         activeTab.closest("#sidebarMarketing")
                     ) {
-                        document.getElementById("sidebarMarketing").classList.add("show");
+                        document
+                            .getElementById("sidebarMarketing")
+                            .classList.add("show");
                         const note = document.querySelector(".marketing");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
@@ -1237,7 +1243,9 @@
                         document.getElementById("sidebarReports") &&
                         activeTab.closest("#sidebarReports")
                     ) {
-                        document.getElementById("sidebarReports").classList.add("show");
+                        document
+                            .getElementById("sidebarReports")
+                            .classList.add("show");
                         const note = document.querySelector(".reports");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
@@ -1246,5 +1254,4 @@
             }
         });
     </script>
-    
 </html>

@@ -223,15 +223,37 @@
                                                 </div>
                                             </div>
                                             <div class="col-xxl-3 col-sm-6">
-                                                <label class="form-label">Show In</label>
+                                                <label class="form-label"
+                                                    >Show In</label
+                                                >
                                                 <div>
-                                                  <select class="form-control" id="idShowIn" name="show_in">
-                                                    <option value="none" class="none" selected>None</option>
-                                                    <option value="information" class="information">Information</option>
-                                                    <option value="letus" class="letus">Let Us</option>
-                                                  </select>
+                                                    <select
+                                                        class="form-control"
+                                                        id="idShowIn"
+                                                        name="show_in"
+                                                    >
+                                                        <option
+                                                            value="none"
+                                                            class="none"
+                                                            selected
+                                                        >
+                                                            None
+                                                        </option>
+                                                        <option
+                                                            value="information"
+                                                            class="information"
+                                                        >
+                                                            Information
+                                                        </option>
+                                                        <option
+                                                            value="letus"
+                                                            class="letus"
+                                                        >
+                                                            Let Us
+                                                        </option>
+                                                    </select>
                                                 </div>
-                                              </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div
@@ -270,9 +292,48 @@
 <script>
     $(document).ready(function () {
         const page = JSON.parse(
-            '<%- JSON.stringify(page).replace(/\\n/g, "\\\\n").replace(/\\r/g, "\\\\r").replace(/\\t/g, "\\\\t").replace(/\\f/g, "\\\\f") %>'
+            '<%- JSON.stringify(page)
+            .replace(/\\/g, "\\\\")
+            .replace(/'/g, "\\'")
+            .replace(/\\n/g, "\\n")
+            .replace(/\\r/g, "\\r")
+            .replace(/\\t/g, "\\t")
+            .replace(/\\f/g, "\\f")
+            .replace(/<\/script>/g, "<\\/script>")%>' // Handle double quotes as well
         );
+
         const activeStatusId = "<%= activeStatus._id.toString() %>";
+        var imageUrl = "/dist/pages/" + page.image;
+        var defaultImageUrl =
+            "../../../assets/images/default/mart-demo-img.jpg";
+
+        // Function to check if the image exists
+        function imageExists(url, callback) {
+            $.ajax({
+                url: url,
+                type: "HEAD",
+                success: function () {
+                    callback(true);
+                },
+                error: function () {
+                    callback(false);
+                },
+            });
+        }
+        if (page.image) {
+            imageExists(imageUrl, function (exists) {
+                if (exists) {
+                    $("#display_preview_image").attr("src", imageUrl);
+                } else {
+                    $("#display_preview_image").attr(
+                        "src",
+                        defaultImageUrl
+                    );
+                }
+            });
+        } else {
+            $("#display_preview_image").attr("src", defaultImageUrl);
+        }
 
         // Fill form fields with existing data
         $("#title").val(page.title);
@@ -280,17 +341,11 @@
         $("#meta_description").val(page.meta_description);
         $("#meta_keywords").val(page.meta_keywords);
         $("#slug").val(page.slug);
-        $('#idShowIn').val(page.show_in);
+        $("#idShowIn").val(page.show_in);
         $("#status_id").prop(
             "checked",
             page.status_id.toString() === activeStatusId
         );
-        if (page.image) {
-            $("#display_preview_image").attr(
-                "src",
-                "/dist/pages/" + page.image
-            );
-        }
     });
 </script>
 

@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { NotLoggedIn } = require("../../middlewares/WebAuth");
 const websiteController = require("../../controllers/website/websiteController");
 
 router.get("/category", websiteController.category);
@@ -27,7 +28,15 @@ router.get("/get_all_faqs", websiteController.get_all_faqs);
 router.get("/get_all_banners", websiteController.get_all_banners);
 router.get("/get_webSettings_data", websiteController.get_webSettings_data);
 router.get("/get_static_pages", websiteController.get_static_pages);
-router.get("/get_static_slug_details", websiteController.get_static_slug_details);
-
+router.get(
+    "/get_static_slug_details",
+    websiteController.get_static_slug_details
+);
+router.get(
+    "/get_razorpayConfig",
+    NotLoggedIn,
+    websiteController.get_razorpayConfig
+);
+router.get("/get_smtpConfig", NotLoggedIn, websiteController.get_smtpConfig);
 
 module.exports = router;

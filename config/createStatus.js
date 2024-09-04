@@ -1,4 +1,5 @@
 const Status = require("../models/Status");
+const {UpdateStatus} = require("../controllers/admin/orderController")
 
 const createPagesStatus = async () => {
     const checkAndUpdateStatus = async (name) => {
@@ -141,8 +142,48 @@ const creatOrderStatus = async () => {
             await status.save();
         }
     };
-    await checkAndUpdateStatus("created");
+    const UpdateStatus = async(name)=>{
+        try {
+            let status = await Status.findOne({
+                type: "orders",
+                name: { $regex: new RegExp(`^${name}$`, "i") },
+            });
+    
+            if (status) {
+                let needsUpdate = false;
+                if (status.name.toLowerCase() !== name.toLowerCase()) {
+                    status.name = name;
+                    needsUpdate = true;
+                }
+                if (status.type !== "orders") {
+                    status.type = "orders";
+                    needsUpdate = true;
+                }
+                if (needsUpdate) {
+                    await status.save();
+                }
+            } else {
+                status = new Status({ name, type: "orders" });
+                await status.save();
+            }
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                message: "Error creating orders detail: " + error.message,
+            });
+        }
+    }
+
+    
+    await checkAndUpdateStatus("pending");
     await checkAndUpdateStatus("completed");
+
+    await UpdateStatus("pending");
+    await UpdateStatus("confirmed");
+    await UpdateStatus("picked up");
+    await UpdateStatus("on the way");
+    await UpdateStatus("canceled");
+    await UpdateStatus("delivered");
 };
 
 const creatTransactionStatus = async () => {
@@ -292,6 +333,35 @@ const createSliderStatus = async () => {
     await checkAndUpdateStatus("active");
     await checkAndUpdateStatus("inactive");
 };
+
+const createRazorpayStatus = async () => {
+    const checkAndUpdateStatus = async (name) => {
+        let status = await Status.findOne({
+            type: "razorpay",
+            name: { $regex: new RegExp(`^${name}$`, "i") },
+        });
+
+        if (status) {
+            let needsUpdate = false;
+            if (status.name.toLowerCase() !== name.toLowerCase()) {
+                status.name = name;
+                needsUpdate = true;
+            }
+            if (status.type !== "razorpay") {
+                status.type = "razorpay";
+                needsUpdate = true;
+            }
+            if (needsUpdate) {
+                await status.save();
+            }
+        } else {
+            status = new Status({ name, type: "razorpay" });
+            await status.save();
+        }
+    };
+    await checkAndUpdateStatus("enable");
+    await checkAndUpdateStatus("disable");
+};
 module.exports = {
     createPagesStatus,
     createCategoryStatus,
@@ -303,4 +373,5 @@ module.exports = {
     createRatingStatus,
     createCouponStatus,
     createSliderStatus,
+    createRazorpayStatus,
 };

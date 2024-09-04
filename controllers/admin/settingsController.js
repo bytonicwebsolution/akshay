@@ -1,5 +1,9 @@
 const Banner = require("../../models/Banner");
 const WebSetting = require("../../models/WebSetting");
+const RazorpayConfig = require("../../models/RazorpayConfig");
+const SmtpConfig = require("../../models/SmtpConfig");
+const Status = require("../../models/Status");
+const config = require("../../config/createStatus");
 const multer = require("multer");
 const path = require("path");
 const root = process.cwd();
@@ -274,12 +278,15 @@ class SettingsController {
                 toll_number: settings ? settings.toll_number : "",
                 logo: settings ? settings.logo : "",
                 copyright: settings ? settings.copyright : "",
+                twitter: settings ? settings.twitter : "",
+                facebook: settings ? settings.facebook : "",
+                instagram: settings ? settings.instagram : "",
             });
         } catch (error) {
             console.log(error);
             return res
                 .status(500)
-                .send("Error creating banner: " + error.message);
+                .send("Error settings_view: " + error.message);
         }
     };
 
@@ -310,6 +317,9 @@ class SettingsController {
                         ? exist.logo
                         : "",
                     copyright: data.copyright,
+                    twitter: data.twitter,
+                    facebook: data.facebook,
+                    instagram: data.instagram,
                 };
 
                 if (exist) {
@@ -344,6 +354,137 @@ class SettingsController {
             return res.send({
                 status: 500,
                 message: "Failed to Settings update: " + error.message,
+            });
+        }
+    };
+
+    static smtp_config_view = async (req, res) => {
+        try {
+            const smtpConfig = await SmtpConfig.findOne();
+
+            return res.render("admin/smtp-config", {
+                service: smtpConfig ? smtpConfig.service : "",
+                host: smtpConfig ? smtpConfig.host : "",
+                port: smtpConfig ? smtpConfig.port : "",
+                mail_address: smtpConfig ? smtpConfig.mail_address : "",
+                name: smtpConfig ? smtpConfig.name : "",
+                username: smtpConfig ? smtpConfig.username : "",
+                password: smtpConfig ? smtpConfig.password : "",
+                secure: smtpConfig
+                    ? smtpConfig.secure === true
+                        ? "ssl"
+                        : "tsl"
+                    : "",
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .send("Error creating smtpConfig: " + error.message);
+        }
+    };
+
+    static smtp_config_add = async (req, res) => {
+        try {
+            const data = req.body;
+            let exist = await SmtpConfig.findOne();
+
+            const insertData = {
+                service: data.service,
+                host: data.host,
+                port: data.port,
+                mail_address: data.mail_address,
+                name: data.name,
+                username: data.username,
+                password: data.password,
+                secure: data.secure === "ssl" ? true : false,
+            };
+
+            if (exist) {
+                insertData.updated_at = new Date();
+                await SmtpConfig.updateOne({}, insertData);
+            } else {
+                const newConfig = new SmtpConfig(insertData);
+                await newConfig.save();
+            }
+
+            return res.send({
+                status: 200,
+                message: "SMTP Config updated successfully",
+            });
+        } catch (error) {
+            console.error(error);
+            return res.send({
+                status: 500,
+                message: "Failed to update SMTP Config: " + error.message,
+            });
+        }
+    };
+
+    static razorpay_config = async (req, res) => {
+        try {
+            const razorpayconfig = await RazorpayConfig.findOne();
+            await config.createRazorpayStatus();
+            const activeStatus = await Status.findOne({
+                type: "razorpay",
+                name: { $regex: new RegExp("^enable$", "i") },
+            });
+
+            return res.render("admin/razorpay-config", {
+                key_id: razorpayconfig ? razorpayconfig.key_id : "",
+                key_secret: razorpayconfig ? razorpayconfig.key_secret : "",
+                activeStatus,
+                status_id: razorpayconfig ? razorpayconfig.status_id : "",
+            });
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .send("Error razorpay_config: " + error.message);
+        }
+    };
+
+    static razorpay_config_add = async (req, res) => {
+        try {
+            const data = req.body;
+            let exist = await RazorpayConfig.findOne();
+
+            await config.createRazorpayStatus();
+            const activeStatus = await Status.findOne({
+                type: "razorpay",
+                name: { $regex: new RegExp("^enable$", "i") },
+            });
+            const inactiveStatus = await Status.findOne({
+                type: "razorpay",
+                name: { $regex: new RegExp("^disable$", "i") },
+            });
+
+            const insertData = {
+                key_id: data.key_id,
+                key_secret: data.key_secret,
+                status_id:
+                    data.status_id === "on"
+                        ? activeStatus._id
+                        : inactiveStatus._id,
+            };
+
+            if (exist) {
+                insertData.updated_at = new Date();
+                await RazorpayConfig.updateOne({}, insertData);
+            } else {
+                const newSetting = new RazorpayConfig(insertData);
+                await newSetting.save();
+            }
+
+            return res.send({
+                status: 200,
+                message: "Razorpay config updated successfully",
+            });
+        } catch (error) {
+            console.error(error);
+            return res.send({
+                status: 500,
+                message: "Failed to Razorpay config update: " + error.message,
             });
         }
     };

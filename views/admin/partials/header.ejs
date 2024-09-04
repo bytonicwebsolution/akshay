@@ -339,6 +339,22 @@
                                             >Web Setting</a
                                         >
                                     </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/razorpay_config"
+                                            class="nav-link razorpay_config"
+                                            data-key="t-products"
+                                            >Razorpay Config</a
+                                        >
+                                    </li>
+                                    <li class="nav-item">
+                                        <a
+                                            href="/admin/smtp_config_view"
+                                            class="nav-link smtp_config"
+                                            data-key="t-products"
+                                            >SMTP Config</a
+                                        >
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -1331,20 +1347,22 @@
                 "/admin/slider/list": "slider",
                 "/admin/banner/list": "banner",
                 "/admin/settings_view": "web_setting ",
+                "/admin/razorpay_config": "razorpay_config",
+                "/admin/smtp_config_view": "smtp_config",
                 "/admin/coupon/list": "coupons",
                 "/admin/order/list": "orders",
                 "/admin/contactus/list": "contactus",
                 "/admin/staff/list": "staffs",
                 "/admin/staff/add": "staffs",
                 "/admin/user/order-view": "orders", // Keep this for exact matches
-                "/admin/product/edit":"products",
-                "/admin/vendor/edit":"venders"
+                "/admin/product/edit": "products",
+                "/admin/vendor/edit": "venders",
+                "/admin/order/details":"orders"
             };
-    
+
             const pathname = window.location.pathname;
             let activeTabClass = pathnameToTabClassMap[pathname];
-    
-            
+
             if (pathname.startsWith("/admin/user/order-view")) {
                 activeTabClass = "orders";
             }
@@ -1354,59 +1372,72 @@
             if (pathname.startsWith("/admin/vendor/edit")) {
                 activeTabClass = "venders";
             }
-    
+            if(pathname.startsWith("/admin/order/details")){
+                activeTabClass = "orders";
+            }
+
             if (activeTabClass) {
                 // Highlight the specific active tab
                 const activeTab = document.querySelector(`.${activeTabClass}`);
                 if (activeTab) {
                     activeTab.classList.add("active");
-    
+
                     // Check which sidebar the active tab belongs to and open that sidebar
                     if (
                         document.getElementById("sidebarProducts") &&
                         activeTab.closest("#sidebarProducts")
                     ) {
-                        document.getElementById("sidebarProducts").classList.add("show");
+                        document
+                            .getElementById("sidebarProducts")
+                            .classList.add("show");
                         const note = document.querySelector(".product");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
                     }
-    
+
                     if (
                         document.getElementById("sidebarPages") &&
                         activeTab.closest("#sidebarPages")
                     ) {
-                        document.getElementById("sidebarPages").classList.add("show");
+                        document
+                            .getElementById("sidebarPages")
+                            .classList.add("show");
                         const note = document.querySelector(".staticpages");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
                     }
-    
+
                     if (
                         document.getElementById("sidebarStoreFront") &&
                         activeTab.closest("#sidebarStoreFront")
                     ) {
-                        document.getElementById("sidebarStoreFront").classList.add("show");
+                        document
+                            .getElementById("sidebarStoreFront")
+                            .classList.add("show");
                         const note = document.querySelector(".storefront");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
                     }
-    
+
                     if (
                         document.getElementById("sidebarMarketing") &&
                         activeTab.closest("#sidebarMarketing")
                     ) {
-                        document.getElementById("sidebarMarketing").classList.add("show");
+                        document
+                            .getElementById("sidebarMarketing")
+                            .classList.add("show");
                         const note = document.querySelector(".marketing");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
                     }
-    
+
                     if (
                         document.getElementById("sidebarInvoices") &&
                         activeTab.closest("#sidebarInvoices")
                     ) {
-                        document.getElementById("sidebarInvoices").classList.add("show");
+                        document
+                            .getElementById("sidebarInvoices")
+                            .classList.add("show");
                         const note = document.querySelector(".invoices");
                         note.style.backgroundColor = "#E40F15";
                         note.style.color = "white";
@@ -1415,5 +1446,4 @@
             }
         });
     </script>
-    
 </html>

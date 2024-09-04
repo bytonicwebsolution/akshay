@@ -168,6 +168,29 @@ class OrderController {
         }
     };
 
+    static get_transactions = async (req, res) => {
+        try {
+            var token = req.body.token;
+            const payload = jwt.decode(token, process.env.TOKEN_SECRET);
+            const userId = payload.id;
+
+            let transactions = await Transaction.find({ user_id: userId });
+            return res.send({
+                success: true,
+                status: 200,
+                message: "Transaction fetched successfully",
+                data: transactions,
+            });
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            res.send({
+                success: false,
+                status: 500,
+                message: "Error fetching data" + error.message,
+            });
+        }
+    };
+
     static userBillingAddress = async (req, res) => {
         try {
             var token = req.body.token;

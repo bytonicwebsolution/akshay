@@ -137,14 +137,14 @@ class staffController {
                     console.log(err);
                     return res.send(err);
                 }
-    
+
                 // Find the existing staff record
                 const staff = await Adminauth.findOne({ _id: req.body.editid });
-    
+
                 if (!staff) {
                     return res.status(404).send({ message: "User not found" });
                 }
-    
+
                 // Prepare the updated data
                 let updatedData = {
                     username: req.body.edit_user_name,
@@ -154,31 +154,40 @@ class staffController {
                     phone: req.body.edit_phone,
                     updated_at: new Date(),
                 };
-    
+
                 // Update the image only if a new file is uploaded
                 if (req.file) {
-                    updatedData.image = req.file.filename;
-    
+                    updatedData.image = req.file ? req.file.filename : "";
+
                     // Remove the old image file from the server if a new image is uploaded
                     if (staff.image) {
-                        fs.unlink(path.join(root, "/public/dist/staff/" + staff.image), (err) => {
-                            if (err) {
-                                console.log("Error deleting old image:", err);
+                        fs.unlink(
+                            path.join(
+                                root,
+                                "/public/dist/staff/" + staff.image
+                            ),
+                            (err) => {
+                                if (err) {
+                                    console.log(
+                                        "Error deleting old image:",
+                                        err
+                                    );
+                                }
                             }
-                        });
+                        );
                     }
                 } else {
                     // Retain the existing image if no new image is uploaded
                     updatedData.image = staff.image;
                 }
-    
+
                 // Update the staff record in the database
                 await Adminauth.findOneAndUpdate(
                     { _id: req.body.editid },
                     updatedData,
                     { new: true }
                 );
-    
+
                 return res.send({
                     status: 200,
                     message: "Staff updated successfully",
@@ -192,7 +201,6 @@ class staffController {
             });
         }
     };
-    
 
     static delete = async (req, res) => {
         try {

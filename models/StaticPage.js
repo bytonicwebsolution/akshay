@@ -25,8 +25,8 @@ const schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Status",
     },
-    show_in:{
-        type:String,
+    show_in: {
+        type: String,
     },
     image: {
         type: String,

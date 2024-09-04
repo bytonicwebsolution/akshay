@@ -1,9 +1,26 @@
 const Razorpay = require("razorpay");
+const RazorpayConfig = require("../models/RazorpayConfig");
 require("dotenv").config();
 
-const razorpay = new Razorpay({
-    key_id: "rzp_test_rFXwtHIILu1CTU",
-    key_secret: "OagCUpxf4bDzhU7igpiUOxK2",
-});
+async function initializeRazorpay() {
+    try {
+        let config = await RazorpayConfig.findOne().sort({ created_at: -1 });
 
-module.exports = razorpay;
+        if (!config || !config.key_id || !config.key_secret) {
+            throw new Error("Razorpay configuration not found.");
+        }
+
+        // Razorpay instance initialization
+        const razorpay = new Razorpay({
+            key_id: config.key_id,
+            key_secret: config.key_secret,
+        });
+
+        return razorpay;
+    } catch (error) {
+        console.error("Error initializing Razorpay:", error.message);
+        throw new Error("Error initializing Razorpay: " + error.message);
+    }
+}
+
+module.exports = initializeRazorpay;

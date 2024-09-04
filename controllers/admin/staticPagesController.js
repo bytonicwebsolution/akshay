@@ -103,10 +103,7 @@ class StaticPagesController {
 
                 const insertRecord = StaticPage({
                     title: req.body.title,
-                    description: req.body.description.replace(
-                        /<\/?[^>]+(>|$)/g,
-                        ""
-                    ),
+                    description: req.body.description,
                     image: req.file ? req.file.filename : "",
                     meta_title: req.body.meta_title,
                     meta_description: req.body.meta_description,
@@ -168,16 +165,13 @@ class StaticPagesController {
 
                 const updatedData = {
                     title: req.body.title,
-                    description: req.body.description.replace(
-                        /<\/?[^>]+(>|$)/g,
-                        ""
-                    ),
+                    description: req.body.description,
                     image: req.file ? req.file.filename : pages.image,
                     meta_title: req.body.meta_title,
                     meta_description: req.body.meta_description,
                     meta_keywords: req.body.meta_keywords,
                     slug: req.body.slug,
-                    show_in:req.body.show_in,
+                    show_in: req.body.show_in,
                     status_id:
                         req.body.status_id === "on"
                             ? activeStatus._id
@@ -194,8 +188,16 @@ class StaticPagesController {
                 );
 
                 if (req.file && pages.image) {
-                    fs.unlinkSync(
-                        path.join(root, "/public/dist/pages/", pages.image)
+                    fs.unlink(
+                        path.join(
+                            root,
+                            "/public/dist/pages/" + pages.image
+                        ),
+                        (err) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                        }
                     );
                 }
                 return res.send({

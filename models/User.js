@@ -29,6 +29,7 @@ const schema = new mongoose.Schema({
         type: String,
         unique: true,
         max: 255,
+        default: null,
     },
     password: {
         type: String,

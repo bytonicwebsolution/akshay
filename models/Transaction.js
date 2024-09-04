@@ -33,6 +33,9 @@ const transactionSchema = new mongoose.Schema({
         ref: "Status",
         required: true,
     },
+    payment_mode: {
+        type: String,
+    },
     created_at: {
         type: Date,
         default: Date,

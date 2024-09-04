@@ -5,6 +5,7 @@ const OrderController = require("../../controllers/website/orderController");
 router.get("/get_orders", OrderController.getOrders);
 router.get("/get_order-details", OrderController.getOrderDetails);
 router.post("/get_orderItems", OrderController.orderItems);
+router.get("/get_transactions", OrderController.get_transactions);
 router.post("/get_userBillingAddress", OrderController.userBillingAddress);
 router.post(
     "/add-userBillingAddress",

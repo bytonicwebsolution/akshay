@@ -6,7 +6,7 @@ const BillingAddress = require("../../models/BillingAddress");
 const UserBillingAddress = require("../../models/UserBillingAddress");
 const Transaction = require("../../models/Transaction");
 const Coupon = require("../../models/Coupon");
-const razorpay = require("../../config/razorpay");
+const initializeRazorpay = require("../../config/razorpay");
 const Status = require("../../models/Status");
 const Product = require("../../models/Product");
 const ProductStock = require("../../models/ProductStock");
@@ -265,28 +265,43 @@ class PaymentController {
                     lastInvoiceNumber.order_no
                 );
             }
-            const options = {
-                amount: totalAmount * 100, // amount in the smallest currency unit
-                currency: "INR",
-                receipt: newInvoiceNumber,
-            };
 
-            const razorpayOrder = await razorpay.orders.create(options);
+            let razorpayOrder;
+            let paymentMode = "Online";
+
+            try {
+                const razorpay = await initializeRazorpay();
+
+                const options = {
+                    amount: totalAmount * 100, // amount in the smallest currency unit
+                    currency: "INR",
+                    receipt: newInvoiceNumber,
+                };
+
+                razorpayOrder = await razorpay.orders.create(options);
+            } catch (error) {
+                console.log(
+                    "Razorpay configuration not found. Defaulting to COD."
+                );
+                paymentMode = "COD";
+            }
 
             await config.creatOrderStatus();
             let order_status = await Status.findOne({
-                name: { $regex: new RegExp("^created$", "i") },
+                name: { $regex: new RegExp("^pending$", "i") },
                 type: { $regex: new RegExp("^order$", "i") },
             });
             const order = await Order.create({
                 user_id: req.login_user ? req.login_user._id : "",
-                order_no: options.receipt,
+                order_no: newInvoiceNumber,
                 order_total_amount: totalAmount,
                 order_discount_amount: couponDiscount ? couponDiscount : 0,
                 coupon_code: coupon_code ? coupon_code : null,
                 order_subtotal_amount: subTotal,
                 additional_info: additional_info,
                 status_id: order_status._id,
+                payment_mode: paymentMode,
+                payment_status: "Unpaid",
             });
 
             orderItems = await Promise.all(
@@ -315,28 +330,54 @@ class PaymentController {
                 await userBillingAddress.save();
             }
 
-            await config.creatTransactionStatus();
-            let transaction_status = await Status.findOne({
-                name: { $regex: new RegExp("^pending$", "i") },
-                type: { $regex: new RegExp("^transaction$", "i") },
-            });
-            const transaction = await Transaction.create({
-                order_id: order._id,
-                user_id: req.login_user ? req.login_user._id : "",
-                orderId: razorpayOrder.id,
-                payment_id: null, // Will be updated later
-                signature: null, // Will be updated later
-                amount: totalAmount,
-                currency: "INR",
-                status_id: transaction_status._id,
-            });
-
-            res.send({
-                orderId: razorpayOrder.id,
-                order_id: order._id,
-                amount: totalAmount,
-                currency: "INR",
-            });
+            // if payment mode is COD, then save
+            if (paymentMode === "COD") {
+                await config.creatTransactionStatus();
+                let transaction_status = await Status.findOne({
+                    name: { $regex: new RegExp("^pending$", "i") },
+                    type: { $regex: new RegExp("^transaction$", "i") },
+                });
+                await Transaction.create({
+                    order_id: order._id,
+                    user_id: req.login_user ? req.login_user._id : "",
+                    orderId: null, // Will be updated later
+                    payment_id: null, // Will be updated later
+                    signature: null, // Will be updated later
+                    amount: totalAmount,
+                    currency: "INR",
+                    status_id: transaction_status._id,
+                    payment_mode: paymentMode,
+                });
+                res.send({
+                    orderId: null,
+                    order_id: order._id,
+                    amount: totalAmount,
+                    currency: "INR",
+                });
+            } else {
+                await config.creatTransactionStatus();
+                let transaction_status = await Status.findOne({
+                    name: { $regex: new RegExp("^pending$", "i") },
+                    type: { $regex: new RegExp("^transaction$", "i") },
+                });
+                await Transaction.create({
+                    order_id: order._id,
+                    user_id: req.login_user ? req.login_user._id : "",
+                    orderId: razorpayOrder.id,
+                    payment_id: null, // Will be updated later
+                    signature: null, // Will be updated later
+                    amount: totalAmount,
+                    currency: "INR",
+                    status_id: transaction_status._id,
+                    payment_mode: paymentMode,
+                });
+                res.send({
+                    orderId: razorpayOrder.id,
+                    order_id: order._id,
+                    amount: totalAmount,
+                    currency: "INR",
+                });
+            }
         } catch (error) {
             console.error("Error in order", error);
             return res.status(500).send({
@@ -351,62 +392,98 @@ class PaymentController {
             const {
                 orderId,
                 payment_id,
-                // signature,
-                order_id,
+                order_id, // For COD payments, this may be undefined or null
             } = req.body;
 
-            // const generated_signature = crypto
-            //     .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-            //     .update(orderId + "|" + payment_id)
-            //     .digest("hex");
+            // Determine payment mode
+            const paymentMode = req.body.paymentMode || "COD"; // Default to COD if not provided
 
-            // if (generated_signature !== signature) {
-            //     return res.status(400).send({ message: "Invalid signature" });
-            // }
+            if (paymentMode === "COD") {
+                // Handle COD case
+                await config.creatTransactionStatus();
+                let status = await Status.findOne({
+                    name: { $regex: new RegExp("^completed$", "i") },
+                    type: { $regex: new RegExp("^transaction$", "i") },
+                });
+                await Transaction.updateOne(
+                    { orderId: orderId },
+                    {
+                        $set: {
+                            payment_id: payment_id,
+                            status_id: status._id,
+                        },
+                    }
+                );
 
-            await config.creatTransactionStatus();
-            let status = await Status.findOne({
-                name: { $regex: new RegExp("^completed$", "i") },
-                type: { $regex: new RegExp("^transaction$", "i") },
-            });
-            await Transaction.updateOne(
-                { orderId: orderId },
-                {
-                    $set: {
-                        payment_id: payment_id,
-                        // signature: signature,
-                        status_id: status._id,
-                    },
-                }
-            );
+                await config.creatOrderStatus();
+                let order_status = await Status.findOne({
+                    name: { $regex: new RegExp("^completed$", "i") },
+                    type: { $regex: new RegExp("^order$", "i") },
+                });
+                await Order.updateOne(
+                    { _id: order_id },
+                    {
+                        $set: {
+                            status_id: order_status._id,
+                            payment_status: "Paid",
+                        },
+                    }
+                );
 
-            await config.creatOrderStatus();
-            let order_status = await Status.findOne({
-                name: { $regex: new RegExp("^completed$", "i") },
-                type: { $regex: new RegExp("^order$", "i") },
-            });
-            await Order.updateOne(
-                { _id: order_id },
-                {
-                    $set: {
-                        status_id: order_status._id,
-                    },
-                }
-            );
-            await OrderHistory.updateOne(
-                { order_id: order_id },
-                {
-                    $set: {
-                        orderId: orderId,
-                    },
-                }
-            );
-            res.send({
-                status: 200,
-                message: "Payment verified successfully",
-                orderId: orderId,
-                payment_id: payment_id,
-            });
+                // No need to update OrderHistory in COD case
+                res.send({
+                    status: 200,
+                    message: "Payment verified successfully",
+                    orderId: orderId,
+                    payment_id: payment_id,
+                });
+            } else {
+                // Handle Razorpay or other payment mode
+                await config.creatTransactionStatus();
+                let status = await Status.findOne({
+                    name: { $regex: new RegExp("^completed$", "i") },
+                    type: { $regex: new RegExp("^transaction$", "i") },
+                });
+                await Transaction.updateOne(
+                    { orderId: orderId },
+                    {
+                        $set: {
+                            payment_id: payment_id,
+                            status_id: status._id,
+                        },
+                    }
+                );
+
+                await config.creatOrderStatus();
+                let order_status = await Status.findOne({
+                    name: { $regex: new RegExp("^completed$", "i") },
+                    type: { $regex: new RegExp("^order$", "i") },
+                });
+                await Order.updateOne(
+                    { _id: order_id },
+                    {
+                        $set: {
+                            status_id: order_status._id,
+                            payment_status: "Paid",
+                        },
+                    }
+                );
+
+                await OrderHistory.updateOne(
+                    { order_id: order_id },
+                    {
+                        $set: {
+                            orderId: orderId,
+                        },
+                    }
+                );
+                res.send({
+                    status: 200,
+                    message: "Payment verified successfully",
+                    orderId: orderId,
+                    payment_id: payment_id,
+                });
+            }
         } catch (error) {
             console.log("Error in checkout", error);
             return res.status(500).send({

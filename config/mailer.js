@@ -1,20 +1,21 @@
-const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
+const SmtpConfig = require("../models/SmtpConfig");
 
 const sendEmail = async (subject, body) => {
-    const pass = process.env.MAIL_PASS;
+    const smtpconfig = await SmtpConfig.findOne();
+    const pass = smtpconfig.password;
 
     return new Promise((resolve, reject) => {
         const transporter = nodemailer.createTransport({
-            service: "gmail",
-            host: "smtp.gmail.com",
-            port: 587,
-            secure: false, // true for 465, false for other ports
+            service: smtpconfig.service,
+            host: smtpconfig.host,
+            port: smtpconfig.port,
+            secure: smtpconfig.secure, // true for 465, false for other ports
             auth: {
-                user: "akshayhiran04@gmail.com",
+                user: smtpconfig.mail_address,
                 pass: pass,
             },
         });
@@ -27,7 +28,7 @@ const sendEmail = async (subject, body) => {
         );
 
         const mailOptions = {
-            from: "akshayhiran04@gmail.com",
+            from: smtpconfig.mail_address,
             to: email, // Use the email of the newly registered user
             subject: `Hi ${first_name}, Your registration was successful!`,
             html: HTML_TEMPLATE.replace("{{first_name}}", first_name), // Replace placeholder with the user's name if needed

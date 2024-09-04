@@ -515,6 +515,13 @@ class webauthController {
                     type: { $regex: new RegExp("^rating$", "i") },
                 });
 
+                // validation
+                if (!req.body.product_id) {
+                    return res.status(401).send({
+                        message: "Product id is required",
+                    });
+                }
+
                 let data = {
                     product_id: req.body.product_id,
                     user_id: user._id,
@@ -550,19 +557,18 @@ class webauthController {
 
     static get_product_ratings = async (req, res) => {
         try {
-            const product_id = req.params.product_id;
+            const product_id = req.query.product_id;
             let mediaUrl = baseURL + "/dist/ratings/";
 
             const ratings = await Rating.find({
                 product_id: product_id,
-                product_id: { $ne: null },
             })
                 .populate({
                     path: "user_id",
                     model: "User",
                     select: "user_type first_name last_name email phone address address2",
                 })
-                .populate({ path: "status_id", model: "Status" });
+                .populate({ path: "status_id", model: "Status" })
 
             // set default image if necessary
             if (ratings && ratings.length > 0) {

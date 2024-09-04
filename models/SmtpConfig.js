@@ -1,40 +1,36 @@
 const mongoose = require("mongoose");
 
-const schema = new mongoose.Schema({
-    address: {
+const smtpConfigSchema = new mongoose.Schema({
+    service: {
         type: String,
         required: true,
     },
-    phone: {
+    host: {
         type: String,
         required: true,
     },
-    email: {
+    port: {
+        type: Number,
+        required: true,
+    },
+    mail_address: {
         type: String,
         required: true,
     },
-    toll_number: {
+    name: {
         type: String,
         required: true,
     },
-    logo: {
+    username: {
         type: String,
         required: true,
     },
-    copyright: {
+    password: {
         type: String,
         required: true,
     },
-    twitter: {
-        type: String,
-        required: true,
-    },
-    facebook: {
-        type: String,
-        required: true,
-    },
-    instagram: {
-        type: String,
+    secure: {
+        type: Boolean,
         required: true,
     },
     created_at: {
@@ -47,4 +43,4 @@ const schema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("WebSetting", schema);
+module.exports = mongoose.model("SmtpConfig", smtpConfigSchema);
