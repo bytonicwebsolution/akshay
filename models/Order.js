@@ -38,7 +38,10 @@ const orderSchema = new mongoose.Schema({
     },
     payment_status: {
         type: String,
-        default: "Unpaid",
+        default: "unpaid",
+    },
+    reason: {
+        type: String,
     },
     created_at: {
         type: String,

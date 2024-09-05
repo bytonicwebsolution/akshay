@@ -364,6 +364,13 @@
                                                 <th
                                                     scope="col"
                                                     class="sort cursor-pointer"
+                                                    data-sort="amount"
+                                                >
+                                                    Payment
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    class="sort cursor-pointer"
                                                     data-sort="status"
                                                 >
                                                     Status
@@ -426,6 +433,13 @@
                                                         <span class="fw-medium">₹<%= order.order_subtotal_amount ? order.order_subtotal_amount: "0"%></span>
                                                     <% } %>
                                                 </td>
+                                                <td class="payment">
+                                                    <span
+                                                        class="badge bg-success-subtle text-success"
+                                                        ><%= order.payment_status ? order.payment_status : ""%>
+                                                        </span
+                                                    >
+                                                </td>
                                                 <td class="status">
                                                     <span
                                                         class="badge bg-primary-subtle text-primary"
@@ -433,6 +447,7 @@
                                                         </span
                                                     >
                                                 </td>
+                                                
                                                 <!-- <td>
                                                     <ul
                                                         class="d-flex gap-2 list-unstyled mb-0"

@@ -97,11 +97,11 @@
                                                     <option value="Active">
                                                         Active
                                                     </option>
-                                                    <option value="Unactive">
-                                                        Unactive
+                                                    <option value="Inactive">
+                                                        Inactive
                                                     </option>
-                                                    <option value="Block">
-                                                        Block
+                                                    <option value="Banned">
+                                                        Banned
                                                     </option>
                                                 </select>
                                             </div>
@@ -958,4 +958,21 @@
         const date = new Date(dateString);
         return date.toLocaleDateString("en-US", options);
     }
+</script>
+
+
+<script>
+    document.getElementById('idStatus').addEventListener('change', function() {
+        const selectedStatus = this.value.toLowerCase();
+        const rows = document.querySelectorAll('.list tr');
+        rows.forEach(row => {
+            const statusText = row.querySelector('.statusbar button').textContent.trim().toLowerCase();
+            if (selectedStatus === 'all' || statusText === selectedStatus) {
+                row.style.display = ''; 
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+    
 </script>

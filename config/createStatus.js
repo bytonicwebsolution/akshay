@@ -1,5 +1,4 @@
 const Status = require("../models/Status");
-const {UpdateStatus} = require("../controllers/admin/orderController")
 
 const createPagesStatus = async () => {
     const checkAndUpdateStatus = async (name) => {
@@ -117,7 +116,7 @@ const createProductStatus = async () => {
     await checkAndUpdateStatus("inactive");
 };
 
-const creatOrderStatus = async () => {
+const createOrderStatus = async () => {
     const checkAndUpdateStatus = async (name) => {
         let status = await Status.findOne({
             type: "order",
@@ -141,49 +140,13 @@ const creatOrderStatus = async () => {
             status = new Status({ name, type: "order" });
             await status.save();
         }
-    };
-    const UpdateStatus = async(name)=>{
-        try {
-            let status = await Status.findOne({
-                type: "orders",
-                name: { $regex: new RegExp(`^${name}$`, "i") },
-            });
-    
-            if (status) {
-                let needsUpdate = false;
-                if (status.name.toLowerCase() !== name.toLowerCase()) {
-                    status.name = name;
-                    needsUpdate = true;
-                }
-                if (status.type !== "orders") {
-                    status.type = "orders";
-                    needsUpdate = true;
-                }
-                if (needsUpdate) {
-                    await status.save();
-                }
-            } else {
-                status = new Status({ name, type: "orders" });
-                await status.save();
-            }
-        } catch (error) {
-            console.log(error);
-            return res.status(500).send({
-                message: "Error creating orders detail: " + error.message,
-            });
-        }
     }
-
-    
     await checkAndUpdateStatus("pending");
     await checkAndUpdateStatus("completed");
-
-    await UpdateStatus("pending");
-    await UpdateStatus("confirmed");
-    await UpdateStatus("picked up");
-    await UpdateStatus("on the way");
-    await UpdateStatus("canceled");
-    await UpdateStatus("delivered");
+    await checkAndUpdateStatus("picked_up");
+    await checkAndUpdateStatus("on_the_way");
+    await checkAndUpdateStatus("cancelled");
+    await checkAndUpdateStatus("delivered");
 };
 
 const creatTransactionStatus = async () => {
@@ -367,7 +330,7 @@ module.exports = {
     createCategoryStatus,
     createBrandStatus,
     createProductStatus,
-    creatOrderStatus,
+    createOrderStatus,
     creatTransactionStatus,
     createUserStatus,
     createRatingStatus,

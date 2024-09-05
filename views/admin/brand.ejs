@@ -40,7 +40,7 @@
                                     >
                                         <div class="flex-grow-1">
                                             <h3 class="card-title mb-0">
-                                                Brand List
+                                                List
                                             </h3>
                                         </div>
                                         <div>
@@ -173,9 +173,7 @@
                                                             ></label>
                                                         </div>
                                                     </th>
-                                                    <th>
-                                                        #
-                                                    </th>
+                                                    
                                                     <th
                                                         class="sort cursor-pointer"
                                                         data-sort="products"
@@ -193,7 +191,7 @@
                                             </thead>
                                             <tbody class="list form-check-all">
                                                 <%
-                                                brands.forEach(function(brand,index)
+                                                brands.forEach(function(brand)
                                                 {%>
                                                 <tr data-id="<%= brand._id %>">
                                                     <td>
@@ -208,9 +206,7 @@
                                                             ></label>
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <%= index + 1 %>
-                                                    </td>
+                                                   
 
                                                     <td class="category">
                                                         <div

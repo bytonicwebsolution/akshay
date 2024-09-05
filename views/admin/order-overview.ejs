@@ -98,10 +98,10 @@
                                     <label for="orderStatus" class="form-label">Order Status</label>
                                     <select class="form-control" id="orderStatus" name="orderStatus">
                                         <option value="pending">Pending</option>
-                                        <option value="confirmed">Confirmed</option>
-                                        <option value="picked up">Picked Up</option>
-                                        <option value="on the way">On the Way</option>
-                                        <option value="canceled">Canceled</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="picked_up">Picked Up</option>
+                                        <option value="on_the_way">On the Way</option>
+                                        <option value="cancelled">Cancelled</option>
                                         <option value="delivered">Delivered</option>
                                     </select>
                                 </div>
@@ -657,98 +657,211 @@
             <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
-
-        <footer class="footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <script>
-                            document.write(new Date().getFullYear());
-                        </script>
-                        © Anuda Mart.
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="text-sm-end d-none d-sm-block">
-                            Design & Develop by Anuda Mart
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
     </div>
     <!-- end main content-->
 </div>
 <!-- END layout-wrapper -->
 
+
+<!-- Add Reason Modal -->
+<div
+    class="modal fade"
+    id="showModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" id="exampleModalLabel">Add Reason</h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    id="close-ordermodal"
+                ></button>
+            </div>
+            <form class="tablelist-form" id="submitForm" autocomplete="off">
+                <div class="modal-body">
+                    <input type="hidden" id="id-field" />
+
+                    <div class="mb-3">
+                        <label for="reasonTextarea" class="form-label"
+                            >Reason for Change Status</label
+                        >
+                        <textarea
+                            id="reasonTextarea"
+                            class="form-control"
+                            name="reasonTextarea"
+                            placeholder="Enter Reason"
+                            rows="4"
+                            required
+                        ></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button
+                            type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button
+                            type="submit"
+                            class="btn btn-success"
+                            id="saveReason"
+                        >
+                            Add Reason
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end Add Reason Modal -->
+
+
 <%- include('partials/footer.ejs') %>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
+        // Initialize the modal using Bootstrap
+        const modalElement = new bootstrap.Modal(document.getElementById('showModal'), {});
         const orders = JSON.parse(
             `<%- JSON.stringify(order).replace(/\\/g, '\\\\').replace(/"/g, '\\"') %>`
         );
-        console.log(orders); // Check the object structure in the console
-        
-        // Ensure that the correct fields from the 'orders' object are assigned
-        $("#paymentStatus").val(orders?.payment_status); // Assuming 'payment_status' contains 'paid' or 'unpaid'
-        $("#orderStatus").val(orders?.status_id?.name); // Assuming 'status_id.name' contains one of the order statuses
-        
-        // Handler for Payment Status change
+    
+        $("#paymentStatus").val(orders?.payment_status);
+        $("#orderStatus").val(orders?.status_id?.name);
 
-        $('#paymentStatus').change(function() {
-          const paymentStatus = $(this).val();
-          const order_id = $('#editid').val(); // Fetch the order_id from the hidden input field
-      
-          $.ajax({
-            type: 'POST',
-            url: '/admin/order/update_payment_status',
-            data: { status: paymentStatus, order_id: order_id },
-            success: function(response) {
-              iziToast.success({
-                title: 'Success',
-                message: 'Payment status updated successfully',
-                position: 'topRight',
-              });
-            },
-            error: function(xhr, status, error) {
-              iziToast.error({
-                title: 'Error',
-                message: 'Failed to update payment status: ' + xhr.responseText,
-                position: 'topRight',
-              });
-            }
+         // Handler for Order Status change
+         $('#orderStatus').change(function() {
+            const orderStatus = $(this).val();
+            const order_id = $('#editid').val(); // Fetch the order_id from the hidden input field
+        
+            // Make AJAX call to update order status in orders table
+            $.ajax({
+              type: 'POST',
+              url: '/admin/order/update_order_status',
+              data: { orderStatus: orderStatus, order_id: order_id },
+              success: function(response) {
+                iziToast.success({
+                  title: 'Success',
+                  message: 'Order status updated successfully',
+                  position: 'topRight',
+                });
+                setTimeout(function () {
+                  location.reload();
+              }, 2000);
+              },
+              error: function(xhr, status, error) {
+                iziToast.error({
+                  title: 'Error',
+                  message: 'Failed to update order status: ' + xhr.responseText,
+                  position: 'topRight',
+                });
+                setTimeout(function () {
+                  location.reload();
+              }, 2000);
+              }
+            });
           });
-        });
-      
-        // Handler for Order Status change
-        $('#orderStatus').change(function() {
-          const orderStatus = $(this).val();
-          const order_id = $('#editid').val(); // Fetch the order_id from the hidden input field
-      
-          // Make AJAX call to update order status in orders table
-          $.ajax({
-            type: 'POST',
-            url: '/admin/order/update_order_status',
-            data: { orderStatus: orderStatus, order_id: order_id },
-            success: function(response) {
-              iziToast.success({
-                title: 'Success',
-                message: 'Order status updated successfully',
-                position: 'topRight',
-              });
-            },
-            error: function(xhr, status, error) {
-              iziToast.error({
-                title: 'Error',
-                message: 'Failed to update order status: ' + xhr.responseText,
-                position: 'topRight',
-              });
+    
+        // Handler for Payment Status change
+        $('#paymentStatus').change(function () {
+            const paymentStatus = $(this).val();
+            const order_id = $('#editid').val(); // Fetch the order_id from the hidden input field
+    
+            // Check if the status is changed from 'paid' to 'unpaid' or vice versa
+            if ((orders?.payment_status === 'paid' && paymentStatus === 'unpaid') ||
+                (orders?.payment_status === 'unpaid' && paymentStatus === 'paid')) {
+    
+                // Show the modal to input the reason
+               
+                
+                // Show the modal using Bootstrap's modal API
+                modalElement.show();
+    
+                // Handle save reason button click
+                $('#saveReason').off('click').on('click', function (e) {
+                    e.preventDefault(); // Prevent the form from submitting normally
+                    const reason = $('#reasonTextarea').val();
+    
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/order/update_payment_status',
+                        data: {
+                            status: paymentStatus,
+                            order_id: order_id,
+                            reason: reason // Include the reason
+                        },
+                        success: function (response) {
+                            iziToast.success({
+                                title: 'Success',
+                                message: 'Payment status updated successfully',
+                                position: 'topRight',
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 2000);
+                        },
+                        error: function (xhr, status, error) {
+                            iziToast.error({
+                                title: 'Error',
+                                message: 'Failed to update payment status: ' + xhr.responseText,
+                                position: 'topRight',
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 2000);
+                        }
+                    });
+                });
+    
+            } else {
+                // Directly update the status without a modal if the status is not changing from paid/unpaid
+                updatePaymentStatus(paymentStatus, order_id);
             }
-          });
         });
-      });
-      
+    
+        function updatePaymentStatus(paymentStatus, order_id) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/order/update_payment_status',
+                data: { status: paymentStatus, order_id: order_id },
+                success: function (response) {
+                    iziToast.success({
+                        title: 'Success',
+                        message: 'Payment status updated successfully',
+                        position: 'topRight',
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                },
+                error: function (xhr, status, error) {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Failed to update payment status: ' + xhr.responseText,
+                        position: 'topRight',
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                }
+            });
+        }
+    });
+    
+    
 </script>
+
+
   
 <!-- leaflet plugin -->
 <script src="/assets/libs/leaflet/leaflet.js"></script>

@@ -41,7 +41,7 @@
                                 >
                                     <div class="flex-grow-1">
                                         <h5 class="card-title mb-0">
-                                            Static Pages
+                                            List
                                         </h5>
                                     </div>
                                     <div class="flex-shrink-0">
@@ -89,12 +89,36 @@
                                                             ></label>
                                                         </div>
                                                     </th>
-                                                    <th>#</th>
+                                                  
                                                     <th
-                                                        class="sort cursor-pointer"
-                                                        data-sort="products"
+                                                        class="image"
+                                                       
+                                                    >
+                                                        Image
+                                                    </th>
+                                                    <th
+                                                        class="title"
+                                                        
                                                     >
                                                         Title
+                                                    </th>
+                                                    <th
+                                                        class="slug"
+                                                        
+                                                    >
+                                                        Slug
+                                                    </th>
+                                                    <th
+                                                        class="show_in"
+                                                        
+                                                    >
+                                                        Show In
+                                                    </th>
+                                                    <th
+                                                        class="status"
+                                                        
+                                                    >
+                                                        Status
                                                     </th>
                                                     <th>Action</th>
                                                 </tr>
@@ -124,11 +148,53 @@
                                                             ></label>
                                                         </div>
                                                     </td>
-                                                    <td><%= index + 1 %></td>
+                                                    <td class="image">
+                                                        <div
+                                                            class="d-flex align-items-center"
+                                                        >
+                                                            <div
+                                                                class="flex-shrink-0 me-2"
+                                                            >
+                                                                <div>
+                                                                    <img
+                                                                        class="avatar-sm rounded-circle customer-image-elem"
+                                                                        src="<%- pages.image ? '../../dist/users/' + pages.image : '../../assets/images/default/user-dummy-img.jpg' %>"
+                                                                        onerror="this.src='../../assets/images/default/user-dummy-img.jpg';"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
 
-                                                    <td class="category">
+                                                    <td class="title">
                                                         <%= pages.title?
                                                         pages.title: ''%>
+                                                    </td>
+                                                    <td class="slug">
+                                                        <%= pages.slug?
+                                                        pages.slug: ''%>
+                                                    </td>
+                                                    <td class="show_in">
+                                                        <span
+                                                            class="badge bg-secondary-subtle text-secondary"
+                                                        >
+                                                            <%=
+                                                            pages.show_in
+                                                            ?
+                                                            pages.show_in
+                                                            : '' %>
+                                                        </span>
+                                                    </td>
+                                                    <td class="status">
+                                                        <span
+                                                            class="badge bg-secondary-subtle text-secondary"
+                                                        >
+                                                            <%=
+                                                            pages.status_id
+                                                            ?
+                                                            pages.status_id.name
+                                                            : '' %>
+                                                        </span>
                                                     </td>
                                                     <td>
                                                         <div

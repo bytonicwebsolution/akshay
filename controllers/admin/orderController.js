@@ -39,13 +39,17 @@ class OrderController {
     // Update payment status in orders table
     static updatePaymentStatus = async (req, res) => {
         try {
-            const { status,order_id} = req.body;
-            // Update the payment_status in the orders table
+            const { status, order_id, reason } = req.body;
+    
+            // Update the payment_status and reason in the orders table
             await Order.updateOne(
                 { _id: order_id },
-                { payment_status: status }
+                { 
+                  payment_status: status,
+                  reason: reason // Save the reason in the database
+                }
             );
-
+    
             res.status(200).send({
                 message: "Payment status updated successfully",
             });
@@ -56,15 +60,15 @@ class OrderController {
             });
         }
     };
+    
 
-    // Update order status in orders table
+
     static updateOrderStatus = async (req, res) => {
         try {
             const { orderStatus,order_id} = req.body;
 
-            // Find the status ID from the Status collection
             const status = await Status.findOne({
-                type: "orders",
+                type: "order",
                 name: orderStatus,
             });
 
@@ -72,7 +76,6 @@ class OrderController {
                 return res.status(404).send({ message: "Status not found" });
             }
 
-            // Update the status_id in the orders table with the found status ID
             await Order.updateOne({ _id: order_id }, { status_id: status._id });
 
             res.status(200).send({
