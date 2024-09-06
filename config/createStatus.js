@@ -140,7 +140,7 @@ const createOrderStatus = async () => {
             status = new Status({ name, type: "order" });
             await status.save();
         }
-    }
+    };
     await checkAndUpdateStatus("pending");
     await checkAndUpdateStatus("completed");
     await checkAndUpdateStatus("picked_up");
@@ -149,7 +149,7 @@ const createOrderStatus = async () => {
     await checkAndUpdateStatus("delivered");
 };
 
-const creatTransactionStatus = async () => {
+const createTransactionStatus = async () => {
     const checkAndUpdateStatus = async (name) => {
         let status = await Status.findOne({
             type: "transaction",
@@ -174,8 +174,8 @@ const creatTransactionStatus = async () => {
             await status.save();
         }
     };
-    await checkAndUpdateStatus("pending");
-    await checkAndUpdateStatus("completed");
+    await checkAndUpdateStatus("success");
+    await checkAndUpdateStatus("failed");
 };
 
 const createUserStatus = async () => {
@@ -331,7 +331,7 @@ module.exports = {
     createBrandStatus,
     createProductStatus,
     createOrderStatus,
-    creatTransactionStatus,
+    createTransactionStatus,
     createUserStatus,
     createRatingStatus,
     createCouponStatus,

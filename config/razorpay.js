@@ -7,7 +7,7 @@ async function initializeRazorpay() {
         let config = await RazorpayConfig.findOne().sort({ created_at: -1 });
 
         if (!config || !config.key_id || !config.key_secret) {
-            throw new Error("Razorpay configuration not found.");
+            return null;
         }
 
         // Razorpay instance initialization

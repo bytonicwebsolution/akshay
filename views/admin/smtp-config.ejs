@@ -52,7 +52,6 @@
                                                 class="form-control"
                                                 id="service"
                                                 name="service"
-                                                value="<% service %>"
                                             >
                                                 <option
                                                     value="gmail"
@@ -163,12 +162,13 @@
                                                 class="form-control"
                                                 id="secure"
                                                 name="secure"
-                                                value="<% secure %>"
-                                            >
-                                                <option value="ssl">SSL</option>
-                                                <option value="tsl">TSL</option>
-                                                >
-                                            </select>
+                                                value="<%= secure ? secure : '' %>"
+                                                <option value="ssl" <%= secure ===true ? selected : "" %>default
+                                                    selected>
+                                                    SSL
+                                                </option>
+                                                <option value="tsl" <%= secure === false ? selected : "" %>>TSL</option>
+                                            ></select>
                                         </div>
 
                                         <div

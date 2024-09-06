@@ -39,6 +39,9 @@
                                 <div class="card-body">
                                     <div class="row g-3">
                                         <div class="col-xxl-3">
+                                            <label class="form-label"
+                                                >Search</label
+                                            >
                                             <div class="search-box">
                                                 <input
                                                     type="text"
@@ -82,6 +85,9 @@
                                         </div> -->
                                         <!--end col-->
                                         <div class="col-xxl-3 col-sm-6">
+                                            <label class="form-label"
+                                                >Category</label
+                                            >
                                             <div>
                                                 <select
                                                     class="form-control"
@@ -155,7 +161,10 @@
                                             </div>
                                         </div> -->
                                         <!--end col-->
-                                        <div class="col-xxl-1 col-sm-6 ms-auto">
+                                        <div
+                                            class="col-xxl-1 col-sm-6"
+                                            style="margin-top: 40px"
+                                        >
                                             <button
                                                 type="button"
                                                 class="btn btn-secondary w-100 pd-new"
@@ -167,7 +176,6 @@
                                                 Filters
                                             </button>
                                         </div>
-
                                         <!--end col-->
                                     </div>
                                     <!--end row-->
@@ -675,9 +683,7 @@
                         type: "POST",
                         contentType: "application/json",
                         url: "/admin/product/delete",
-                        data: JSON.stringify({
-                            ids: ids_array,
-                        }),
+                        data: JSON.stringify({ ids: ids_array }),
                     })
                         .done((res) => {
                             if (res.status == 200) {

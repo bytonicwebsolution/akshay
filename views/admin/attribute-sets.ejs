@@ -41,7 +41,7 @@
                                     >
                                         <div class="flex-grow-1">
                                             <h3 class="card-title mb-0">
-                                                 List
+                                                Attributes List
                                             </h3>
                                         </div>
                                         <div>
@@ -129,21 +129,21 @@
                                                             ></label>
                                                         </div>
                                                     </th>
-                                                   
+                                                    <th>#</th>
                                                     <th
-                                                        class="title"
-                                                        data-sort="title"
+                                                        class="sort cursor-pointer"
+                                                        data-sort="products"
                                                     >
                                                         Title
                                                     </th>
                                                     <th
-                                                        class="values"
-                                                        data-sort="values"
+                                                        class="sort cursor-pointer"
+                                                        data-sort="category"
                                                     >
                                                         Values
                                                     </th>
                                                     <th
-                                                        class="category"
+                                                        class="sort cursor-pointer"
                                                         data-sort="category"
                                                     >
                                                         Category
@@ -176,7 +176,7 @@
                                                             ></label>
                                                         </div>
                                                     </td>
-                                                   
+                                                    <td><%= index + 1 %></td>
                                                     <td class="category">
                                                         <%= attributes.title?
                                                         attributes.title: ''%>

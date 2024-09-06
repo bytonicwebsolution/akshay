@@ -18,7 +18,6 @@
                                         <a href="javascript: void(0);"
                                             >Product</a
                                         >
-                                        
                                     </li>
                                     <li class="breadcrumb-item active">
                                         Order Overview
@@ -39,7 +38,8 @@
                                 <div class="flex-grow-1">
                                     <p class="text-muted mb-2">Order Number</p>
                                     <h6 class="fs-md mb-0">
-                                        <%= order.order_no ? order.order_no : 'N/A' %>
+                                        <%= order.order_no ? order.order_no :
+                                        'N/A' %>
                                     </h6>
                                 </div>
                                 <div class="flex-shrink-0 text-end">
@@ -77,37 +77,59 @@
                             </div>
                         </div>
                         <div>
-                            
-                            <div class="row g-2 justify-content-lg-between align-items-center">
-                              
-                                    <input
+                            <div
+                                class="row g-2 justify-content-lg-between align-items-center"
+                            >
+                                <input
                                     type="hidden"
                                     id="editid"
                                     name="editid"
                                     value="<%= order?._id %>"
                                 />
-                                 
+
                                 <div class="col-lg-6 mb-4">
-                                    <label for="paymentStatus" class="form-label">Payment Status</label>
-                                    <select class="form-control" id="paymentStatus" name="paymentStatus">
+                                    <label
+                                        for="paymentStatus"
+                                        class="form-label"
+                                        >Payment Status</label
+                                    >
+                                    <select
+                                        class="form-control"
+                                        id="paymentStatus"
+                                        name="paymentStatus"
+                                    >
                                         <option value="paid">Paid</option>
                                         <option value="unpaid">Unpaid</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-6 mb-4">
-                                    <label for="orderStatus" class="form-label">Order Status</label>
-                                    <select class="form-control" id="orderStatus" name="orderStatus">
+                                    <label for="orderStatus" class="form-label"
+                                        >Order Status</label
+                                    >
+                                    <select
+                                        class="form-control"
+                                        id="orderStatus"
+                                        name="orderStatus"
+                                    >
                                         <option value="pending">Pending</option>
-                                        <option value="completed">Completed</option>
-                                        <option value="picked_up">Picked Up</option>
-                                        <option value="on_the_way">On the Way</option>
-                                        <option value="cancelled">Cancelled</option>
-                                        <option value="delivered">Delivered</option>
+                                        <option value="completed">
+                                            Completed
+                                        </option>
+                                        <option value="picked_up">
+                                            Picked Up
+                                        </option>
+                                        <option value="on_the_way">
+                                            On the Way
+                                        </option>
+                                        <option value="cancelled">
+                                            Cancelled
+                                        </option>
+                                        <option value="delivered">
+                                            Delivered
+                                        </option>
                                     </select>
                                 </div>
-                                
-                              </div>
-
+                            </div>
                         </div>
                         <!--end card-->
                     </div>
@@ -131,17 +153,16 @@
                                         order.user_id.last_name : 'N/A' %>
                                     </p>
                                     <p class="text-muted mb-1">
-                                        <%= order.user_id ?
-                                        order.user_id.email : 'N/A' %>
+                                        <%= order.user_id ? order.user_id.email
+                                        : 'N/A' %>
                                     </p>
                                     <p class="text-muted mb-0">
-                                        <%= order.user_id ?
-                                        order.user_id.phone : 'N/A' %>
+                                        <%= order.user_id ? order.user_id.phone
+                                        : 'N/A' %>
                                     </p>
                                 </div>
                                 <div class="flex-shrink-0">
                                     <img
-                                        
                                         src="<%- order.user_id.image ? '../../../dist/users/' + order.user_id.image : '../../../assets/images/default/user-dummy-img.jpg' %>"
                                         onerror="this.src='../../../assets/images/default/user-dummy-img.jpg';"
                                         class="avatar-md rounded img-thumbnail"
@@ -340,7 +361,7 @@
                                                     ₹<%= record.special_discount
                                                     ? record.special_discount :
                                                     record.unit_price %>
-                                                </td>                                                
+                                                </td>
                                                 <td>
                                                     <%= record.quantity ?
                                                     record.quantity : 'N/A' %>
@@ -452,8 +473,8 @@
                                                         <td class="text-end">
                                                             -<%=
                                                             record?.order_id ?
-                                                            record.order_id.order_discount_amount :
-                                                            '0' %>                                                           
+                                                            record.order_id.order_discount_amount
+                                                            : '0' %>
                                                         </td>
                                                     </tr>
                                                     <!-- <tr>
@@ -662,7 +683,6 @@
 </div>
 <!-- END layout-wrapper -->
 
-
 <!-- Add Reason Modal -->
 <div
     class="modal fade"
@@ -725,120 +745,37 @@
 </div>
 <!-- end Add Reason Modal -->
 
-
 <%- include('partials/footer.ejs') %>
 
 <script>
     $(document).ready(function () {
         // Initialize the modal using Bootstrap
-        const modalElement = new bootstrap.Modal(document.getElementById('showModal'), {});
+        const modalElement = new bootstrap.Modal(
+            document.getElementById("showModal"),
+            {}
+        );
         const orders = JSON.parse(
             `<%- JSON.stringify(order).replace(/\\/g, '\\\\').replace(/"/g, '\\"') %>`
         );
-    
+
         $("#paymentStatus").val(orders?.payment_status);
         $("#orderStatus").val(orders?.status_id?.name);
 
-         // Handler for Order Status change
-         $('#orderStatus').change(function() {
+        // Handler for Order Status change
+        $("#orderStatus").change(function () {
             const orderStatus = $(this).val();
-            const order_id = $('#editid').val(); // Fetch the order_id from the hidden input field
-        
+            const order_id = $("#editid").val(); // Fetch the order_id from the hidden input field
+
             // Make AJAX call to update order status in orders table
             $.ajax({
-              type: 'POST',
-              url: '/admin/order/update_order_status',
-              data: { orderStatus: orderStatus, order_id: order_id },
-              success: function(response) {
-                iziToast.success({
-                  title: 'Success',
-                  message: 'Order status updated successfully',
-                  position: 'topRight',
-                });
-                setTimeout(function () {
-                  location.reload();
-              }, 2000);
-              },
-              error: function(xhr, status, error) {
-                iziToast.error({
-                  title: 'Error',
-                  message: 'Failed to update order status: ' + xhr.responseText,
-                  position: 'topRight',
-                });
-                setTimeout(function () {
-                  location.reload();
-              }, 2000);
-              }
-            });
-          });
-    
-        // Handler for Payment Status change
-        $('#paymentStatus').change(function () {
-            const paymentStatus = $(this).val();
-            const order_id = $('#editid').val(); // Fetch the order_id from the hidden input field
-    
-            // Check if the status is changed from 'paid' to 'unpaid' or vice versa
-            if ((orders?.payment_status === 'paid' && paymentStatus === 'unpaid') ||
-                (orders?.payment_status === 'unpaid' && paymentStatus === 'paid')) {
-    
-                // Show the modal to input the reason
-               
-                
-                // Show the modal using Bootstrap's modal API
-                modalElement.show();
-    
-                // Handle save reason button click
-                $('#saveReason').off('click').on('click', function (e) {
-                    e.preventDefault(); // Prevent the form from submitting normally
-                    const reason = $('#reasonTextarea').val();
-    
-                    $.ajax({
-                        type: 'POST',
-                        url: '/admin/order/update_payment_status',
-                        data: {
-                            status: paymentStatus,
-                            order_id: order_id,
-                            reason: reason // Include the reason
-                        },
-                        success: function (response) {
-                            iziToast.success({
-                                title: 'Success',
-                                message: 'Payment status updated successfully',
-                                position: 'topRight',
-                            });
-                            setTimeout(function () {
-                                location.reload();
-                            }, 2000);
-                        },
-                        error: function (xhr, status, error) {
-                            iziToast.error({
-                                title: 'Error',
-                                message: 'Failed to update payment status: ' + xhr.responseText,
-                                position: 'topRight',
-                            });
-                            setTimeout(function () {
-                                location.reload();
-                            }, 2000);
-                        }
-                    });
-                });
-    
-            } else {
-                // Directly update the status without a modal if the status is not changing from paid/unpaid
-                updatePaymentStatus(paymentStatus, order_id);
-            }
-        });
-    
-        function updatePaymentStatus(paymentStatus, order_id) {
-            $.ajax({
-                type: 'POST',
-                url: '/admin/order/update_payment_status',
-                data: { status: paymentStatus, order_id: order_id },
+                type: "POST",
+                url: "/admin/order/update_order_status",
+                data: { orderStatus: orderStatus, order_id: order_id },
                 success: function (response) {
                     iziToast.success({
-                        title: 'Success',
-                        message: 'Payment status updated successfully',
-                        position: 'topRight',
+                        title: "Success",
+                        message: "Order status updated successfully",
+                        position: "topRight",
                     });
                     setTimeout(function () {
                         location.reload();
@@ -846,23 +783,114 @@
                 },
                 error: function (xhr, status, error) {
                     iziToast.error({
-                        title: 'Error',
-                        message: 'Failed to update payment status: ' + xhr.responseText,
-                        position: 'topRight',
+                        title: "Error",
+                        message:
+                            "Failed to update order status: " +
+                            xhr.responseText,
+                        position: "topRight",
                     });
                     setTimeout(function () {
                         location.reload();
                     }, 2000);
-                }
+                },
+            });
+        });
+
+        // Handler for Payment Status change
+        $("#paymentStatus").change(function () {
+            const paymentStatus = $(this).val();
+            const order_id = $("#editid").val(); // Fetch the order_id from the hidden input field
+
+            // Check if the status is changed from 'paid' to 'unpaid' or vice versa
+            if (
+                (orders?.payment_status === "paid" &&
+                    paymentStatus === "unpaid") ||
+                (orders?.payment_status === "unpaid" &&
+                    paymentStatus === "paid")
+            ) {
+                // Show the modal to input the reason
+
+                // Show the modal using Bootstrap's modal API
+                modalElement.show();
+
+                // Handle save reason button click
+                $("#saveReason")
+                    .off("click")
+                    .on("click", function (e) {
+                        e.preventDefault(); // Prevent the form from submitting normally
+                        const reason = $("#reasonTextarea").val();
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/admin/order/update_payment_status",
+                            data: {
+                                status: paymentStatus,
+                                order_id: order_id,
+                                reason: reason, // Include the reason
+                            },
+                            success: function (response) {
+                                iziToast.success({
+                                    title: "Success",
+                                    message:
+                                        "Payment status updated successfully",
+                                    position: "topRight",
+                                });
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 2000);
+                            },
+                            error: function (xhr, status, error) {
+                                iziToast.error({
+                                    title: "Error",
+                                    message:
+                                        "Failed to update payment status: " +
+                                        xhr.responseText,
+                                    position: "topRight",
+                                });
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 2000);
+                            },
+                        });
+                    });
+            } else {
+                // Directly update the status without a modal if the status is not changing from paid/unpaid
+                updatePaymentStatus(paymentStatus, order_id);
+            }
+        });
+
+        function updatePaymentStatus(paymentStatus, order_id) {
+            $.ajax({
+                type: "POST",
+                url: "/admin/order/update_payment_status",
+                data: { status: paymentStatus, order_id: order_id },
+                success: function (response) {
+                    iziToast.success({
+                        title: "Success",
+                        message: "Payment status updated successfully",
+                        position: "topRight",
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                },
+                error: function (xhr, status, error) {
+                    iziToast.error({
+                        title: "Error",
+                        message:
+                            "Failed to update payment status: " +
+                            xhr.responseText,
+                        position: "topRight",
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                },
             });
         }
     });
-    
-    
 </script>
 
-
-  
 <!-- leaflet plugin -->
 <script src="/assets/libs/leaflet/leaflet.js"></script>
 <!-- leaflet-routing-machine -->

@@ -267,7 +267,7 @@ class PaymentController {
             }
 
             let razorpayOrder;
-            let paymentMode = "Online";
+            let paymentMode = "online";
 
             try {
                 const razorpay = await initializeRazorpay();
@@ -280,13 +280,10 @@ class PaymentController {
 
                 razorpayOrder = await razorpay.orders.create(options);
             } catch (error) {
-                console.log(
-                    "Razorpay configuration not found. Defaulting to COD."
-                );
-                paymentMode = "COD";
+                paymentMode = "COD"; // Silently switch to COD if Razorpay fails
             }
 
-            await config.creatOrderStatus();
+            await config.createOrderStatus();
             let order_status = await Status.findOne({
                 name: { $regex: new RegExp("^pending$", "i") },
                 type: { $regex: new RegExp("^order$", "i") },
@@ -301,7 +298,7 @@ class PaymentController {
                 additional_info: additional_info,
                 status_id: order_status._id,
                 payment_mode: paymentMode,
-                payment_status: "Unpaid",
+                payment_status: "unpaid",
             });
 
             orderItems = await Promise.all(
@@ -332,45 +329,12 @@ class PaymentController {
 
             // if payment mode is COD, then save
             if (paymentMode === "COD") {
-                await config.creatTransactionStatus();
-                let transaction_status = await Status.findOne({
-                    name: { $regex: new RegExp("^pending$", "i") },
-                    type: { $regex: new RegExp("^transaction$", "i") },
-                });
-                await Transaction.create({
-                    order_id: order._id,
-                    user_id: req.login_user ? req.login_user._id : "",
-                    orderId: null, // Will be updated later
-                    payment_id: null, // Will be updated later
-                    signature: null, // Will be updated later
-                    amount: totalAmount,
-                    currency: "INR",
-                    status_id: transaction_status._id,
-                    payment_mode: paymentMode,
-                });
                 res.send({
-                    orderId: null,
                     order_id: order._id,
                     amount: totalAmount,
                     currency: "INR",
                 });
             } else {
-                await config.creatTransactionStatus();
-                let transaction_status = await Status.findOne({
-                    name: { $regex: new RegExp("^pending$", "i") },
-                    type: { $regex: new RegExp("^transaction$", "i") },
-                });
-                await Transaction.create({
-                    order_id: order._id,
-                    user_id: req.login_user ? req.login_user._id : "",
-                    orderId: razorpayOrder.id,
-                    payment_id: null, // Will be updated later
-                    signature: null, // Will be updated later
-                    amount: totalAmount,
-                    currency: "INR",
-                    status_id: transaction_status._id,
-                    payment_mode: paymentMode,
-                });
                 res.send({
                     orderId: razorpayOrder.id,
                     order_id: order._id,
@@ -395,37 +359,43 @@ class PaymentController {
                 order_id, // For COD payments, this may be undefined or null
             } = req.body;
 
-            // Determine payment mode
-            const paymentMode = req.body.paymentMode || "COD"; // Default to COD if not provided
+            // Fetch order details to get payment_mode from Order table
+            const order = await Order.findById(order_id);
+            if (!order) {
+                return res.status(404).send({
+                    message: "Order not found",
+                });
+            }
 
-            if (paymentMode === "COD") {
+            // Get payment_mode and payment_status from the order
+            const payment_mode = order.payment_mode;
+
+            if (payment_mode === "COD") {
                 // Handle COD case
-                await config.creatTransactionStatus();
+                await config.createTransactionStatus();
                 let status = await Status.findOne({
-                    name: { $regex: new RegExp("^completed$", "i") },
+                    name: { $regex: new RegExp("^success$", "i") },
                     type: { $regex: new RegExp("^transaction$", "i") },
                 });
-                await Transaction.updateOne(
-                    { orderId: orderId },
-                    {
-                        $set: {
-                            payment_id: payment_id,
-                            status_id: status._id,
-                        },
-                    }
-                );
 
-                await config.creatOrderStatus();
-                let order_status = await Status.findOne({
-                    name: { $regex: new RegExp("^completed$", "i") },
-                    type: { $regex: new RegExp("^order$", "i") },
+                // create Transaction
+                await Transaction.create({
+                    order_id: order_id,
+                    user_id: order.user_id,
+                    orderId: null,
+                    payment_id: payment_id,
+                    signature: null,
+                    amount: order.order_total_amount,
+                    currency: "INR",
+                    status_id: status._id,
+                    payment_mode: payment_mode,
                 });
+
                 await Order.updateOne(
                     { _id: order_id },
                     {
                         $set: {
-                            status_id: order_status._id,
-                            payment_status: "Paid",
+                            payment_status: "paid",
                         },
                     }
                 );
@@ -439,32 +409,30 @@ class PaymentController {
                 });
             } else {
                 // Handle Razorpay or other payment mode
-                await config.creatTransactionStatus();
+                await config.createTransactionStatus();
                 let status = await Status.findOne({
-                    name: { $regex: new RegExp("^completed$", "i") },
+                    name: { $regex: new RegExp("^success$", "i") },
                     type: { $regex: new RegExp("^transaction$", "i") },
                 });
-                await Transaction.updateOne(
-                    { orderId: orderId },
-                    {
-                        $set: {
-                            payment_id: payment_id,
-                            status_id: status._id,
-                        },
-                    }
-                );
 
-                await config.creatOrderStatus();
-                let order_status = await Status.findOne({
-                    name: { $regex: new RegExp("^completed$", "i") },
-                    type: { $regex: new RegExp("^order$", "i") },
+                // create Transaction
+                await Transaction.create({
+                    order_id: order_id,
+                    user_id: order.user_id,
+                    orderId: orderId,
+                    payment_id: payment_id,
+                    signature: null,
+                    amount: order.order_total_amount,
+                    currency: "INR",
+                    status_id: status._id,
+                    payment_mode: payment_mode,
                 });
+
                 await Order.updateOne(
                     { _id: order_id },
                     {
                         $set: {
-                            status_id: order_status._id,
-                            payment_status: "Paid",
+                            payment_status: "paid",
                         },
                     }
                 );
@@ -480,7 +448,6 @@ class PaymentController {
                 res.send({
                     status: 200,
                     message: "Payment verified successfully",
-                    orderId: orderId,
                     payment_id: payment_id,
                 });
             }

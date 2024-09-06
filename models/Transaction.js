@@ -31,7 +31,7 @@ const transactionSchema = new mongoose.Schema({
     status_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Status",
-        required: true,
+        default: null,
     },
     payment_mode: {
         type: String,

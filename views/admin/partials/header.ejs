@@ -1343,6 +1343,7 @@
                 "/admin/static-pages/add": "pages",
                 "/admin/vendor/list": "venders",
                 "/admin/static-pages/list": "pages",
+                "/admin/static-pages/add": "pages",
                 "/admin/faq/list": "faq",
                 "/admin/slider/list": "slider",
                 "/admin/banner/list": "banner",
@@ -1354,11 +1355,10 @@
                 "/admin/contactus/list": "contactus",
                 "/admin/staff/list": "staffs",
                 "/admin/staff/add": "staffs",
-                "/admin/user/order-view": "orders", // Keep this for exact matches
+                "/admin/user/order-view": "orders", 
                 "/admin/product/edit": "products",
                 "/admin/vendor/edit": "venders",
-                "/admin/order/details":"orders",
-                "/admin/static-pages/add":"pages"
+                "/admin/order/details": "orders",
             };
 
             const pathname = window.location.pathname;
@@ -1373,7 +1373,7 @@
             if (pathname.startsWith("/admin/vendor/edit")) {
                 activeTabClass = "venders";
             }
-            if(pathname.startsWith("/admin/order/details")){
+            if (pathname.startsWith("/admin/order/details")) {
                 activeTabClass = "orders";
             }
 
