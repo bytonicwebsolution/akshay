@@ -18,6 +18,7 @@ const defaultImage = baseURL + "/assets/images/default/user-dummy-img.jpg";
 const imageFilter = require("../../config/imageFilter");
 const config = require("../../config/createStatus");
 const sendEmail = require("../../config/mailer");
+const CryptoJS = require("crypto-js");
 
 // Set The Storage Engine
 const storage = multer.diskStorage({
@@ -109,8 +110,21 @@ class webauthController {
             });
             await user.save();
 
-            // Send the email
-            await sendEmail(email, first_name);
+            // Read HTML template for email
+            const HTML_TEMPLATE = fs.readFileSync(
+                path.join(__dirname, "../../views/mail-templates/welcome.html"),
+                "utf8"
+            );
+
+            // Replace placeholder in HTML template with actual data
+            const html = HTML_TEMPLATE.replace("{{first_name}}", first_name);
+
+            // Define subject and body for the email
+            const subject = `Hi ${first_name}, Your registration was successful!`;
+            const body = { email, first_name };
+
+            // Send email
+            await sendEmail(subject, body, html);
 
             return res.send({
                 message: "User registered successfully",
@@ -237,6 +251,110 @@ class webauthController {
             console.log(error);
             return res.status(500).send({
                 message: "Something went wrong please try again later",
+                error: error.message,
+            });
+        }
+    };
+
+    static forgot_password = async (req, res) => {
+        const encrypt = (text) => {
+            return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(text));
+        };
+        try {
+            const { url, email } = req.body;
+            if (!email) {
+                return res.status(400).send({ message: "Email is required" });
+            }
+
+            const user = await User.findOne({ email });
+
+            if (!url) {
+                return res.status(404).send({ message: "Url not found" });
+            }
+
+            // Generate a token containing the email information
+            const emailToken = encrypt(email);
+
+            // Create the reset password URL
+            const resetPasswordUrl = `${url}?email=${encodeURIComponent(
+                emailToken
+            )}`;
+            if (user) {
+                const HTML_TEMPLATE = fs.readFileSync(
+                    path.join(
+                        __dirname,
+                        "../../views/mail-templates/forgot-password.html"
+                    ),
+                    "utf8"
+                );
+                const first_name = user.first_name;
+                const html = HTML_TEMPLATE.replace(
+                    "{{reset_link}}",
+                    resetPasswordUrl
+                );
+                const body = { email, first_name };
+                const subject = `Hi ${body.first_name}, Reset Your Password!`;
+                await sendEmail(subject, body, html);
+            }
+
+            return res.status(200).send({
+                Token: user ? emailToken : "",
+                message: user
+                    ? "mail Sent Successfully, Please Check Your Mail!"
+                    : "Email is Not Exists!",
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                message: "Something went wrong, please try again later",
+                error: error.message,
+            });
+        }
+    };
+
+    static reset_password = async (req, res) => {
+        const decrypt = (data) => {
+            return CryptoJS.enc.Base64.parse(data).toString(CryptoJS.enc.Utf8);
+        };
+        try {
+            const { email_token, new_password } = req.body;
+            if (!email_token) {
+                return res.status(400).send({ message: "Token is required" });
+            }
+
+            if (!new_password) {
+                return res
+                    .status(400)
+                    .send({ message: "New Password is required" });
+            }
+
+            // Decode the token to get the email
+            const decodedEmail = decrypt(email_token);
+            console.log(decodedEmail);
+
+            // Find the user by email
+            const user = await User.findOne({ email: decodedEmail });
+            if (!user) {
+                return res.status(404).send({ message: "User not found" });
+            }
+
+            // Hash the new password
+            const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS));
+            const hashedPassword = await bcrypt.hash(new_password, salt);
+
+            // Update the user's password in the database
+            await User.findOneAndUpdate(
+                { _id: user._id },
+                { password: hashedPassword }
+            );
+
+            return res
+                .status(200)
+                .send({ message: "Password has been reset successfully" });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                message: "Something went wrong, please try again later",
                 error: error.message,
             });
         }
@@ -568,7 +686,7 @@ class webauthController {
                     model: "User",
                     select: "user_type first_name last_name email phone address address2",
                 })
-                .populate({ path: "status_id", model: "Status" })
+                .populate({ path: "status_id", model: "Status" });
 
             // set default image if necessary
             if (ratings && ratings.length > 0) {

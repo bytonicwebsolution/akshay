@@ -4,7 +4,7 @@ const path = require("path");
 require("dotenv").config();
 const SmtpConfig = require("../models/SmtpConfig");
 
-const sendEmail = async (subject, body) => {
+const sendEmail = async (subject,body,html) => {
     const smtpconfig = await SmtpConfig.findOne();
     const pass = smtpconfig.password;
 
@@ -19,19 +19,12 @@ const sendEmail = async (subject, body) => {
                 pass: pass,
             },
         });
-        const email = subject;
-        const first_name = body;
-        // Read the HTML template
-        const HTML_TEMPLATE = fs.readFileSync(
-            path.join(__dirname, "../views/mail-templates/mail.html"),
-            "utf8"
-        );
-
+        const email = body.email;
         const mailOptions = {
             from: smtpconfig.mail_address,
-            to: email, // Use the email of the newly registered user
-            subject: `Hi ${first_name}, Your registration was successful!`,
-            html: HTML_TEMPLATE.replace("{{first_name}}", first_name), // Replace placeholder with the user's name if needed
+            to: email, 
+            subject: subject,
+            html: html, 
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
