@@ -19,7 +19,7 @@ const contactusR = require("./routes/admin/contactus");
 const staffR = require("./routes/admin/staff");
 const settingsR = require("./routes/admin/settings");
 const productReview = require("./routes/admin/product-reviews")
-
+const transaction = require("./routes/admin/transactions");
 const AdminRoutes = (app) => {
     app.use("/", mainR);
     app.use("/admin", dashboardR);
@@ -42,6 +42,7 @@ const AdminRoutes = (app) => {
     app.use("/admin/contactus", contactusR);
     app.use("/admin/staff", staffR);
     app.use("/admin", settingsR);
+    app.use("/admin/transaction", transaction);
 };
 
 module.exports = AdminRoutes;

@@ -957,10 +957,17 @@ class ProductController {
                     );
                     const filteredPrices = prices.filter((val) => val);
 
+                    const productStock = await ProductStock.findOne({
+                        product_id: product._id,
+                    });
+
                     // validate if SKU is unique
                     for (let sku of filteredSkus) {
                         const existingStock = await ProductStock.findOne({
                             sku,
+                            _id: {
+                                $ne: productStock ? productStock._id : null,
+                            },
                         });
                         if (existingStock) {
                             return res.status(400).send({
@@ -968,10 +975,6 @@ class ProductController {
                             });
                         }
                     }
-
-                    const productStock = await ProductStock.findOne({
-                        product_id: product._id,
-                    });
                     if (!productStock) {
                         const newProductStock = new ProductStock({
                             attribute_value_id: filteredAttributeValueIds,

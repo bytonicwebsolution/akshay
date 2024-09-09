@@ -62,70 +62,53 @@
                                         >
                                             <thead class="table-active">
                                                 <tr>
-                                                    <th>
-                                                        #
-                                                    </th>
-                                                    <th
-                                                        class="sort cursor-pointer"
-                                                        data-sort="products"
-                                                    >
-                                                        Name
-                                                    </th>
-                                                    <th
-                                                        class="sort cursor-pointer"
-                                                        data-sort="category"
-                                                    >
-                                                        Email
-                                                    </th>
-                                                    <th
-                                                        class="sort cursor-pointer"
-                                                        data-sort="category"
-                                                    >
-                                                        Phone
-                                                    </th>
-                                                    <th
-                                                        class="sort cursor-pointer"
-                                                        data-sort="category"
-                                                    >
-                                                        country
-                                                    </th>
-                                                    <th
-                                                        class="sort cursor-pointer"
-                                                        data-sort="category"
-                                                    >
-                                                        Subject
-                                                    </th>
-                                                    <th
-                                                        class="sort cursor-pointer"
-                                                        data-sort="category"
-                                                    >
-                                                        Message
-                                                    </th>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Phone</th>
+                                                    <th>Country</th>
+                                                    <th>Subject</th>
+                                                    <th>Message</th>
                                                     <!-- <th>Action</th> -->
                                                 </tr>
                                             </thead>
                                             <tbody class="list form-check-all">
                                                 <%
-                                                contactus.forEach(function(contactus,index) { %>
+                                                contactus.forEach(function(contactus,index)
+                                                { %>
                                                 <tr>
                                                     <td><%= index + 1 %></td>
                                                     <td class="customer">
-                                                        <%= contactus.first_name + " " +contactus.last_name ?contactus.first_name + "" + contactus.last_name: "" %>
+                                                        <%= contactus.first_name
+                                                        + " "
+                                                        +contactus.last_name
+                                                        ?contactus.first_name +
+                                                        "" +
+                                                        contactus.last_name: ""
+                                                        %>
                                                     </td>
                                                     <td class="email">
-                                                        <%= contactus.email ? contactus.email : "" %>
+                                                        <%= contactus.email ?
+                                                        contactus.email : "" %>
                                                     </td>
                                                     <td class="phone">
-                                                        <%= contactus.phone ? contactus.phone : "" %>
+                                                        <%= contactus.phone ?
+                                                        contactus.phone : "" %>
                                                     </td>
-                                                    <td class="category">
-                                                        <%= contactus.country ? contactus.country : "" %>
+                                                    <td class="country">
+                                                        <%= contactus.country ?
+                                                        contactus.country : ""
+                                                        %>
                                                     </td>
-                                                    <td class="category">
-                                                        <%= contactus.subject ? contactus.subject : "" %>
+                                                    <td class="subject">
+                                                        <%= contactus.subject ?
+                                                        contactus.subject : ""
+                                                        %>
                                                     </td>
-                                                    <td class="category">
-                                                        <%= contactus.message ? contactus.message : "" %>
+                                                    <td class="message">
+                                                        <%= contactus.message ?
+                                                        contactus.message : ""
+                                                        %>
                                                     </td>
                                                     <!-- <td>
                                                         <div
@@ -181,49 +164,50 @@
                                         </div>
                                     </div>
                                     <div
-                                    class="align-items-center mt-4 justify-content-between row text-center text-sm-start"
-                                    id="pagination-element"
-                                >
-                                    <div class="col-sm">
-                                        <div class="text-muted">
-                                            Showing
-                                            <span
-                                                class="fw-semibold"
-                                                id="current-items"
-                                                ><%= Math.min(currentPage *
-                                                pageSize, totalItems)
-                                                %></span
-                                            >
-                                            of
-                                            <span
-                                                class="fw-semibold"
-                                                id="total-items"
-                                                ><%= totalItems ? totalItems : 0%></span
-                                            >
-                                            Results
+                                        class="align-items-center mt-4 justify-content-between row text-center text-sm-start"
+                                        id="pagination-element"
+                                    >
+                                        <div class="col-sm">
+                                            <div class="text-muted">
+                                                Showing
+                                                <span
+                                                    class="fw-semibold"
+                                                    id="current-items"
+                                                    ><%= Math.min(currentPage *
+                                                    pageSize, totalItems)
+                                                    %></span
+                                                >
+                                                of
+                                                <span
+                                                    class="fw-semibold"
+                                                    id="total-items"
+                                                    ><%= totalItems ? totalItems
+                                                    : 0%></span
+                                                >
+                                                Results
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="col-sm-auto mt-3 mt-sm-0">
-                                        <div
-                                            class="pagination-wrap hstack gap-2 justify-content-center"
-                                        >
-                                            <a
-                                                class="page-item pagination-prev disabled"
-                                                href="javascript:void(0)"
-                                                >Previous</a
+                                        <div class="col-sm-auto mt-3 mt-sm-0">
+                                            <div
+                                                class="pagination-wrap hstack gap-2 justify-content-center"
                                             >
-                                            <ul
-                                                class="pagination listjs-pagination mb-0"
-                                            ></ul>
-                                            <a
-                                                class="page-item pagination-next"
-                                                href="javascript:void(0)"
-                                                >Next</a
-                                            >
+                                                <a
+                                                    class="page-item pagination-prev disabled"
+                                                    href="javascript:void(0)"
+                                                    >Previous</a
+                                                >
+                                                <ul
+                                                    class="pagination listjs-pagination mb-0"
+                                                ></ul>
+                                                <a
+                                                    class="page-item pagination-next"
+                                                    href="javascript:void(0)"
+                                                    >Next</a
+                                                >
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 </div>
                             </div>
                         </div>
@@ -244,18 +228,18 @@
 <script>
     function truncateText(selector, maxLength) {
         const elements = document.querySelectorAll(selector);
-        elements.forEach(element => {
+        elements.forEach((element) => {
             let text = element.innerText;
             if (text.length > maxLength) {
-                element.innerText = text.substring(0, maxLength) + '...';
+                element.innerText = text.substring(0, maxLength) + "...";
             }
         });
     }
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        truncateText('.message', 20);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        truncateText(".message", 20);
     });
-    document.addEventListener('DOMContentLoaded', () => {
-        truncateText('.subject', 20);
+    document.addEventListener("DOMContentLoaded", () => {
+        truncateText(".subject", 20);
     });
 </script>

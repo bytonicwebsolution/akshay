@@ -1,10 +1,8 @@
 const nodemailer = require("nodemailer");
-const fs = require("fs");
-const path = require("path");
 require("dotenv").config();
 const SmtpConfig = require("../models/SmtpConfig");
 
-const sendEmail = async (subject,body,html) => {
+const sendEmail = async (subject, body, html) => {
     const smtpconfig = await SmtpConfig.findOne();
     const pass = smtpconfig.password;
 
@@ -22,9 +20,9 @@ const sendEmail = async (subject,body,html) => {
         const email = body.email;
         const mailOptions = {
             from: smtpconfig.mail_address,
-            to: email, 
+            to: email,
             subject: subject,
-            html: html, 
+            html: html,
         };
 
         transporter.sendMail(mailOptions, function (error, info) {

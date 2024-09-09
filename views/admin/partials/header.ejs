@@ -399,6 +399,17 @@
                             </a>
                         </li>
 
+                        <li class="nav-item"></li>
+                            <a
+                                href="/admin/transaction/list"
+                                class="nav-link menu-link transactions"
+                                data-key="t-orders"
+                            >
+                                <i class="ph-credit-card"></i>
+                                <span data-key="t-calendar">Transaction History</span>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a
                                 href="/admin/contactus/list"
@@ -1355,10 +1366,11 @@
                 "/admin/contactus/list": "contactus",
                 "/admin/staff/list": "staffs",
                 "/admin/staff/add": "staffs",
-                "/admin/user/order-view": "orders", 
+                "/admin/user/order-view": "orders", // Keep this for exact matches
                 "/admin/product/edit": "products",
                 "/admin/vendor/edit": "venders",
                 "/admin/order/details": "orders",
+                "/admin/transaction/list": "transactions",
             };
 
             const pathname = window.location.pathname;

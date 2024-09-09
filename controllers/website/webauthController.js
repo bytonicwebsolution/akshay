@@ -330,7 +330,6 @@ class webauthController {
 
             // Decode the token to get the email
             const decodedEmail = decrypt(email_token);
-           
 
             // Find the user by email
             const user = await User.findOne({ email: decodedEmail });
